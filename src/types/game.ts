@@ -1,6 +1,37 @@
-export type ModeId = "menu" | "restauracao" | "narrativa" | "quiz" | "codex" | "resultado" | "config";
+export type ModeId =
+  | "hub"
+  | "restauracao2026"
+  | "historiaInterativa"
+  | "quizTematico"
+  | "museuVivo"
+  | "resultadoIntegrado"
+  | "config";
 
 export type GlobalStateLevel = "estavel" | "pressionado" | "crise" | "colapso";
+
+export type ContentType = "historical_fact" | "contemporary_fact" | "simulation_2026";
+
+export type RestorationStage =
+  | "locked"
+  | "diagnosis"
+  | "prioritization"
+  | "contracting"
+  | "restoration"
+  | "validation"
+  | "released";
+
+export type DramaticRole = "setup" | "pressure" | "decision" | "consequence";
+
+export type Difficulty = "easy" | "medium" | "hard";
+
+export type MuseumColorState = "locked" | "discovered" | "restored" | "complete";
+
+export interface EditorialMeta {
+  contentType: ContentType;
+  sourceRef: string;
+  confidenceNote: string;
+  unlockSource: string;
+}
 
 export interface Resources {
   orcamento: number;
@@ -10,84 +41,146 @@ export interface Resources {
   preservacao: number;
 }
 
-export interface LocomotiveAsset {
-  id: string;
-  name: string;
-  restorationLevel: number;
-  status: "critico" | "restauro" | "operacional";
-  requirements: string[];
-}
-
-export interface EventConsequence {
-  resources: Partial<Resources>;
-  text: string;
-  unlocks?: string[];
-  tags?: string[];
-}
-
-export interface EventChoice {
-  id: string;
-  label: string;
-  consequence: EventConsequence;
-}
-
-export interface GameEvent {
-  id: string;
-  title: string;
-  description: string;
-  choices: EventChoice[];
-  tags: string[];
-  image?: string;
-}
-
 export interface NarrativeBars {
   saude: number;
   moral: number;
   progresso: number;
 }
 
-export interface NarrativeChoice {
+export interface EvidenceRef {
+  id: string;
+  title: string;
+  shortRef: string;
+  description: string;
+}
+
+export interface Character {
+  id: string;
+  name: string;
+  role: string;
+  summary: string;
+}
+
+export interface Place {
+  id: string;
+  name: string;
+  summary: string;
+}
+
+export interface Artifact {
+  id: string;
+  name: string;
+  summary: string;
+}
+
+export interface RestorationTaskChoice {
+  id: string;
+  label: string;
+  summary: string;
+  outcome: string;
+  resourceDelta: Partial<Resources>;
+  timelineNote: string;
+}
+
+export interface RestorationTask extends EditorialMeta {
+  id: string;
+  moduleId: string;
+  title: string;
+  summary: string;
+  stage: "diagnosis" | "restoration";
+  cost: string;
+  time: string;
+  impact: string;
+  risk: string;
+  dependencies: string[];
+  evidenceType: string;
+  choices: RestorationTaskChoice[];
+}
+
+export interface RestorationModule extends EditorialMeta {
+  id: string;
+  title: string;
+  kicker: string;
+  summary: string;
+  objective: string;
+  imageSrc: string;
+  subsystems: string[];
+  taskIds: string[];
+}
+
+export interface HistoryChoice {
   id: string;
   label: string;
   consequence: string;
   delta: Partial<NarrativeBars>;
-  setFlags?: string[];
-  requiredFlags?: string[];
-  latentDelta?: Partial<NarrativeBars>;
-  unlocks?: string[];
 }
 
-export interface NarrativeScene {
+export interface HistoryScene extends EditorialMeta {
   id: string;
-  chapter: number;
+  chapterId: string;
   title: string;
-  protagonist: "barbadiano" | "medico" | "ambos";
-  text: string;
-  choices: NarrativeChoice[];
+  context: string;
+  dialogue: string;
+  characterId: string;
+  locationId: string;
+  historicalAnchor: string;
+  outcomeTags: string[];
+  dramaticRole: DramaticRole;
+  choices: HistoryChoice[];
 }
 
-export interface QuizQuestion {
+export interface HistoryChapter extends EditorialMeta {
   id: string;
-  category:
-    | "Tratado de Petropolis"
-    | "Construcao"
-    | "Trabalhadores"
-    | "Doencas e Saneamento"
-    | "Locomotivas"
-    | "Patrimonio";
+  part: number;
+  title: string;
+  summary: string;
+  status: "available" | "planned";
+}
+
+export interface QuizQuestion extends EditorialMeta {
+  id: string;
+  moduleId: string;
   prompt: string;
   options: string[];
   correctIndex: number;
   explanation: string;
-  rewardUnlockId?: string;
+  difficulty: Difficulty;
+  topic: string;
+  museumUnlockId?: string;
 }
 
-export interface CodexEntry {
+export interface QuizModule extends EditorialMeta {
   id: string;
-  type: "personagem" | "fato" | "locomotiva" | "documento" | "marco";
   title: string;
-  body: string;
-  tags: string[];
+  summary: string;
+  status: "available" | "planned";
+}
+
+export interface MuseumEntry extends EditorialMeta {
+  id: string;
+  areaId: string;
+  title: string;
+  summary: string;
+  whatIsIt: string;
+  historicalUse: string;
+  whereAppearsInGame: string;
+  whyItMattersToday: string;
+}
+
+export interface MuseumArea extends EditorialMeta {
+  id: string;
+  title: string;
+  icon: string;
+  unlockThreshold: number;
+  entryIds: string[];
+  status: "available" | "planned";
+}
+
+export interface UnlockRule {
+  id: string;
+  sourceType: "restoration" | "history" | "quiz" | "milestone";
+  sourceId: string;
+  museumEntryId: string;
 }
 
 export interface Achievement {
@@ -114,6 +207,44 @@ export interface Player {
   id: string;
   name: string;
   progress: number;
-  unlockedModes: ModeId[];
   achievements: Achievement[];
+}
+
+export interface RestorationModuleProgress {
+  stage: RestorationStage;
+  completedTaskIds: string[];
+  selectedChoiceIds: string[];
+  log: string[];
+}
+
+export interface HistoryProgress {
+  currentChapterId: string;
+  currentSceneIndex: number;
+  pendingConsequence: string | null;
+  completedChapterIds: string[];
+  completedSceneIds: string[];
+  historyLog: string[];
+  bars: NarrativeBars;
+  status: "ongoing" | "completed";
+}
+
+export interface QuizModuleProgress {
+  status: "locked" | "available" | "completed";
+  currentQuestionIndex: number;
+  correct: number;
+  answers: { questionId: string; chosenIndex: number; correct: boolean }[];
+  feedback: string | null;
+}
+
+export interface MuseumProgress {
+  unlockedEntryIds: string[];
+  viewedEntryIds: string[];
+  selectedAreaId: string | null;
+}
+
+export interface ProgressState {
+  restoration: Record<string, RestorationModuleProgress>;
+  history: HistoryProgress;
+  quiz: Record<string, QuizModuleProgress>;
+  museum: MuseumProgress;
 }

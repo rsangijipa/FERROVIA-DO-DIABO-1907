@@ -1,8 +1,15 @@
+import Link from "next/link";
 import clsx from "clsx";
 
 import { type FallbackAreaKey } from "@/content/assetManifest";
 
 import { GameArtwork } from "./GameArtwork";
+
+interface HeroAction {
+  href: string;
+  label: string;
+  variant?: "primary" | "secondary";
+}
 
 interface SectionHeroProps {
   title: string;
@@ -11,6 +18,7 @@ interface SectionHeroProps {
   imageAlt: string;
   eyebrow?: string;
   chips?: string[];
+  actions?: HeroAction[];
   fallbackArea?: FallbackAreaKey;
   preload?: boolean;
   className?: string;
@@ -24,13 +32,14 @@ export function SectionHero({
   imageAlt,
   eyebrow,
   chips,
+  actions,
   fallbackArea = "app",
   preload = false,
   className,
   contentClassName,
 }: SectionHeroProps) {
   return (
-    <section className={clsx("relative overflow-hidden rounded-[1.4rem] golden-frame", className)}>
+    <section className={clsx("relative overflow-hidden rounded-[1.5rem] golden-frame", className)}>
       <GameArtwork
         src={imageSrc}
         alt={imageAlt}
@@ -40,18 +49,26 @@ export function SectionHero({
         fallbackArea={fallbackArea}
         fallbackLabel={title}
         fadeBottom
-        className="min-h-[18rem] rounded-[1.4rem] border-0"
+        className="min-h-[22rem] rounded-[1.5rem] border-0"
         sizes="100vw"
       />
 
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(12,15,14,0.12),rgba(12,15,14,0.72)_58%,rgba(12,15,14,0.9))]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(8,10,9,0.04),rgba(8,10,9,0.54)_46%,rgba(8,10,9,0.88))]" />
 
-      <div className={clsx("absolute inset-0 flex flex-col justify-end p-6 md:p-8", contentClassName)}>
-        {eyebrow ? (
-          <p className="text-xs uppercase tracking-[0.26em] text-[var(--color-paper)]/80">{eyebrow}</p>
+      <div className={clsx("absolute inset-0 flex flex-col justify-end p-6 md:p-8 lg:p-10", contentClassName)}>
+        {eyebrow ? <p className="text-xs uppercase tracking-[0.28em] text-[var(--color-paper)]/82">{eyebrow}</p> : null}
+        <h1 className="mt-2 max-w-4xl font-serif text-4xl text-[var(--color-paper)] md:text-5xl">{title}</h1>
+        <p className="mt-4 max-w-3xl text-sm leading-7 text-[var(--color-paper)]/84 md:text-base">{subtitle}</p>
+
+        {actions?.length ? (
+          <div className="mt-6 flex flex-wrap gap-3">
+            {actions.map((action) => (
+              <Link key={action.href + action.label} href={action.href} className={action.variant === "secondary" ? "btn-secondary" : "btn-primary"}>
+                {action.label}
+              </Link>
+            ))}
+          </div>
         ) : null}
-        <h1 className="mt-2 max-w-3xl font-serif text-3xl text-[var(--color-paper)] md:text-4xl">{title}</h1>
-        <p className="mt-3 max-w-3xl text-sm leading-6 text-[var(--color-paper)]/82 md:text-base">{subtitle}</p>
 
         {chips?.length ? (
           <div className="mt-5 flex flex-wrap gap-2">

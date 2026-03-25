@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 
 import { AppShell } from "@/components/layout/AppShell";
@@ -18,7 +18,7 @@ const cormorant = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   title: "Madeira-Mamore: Trilhos da Memoria",
-  description: "Jogo historico web com restauracao, narrativa e quiz integrados.",
+  description: "Experiencia patrimonial jogavel sobre a EFMM com hub, restauracao, historia, quiz, museu e dossie final.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

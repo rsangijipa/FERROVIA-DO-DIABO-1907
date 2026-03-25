@@ -1,9 +1,5 @@
-﻿"use client";
+import { permanentRedirect } from "next/navigation";
 
-import { NarrativeMode } from "@/components/narrative/NarrativeMode";
-import { useMode } from "@/lib/useMode";
-
-export default function NarrativaPage() {
-  useMode("narrativa");
-  return <NarrativeMode />;
+export default function LegacyNarrativaPage() {
+  permanentRedirect("/historia-interativa");
 }

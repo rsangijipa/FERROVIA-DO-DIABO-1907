@@ -1,9 +1,5 @@
-﻿"use client";
+import { permanentRedirect } from "next/navigation";
 
-import { CodexView } from "@/components/codex/CodexView";
-import { useMode } from "@/lib/useMode";
-
-export default function CodexPage() {
-  useMode("codex");
-  return <CodexView />;
+export default function LegacyCodexPage() {
+  permanentRedirect("/museu-vivo");
 }

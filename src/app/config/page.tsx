@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { ConfigView } from "@/components/config/ConfigView";
 import { useMode } from "@/lib/useMode";

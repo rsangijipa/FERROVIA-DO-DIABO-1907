@@ -1,9 +1,5 @@
-﻿"use client";
+import { permanentRedirect } from "next/navigation";
 
-import { RestorationMode } from "@/components/restoration/RestorationMode";
-import { useMode } from "@/lib/useMode";
-
-export default function RestauracaoPage() {
-  useMode("restauracao");
-  return <RestorationMode />;
+export default function LegacyRestauracaoPage() {
+  permanentRedirect("/restauracao-2026");
 }
