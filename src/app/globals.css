@@ -1,0 +1,108 @@
+﻿@import "tailwindcss";
+
+:root {
+  --color-ferrovia: #1f2320;
+  --color-fuligem: #2c2a28;
+  --color-madeira: #4e3b2f;
+  --color-rust: #a14f2a;
+  --color-cobre: #b76a3c;
+  --color-latao: #c59a5d;
+  --color-mata: #31463a;
+  --color-moss: #516b57;
+  --color-rio: #5b6a72;
+  --color-paper: #e9dfc9;
+  --color-parchment: #f4ebd7;
+  --color-ink: #2d241d;
+
+  --color-success: #5e8a61;
+  --color-alert: #d39a3b;
+  --color-danger: #b64932;
+  --color-info: #527a8a;
+
+  --color-bg: var(--color-ferrovia);
+  --color-surface: rgba(44, 42, 40, 0.88);
+  --color-surface-light: rgba(233, 223, 201, 0.95);
+  --color-border: rgba(197, 154, 93, 0.3);
+  --color-text: var(--color-paper);
+  --color-muted: rgba(233, 223, 201, 0.72);
+  --color-ink-soft: rgba(45, 36, 29, 0.82);
+}
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-cormorant);
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(81, 107, 87, 0.16), transparent 40%),
+    radial-gradient(circle at 80% 10%, rgba(183, 106, 60, 0.12), transparent 45%),
+    linear-gradient(180deg, #1f2320 0%, #2c2a28 60%, #1f2320 100%);
+  color: var(--color-text);
+}
+
+.ambient-grid {
+  background-image:
+    linear-gradient(rgba(233, 223, 201, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(233, 223, 201, 0.03) 1px, transparent 1px),
+    radial-gradient(circle at center, rgba(44, 42, 40, 0.25), transparent 50%);
+  background-size: 36px 36px, 36px 36px, 100% 100%;
+  opacity: 0.7;
+}
+
+.card-dark {
+  border: 1px solid var(--color-border);
+  background: linear-gradient(180deg, rgba(44, 42, 40, 0.95), rgba(31, 35, 32, 0.9));
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.card-light {
+  border: 1px solid rgba(183, 106, 60, 0.34);
+  background: linear-gradient(180deg, var(--color-parchment), var(--color-paper));
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.chip {
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: rgba(44, 42, 40, 0.65);
+  padding: 0.3rem 0.75rem;
+}
+
+.btn-primary {
+  border: 1px solid rgba(183, 106, 60, 0.5);
+  border-radius: 8px;
+  background: var(--color-rust);
+  color: var(--color-parchment);
+  padding: 0.55rem 1rem;
+  transition: background-color 150ms ease;
+}
+
+.btn-primary:hover {
+  background: var(--color-cobre);
+}
+
+.btn-secondary {
+  border: 1px solid rgba(49, 70, 58, 0.42);
+  border-radius: 8px;
+  background: rgba(49, 70, 58, 0.92);
+  color: var(--color-parchment);
+  padding: 0.55rem 1rem;
+  transition: background-color 150ms ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(81, 107, 87, 0.95);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-alert);
+  outline-offset: 2px;
+}
