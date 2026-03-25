@@ -1,4 +1,4 @@
-import type { CodexEntry, ModeId } from "@/types/game";
+import type { CodexEntry, ModeId, Resources } from "@/types/game";
 
 type RoutePath = "/" | "/restauracao" | "/narrativa" | "/quiz" | "/codex" | "/resultado" | "/config";
 type RestorationEventId =
@@ -67,7 +67,7 @@ export const resourceIcons = {
   saudeSanitaria: "/game-assets/icons/saude.png",
   progressoTecnico: "/game-assets/icons/progresso.png",
   preservacao: "/game-assets/icons/preservacao.png",
-} as const;
+} as const satisfies Record<keyof Resources, string>;
 
 export const areaFallbacks = {
   app: pageBackgrounds["/"],

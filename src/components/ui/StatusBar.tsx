@@ -1,11 +1,12 @@
-﻿"use client";
+"use client";
 
+import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 
 import { formatPercent } from "@/lib/gameUtils";
 
 interface StatusBarProps {
-  label: string;
+  label: ReactNode;
   value: number;
   colorVar: string;
 }
@@ -13,7 +14,7 @@ interface StatusBarProps {
 export function StatusBar({ label, value, colorVar }: StatusBarProps) {
   return (
     <div className="space-y-1">
-      <div className="flex items-center justify-between text-xs uppercase tracking-wide text-[var(--color-muted)]">
+      <div className="flex items-center justify-between gap-3 text-xs uppercase tracking-wide text-[var(--color-muted)]">
         <span>{label}</span>
         <span>{formatPercent(value)}</span>
       </div>

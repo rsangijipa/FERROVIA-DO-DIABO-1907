@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import clsx from "clsx";
 
@@ -24,31 +24,27 @@ interface GameArtworkProps {
   imageClassName?: string;
 }
 
-export function GameArtwork({
-  src,
+interface ArtworkFrameProps extends Omit<GameArtworkProps, "src" | "fallbackArea"> {
+  normalizedSrc: string;
+  fallbackSrc: string;
+}
+
+function ArtworkFrame({
+  normalizedSrc,
+  fallbackSrc,
   alt,
   aspectRatio = "16/9",
   overlay = false,
   preload = false,
-  fallbackArea = "app",
   fallbackLabel = "Acervo visual",
   fadeBottom = false,
   fit = "cover",
   sizes = "100vw",
   className,
   imageClassName,
-}: GameArtworkProps) {
-  const fallbackSrc = areaFallbacks[fallbackArea];
-  const normalizedSrc = src || fallbackSrc;
+}: ArtworkFrameProps) {
   const [resolvedSrc, setResolvedSrc] = useState(normalizedSrc);
   const [isBroken, setIsBroken] = useState(false);
-
-  useEffect(() => {
-    setResolvedSrc(normalizedSrc);
-    setIsBroken(false);
-  }, [normalizedSrc]);
-
-  const objectFitClass = useMemo(() => (fit === "contain" ? "object-contain" : "object-cover"), [fit]);
 
   return (
     <div
@@ -73,7 +69,7 @@ export function GameArtwork({
           sizes={sizes}
           preload={preload}
           decoding="async"
-          className={clsx("transition duration-500", objectFitClass, imageClassName)}
+          className={clsx("transition duration-500", fit === "contain" ? "object-contain" : "object-cover", imageClassName)}
           onError={() => {
             if (resolvedSrc !== fallbackSrc) {
               setResolvedSrc(fallbackSrc);
@@ -89,4 +85,15 @@ export function GameArtwork({
       {fadeBottom ? <div className="hero-bottom-fade" /> : null}
     </div>
   );
+}
+
+export function GameArtwork({
+  src,
+  fallbackArea = "app",
+  ...props
+}: GameArtworkProps) {
+  const fallbackSrc = areaFallbacks[fallbackArea];
+  const normalizedSrc = src || fallbackSrc;
+
+  return <ArtworkFrame key={`${fallbackArea}:${normalizedSrc}`} normalizedSrc={normalizedSrc} fallbackSrc={fallbackSrc} {...props} />;
 }

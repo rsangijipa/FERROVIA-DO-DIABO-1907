@@ -1,9 +1,12 @@
-﻿"use client";
+"use client";
 
 import { useMemo } from "react";
 
+import { modeCovers } from "@/content/assetManifest";
 import { quizQuestions } from "@/content/quizQuestions";
 import { useGameStore } from "@/store/useGameStore";
+
+import { SectionHero } from "../ui/SectionHero";
 
 const restorationEndingText = {
   bom: "Você liderou um restauro firme: preservou acervo, sustentou equipe e entregou operação com legitimidade cultural.",
@@ -66,11 +69,16 @@ export function IntegratedResult() {
 
   return (
     <section className="space-y-4">
-      <div className="card-dark p-6">
-        <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-muted)]">Epílogo Integrado</p>
-        <h1 className="mt-2 font-serif text-3xl text-[var(--color-paper)]">{finalProfile}</h1>
-        <p className="mt-2 text-sm text-[var(--color-muted)]">Perfil de {playerName}</p>
-      </div>
+      <SectionHero
+        eyebrow="Epílogo Integrado"
+        title={finalProfile}
+        subtitle={`Perfil de ${playerName}. ${worldSummary}`}
+        imageSrc={modeCovers.resultado}
+        imageAlt="Encerramento patrimonial da campanha"
+        chips={["Perfil final", `${codexCount} entradas no Codex`]}
+        fallbackArea="resultado"
+        preload
+      />
 
       <div className="grid gap-4 lg:grid-cols-3">
         <article className="card-light p-5">
@@ -78,7 +86,7 @@ export function IntegratedResult() {
           <h2 className="mt-2 font-serif text-xl text-[var(--color-ink)]">
             {restorationStatus === "ongoing" ? "Em andamento" : restorationStatus === "won" ? "Concluída" : "Colapso"}
           </h2>
-          <p className="mt-2 text-sm text-[var(--color-ink-soft)]">{restorationEndingText[restorationEnding]}</p>
+          <p className="mt-2 text-sm leading-7 text-[var(--color-ink-soft)]">{restorationEndingText[restorationEnding]}</p>
         </article>
 
         <article className="card-light p-5">
@@ -86,7 +94,7 @@ export function IntegratedResult() {
           <h2 className="mt-2 font-serif text-xl text-[var(--color-ink)]">
             {narrativeStatus === "won" ? "Capítulo superado" : narrativeStatus === "lost" ? "Derrota no capítulo" : "Em andamento"}
           </h2>
-          <p className="mt-2 text-sm text-[var(--color-ink-soft)]">{narrativeHealthText(narrativeBars.saude)}</p>
+          <p className="mt-2 text-sm leading-7 text-[var(--color-ink-soft)]">{narrativeHealthText(narrativeBars.saude)}</p>
           <p className="mt-2 text-xs text-[var(--color-ink-soft)]">Decisões registradas: {narrativeHistory.length}</p>
         </article>
 
@@ -95,14 +103,14 @@ export function IntegratedResult() {
           <h2 className="mt-2 font-serif text-xl text-[var(--color-ink)]">
             {quizStatus === "finished" ? `${quizScore}/${quizTotal}` : `${quizScore}/${quizTotal} (parcial)`}
           </h2>
-          <p className="mt-2 text-sm text-[var(--color-ink-soft)]">{quizTier}</p>
+          <p className="mt-2 text-sm leading-7 text-[var(--color-ink-soft)]">{quizTier}</p>
           <p className="mt-2 text-xs text-[var(--color-ink-soft)]">Entradas no codex: {codexCount}</p>
         </article>
       </div>
 
       <article className="card-dark p-5">
         <h3 className="font-serif text-2xl text-[var(--color-paper)]">Síntese do Mundo</h3>
-        <p className="mt-3 text-sm text-[var(--color-muted)]">
+        <p className="mt-3 text-sm leading-7 text-[var(--color-muted)]">
           {worldSummary} Entre eficiência, luto e legado, seu percurso mostra que reconstruir a Madeira-Mamoré exige
           técnica e memória na mesma medida.
         </p>

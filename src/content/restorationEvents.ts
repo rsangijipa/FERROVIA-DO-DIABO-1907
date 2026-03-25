@@ -1,10 +1,12 @@
-﻿import { type GameEvent } from "@/types/game";
+import { restorationEventArt } from "@/content/assetManifest";
+import { type GameEvent } from "@/types/game";
 
 export const restorationEvents: GameEvent[] = [
   {
     id: "ev-01",
     title: "Inspecao Inicial da Locomotiva 18",
     description: "A caldeira mostra fadiga estrutural. A equipe pede parada completa para inspeção técnica detalhada.",
+    image: restorationEventArt["ev-01"],
     tags: ["locomotiva", "seguranca"],
     choices: [
       {
@@ -30,6 +32,7 @@ export const restorationEvents: GameEvent[] = [
     id: "ev-02",
     title: "Vazamento na Oficina",
     description: "A umidade amazônica acelerou corrosão no telhado da oficina principal.",
+    image: restorationEventArt["ev-02"],
     tags: ["oficina", "clima"],
     choices: [
       {
@@ -54,6 +57,7 @@ export const restorationEvents: GameEvent[] = [
     id: "ev-03",
     title: "Pressao da Imprensa Local",
     description: "Jornalistas questionam se o projeto é restauro real ou marketing institucional.",
+    image: restorationEventArt["ev-03"],
     tags: ["opiniao-publica"],
     choices: [
       {
@@ -79,6 +83,7 @@ export const restorationEvents: GameEvent[] = [
     id: "ev-04",
     title: "Surto de Gripe na Equipe",
     description: "Quinze trabalhadores apresentam sintomas respiratórios após semana de chuva intensa.",
+    image: restorationEventArt["ev-04"],
     tags: ["sanitario"],
     choices: [
       {
@@ -103,6 +108,7 @@ export const restorationEvents: GameEvent[] = [
     id: "ev-05",
     title: "Ponte de Santo Antonio",
     description: "O trecho turístico pede reforço estrutural antes da abertura parcial.",
+    image: restorationEventArt["ev-05"],
     tags: ["trecho", "infraestrutura"],
     choices: [
       {
@@ -127,6 +133,7 @@ export const restorationEvents: GameEvent[] = [
     id: "ev-06",
     title: "Equipe de Restauro Subdimensionada",
     description: "Técnicos experientes pedem contratação emergencial para cumprir metas.",
+    image: restorationEventArt["ev-06"],
     tags: ["equipe"],
     choices: [
       {
@@ -152,6 +159,7 @@ export const restorationEvents: GameEvent[] = [
     id: "ev-07",
     title: "Arquivo Historico Danificado",
     description: "Caixas de documentos da EFMM foram encontradas com mofo e perdas parciais.",
+    image: restorationEventArt["ev-07"],
     tags: ["arquivo", "patrimonio"],
     choices: [
       {
@@ -177,6 +185,7 @@ export const restorationEvents: GameEvent[] = [
     id: "ev-08",
     title: "Pane no Gerador",
     description: "Sem energia estável, a oficina noturna não consegue manter soldas críticas.",
+    image: restorationEventArt["ev-08"],
     tags: ["energia"],
     choices: [
       {
@@ -201,6 +210,7 @@ export const restorationEvents: GameEvent[] = [
     id: "ev-09",
     title: "Demanda Escolar",
     description: "Escolas de Porto Velho pedem visitas regulares e material pedagógico.",
+    image: restorationEventArt["ev-09"],
     tags: ["educacao"],
     choices: [
       {
@@ -226,6 +236,7 @@ export const restorationEvents: GameEvent[] = [
     id: "ev-10",
     title: "Conflito de Fornecimento",
     description: "Há atraso no lote de peças importadas para a Locomotiva 50.",
+    image: restorationEventArt["ev-10"],
     tags: ["supply"],
     choices: [
       {
@@ -250,6 +261,7 @@ export const restorationEvents: GameEvent[] = [
     id: "ev-11",
     title: "Fiscalizacao Sanitária",
     description: "Auditoria aponta risco de água parada próxima aos dormitórios.",
+    image: restorationEventArt["ev-11"],
     tags: ["auditoria", "sanitario"],
     choices: [
       {
@@ -274,6 +286,7 @@ export const restorationEvents: GameEvent[] = [
     id: "ev-12",
     title: "Abertura do Trecho Piloto",
     description: "Chegou a semana final. Decisão estratégica define como o público verá o projeto.",
+    image: restorationEventArt["ev-12"],
     tags: ["final"],
     choices: [
       {
