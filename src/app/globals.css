@@ -47,6 +47,10 @@ body {
   color: var(--color-text);
 }
 
+/* ------------------------------------------------------------------ */
+/*  Ambient layers                                                     */
+/* ------------------------------------------------------------------ */
+
 .ambient-photo {
   background-position: center;
   background-repeat: no-repeat;
@@ -70,6 +74,10 @@ body {
   opacity: 0.46;
 }
 
+/* ------------------------------------------------------------------ */
+/*  Card surfaces                                                      */
+/* ------------------------------------------------------------------ */
+
 .card-dark {
   border: 1px solid var(--color-border);
   background: linear-gradient(180deg, rgba(38, 37, 34, 0.96), rgba(25, 29, 27, 0.9));
@@ -84,6 +92,10 @@ body {
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.14);
 }
 
+/* ------------------------------------------------------------------ */
+/*  Buttons                                                            */
+/* ------------------------------------------------------------------ */
+
 .btn-primary,
 .btn-secondary {
   display: inline-flex;
@@ -92,10 +104,15 @@ body {
   gap: 0.5rem;
   border-radius: 999px;
   padding: 0.7rem 1.15rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
   transition:
     background-color 160ms ease,
     border-color 160ms ease,
-    color 160ms ease;
+    color 160ms ease,
+    box-shadow 200ms ease,
+    transform 200ms ease;
 }
 
 .btn-primary {
@@ -106,6 +123,8 @@ body {
 
 .btn-primary:hover {
   background: var(--color-cobre);
+  box-shadow: 0 0 18px rgba(191, 122, 79, 0.22);
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
@@ -116,7 +135,13 @@ body {
 
 .btn-secondary:hover {
   background: rgba(79, 104, 86, 0.96);
+  box-shadow: 0 0 14px rgba(79, 104, 86, 0.18);
+  transform: translateY(-1px);
 }
+
+/* ------------------------------------------------------------------ */
+/*  Overlays                                                           */
+/* ------------------------------------------------------------------ */
 
 .cinematic-overlay {
   position: absolute;
@@ -138,6 +163,10 @@ body {
     inset 0 -28px 52px rgba(8, 10, 9, 0.18);
 }
 
+/* ------------------------------------------------------------------ */
+/*  Badges                                                             */
+/* ------------------------------------------------------------------ */
+
 .image-badge {
   border-radius: 999px;
   border: 1px solid rgba(236, 227, 209, 0.16);
@@ -155,19 +184,29 @@ body {
   color: var(--color-parchment);
 }
 
+/* ------------------------------------------------------------------ */
+/*  Mode card hover                                                    */
+/* ------------------------------------------------------------------ */
+
 .menu-card-hover {
   transition:
-    transform 180ms ease,
-    box-shadow 180ms ease,
-    filter 180ms ease;
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    filter 220ms ease;
   box-shadow: 0 18px 34px rgba(0, 0, 0, 0.18);
 }
 
 .menu-card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 26px 42px rgba(0, 0, 0, 0.24);
-  filter: brightness(1.02);
+  transform: translateY(-4px);
+  box-shadow:
+    0 26px 42px rgba(0, 0, 0, 0.24),
+    0 0 24px rgba(191, 122, 79, 0.1);
+  filter: brightness(1.04);
 }
+
+/* ------------------------------------------------------------------ */
+/*  Hero gradients                                                     */
+/* ------------------------------------------------------------------ */
 
 .hero-bottom-fade {
   position: absolute;
@@ -177,7 +216,208 @@ body {
   background: linear-gradient(180deg, transparent, rgba(12, 15, 14, 0.56) 70%, rgba(12, 15, 14, 0.88));
 }
 
+/* ------------------------------------------------------------------ */
+/*  GAME UTILITY CLASSES                                               */
+/* ------------------------------------------------------------------ */
+
+/* Gold separator under header */
+.gold-separator {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 163, 103, 0.38) 20%, rgba(212, 163, 103, 0.5) 50%, rgba(212, 163, 103, 0.38) 80%, transparent);
+}
+
+/* Slow ambient drift for background elements */
+.ambient-drift {
+  animation: drift 28s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  0% { transform: translate(0, 0) scale(1.02); }
+  100% { transform: translate(6px, -4px) scale(1.04); }
+}
+
+/* Metallic inset edge */
+.metal-edge {
+  box-shadow:
+    inset 0 1px 0 rgba(236, 227, 209, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+/* Paper surface texture */
+.paper-surface {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(245, 237, 220, 0.04), transparent 50%),
+    linear-gradient(180deg, var(--color-parchment), var(--color-paper));
+}
+
+/* Soft vignette overlay */
+.vignette-soft {
+  position: relative;
+}
+.vignette-soft::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(8, 10, 9, 0.32));
+  border-radius: inherit;
+}
+
+/* Game-like hover lift */
+.hover-lift-game {
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+.hover-lift-game:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.18),
+    0 0 12px rgba(212, 163, 103, 0.08);
+}
+
+/* Glow badge — subtle single glow, no continuous loop */
+.glow-badge {
+  box-shadow:
+    0 0 8px rgba(212, 163, 103, 0.2),
+    0 0 2px rgba(212, 163, 103, 0.3);
+}
+
+/* Rail underline for active navigation */
+.rail-underline {
+  position: relative;
+}
+.rail-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-latao), transparent);
+  border-radius: 1px;
+  animation: underline-shimmer 2.4s ease-in-out infinite;
+}
+
+@keyframes underline-shimmer {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Route fade for page transitions */
+.route-fade {
+  animation: route-enter 260ms ease-out both;
+}
+
+@keyframes route-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Generic animate-in for staggered entries */
+.anim-in {
+  animation: fade-up 320ms ease-out both;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Ambient particles (CSS-only)                                       */
+/* ------------------------------------------------------------------ */
+
+.ambient-particle {
+  position: fixed;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(212, 163, 103, 0.12);
+  pointer-events: none;
+  animation: particle-float 30s linear infinite;
+  z-index: 1;
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% { opacity: 0.12; }
+  90% { opacity: 0.08; }
+  100% {
+    transform: translate(40px, -100vh);
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Critical state pulse — for restoration critical badges             */
+/* ------------------------------------------------------------------ */
+
+.pulse-critical {
+  animation: pulse-border 2s ease-in-out 3;
+}
+
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(182, 73, 50, 0); }
+  50% { box-shadow: 0 0 0 4px rgba(182, 73, 50, 0.3); }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Focus                                                              */
+/* ------------------------------------------------------------------ */
+
 :focus-visible {
   outline: 2px solid var(--color-amber);
   outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reduced motion — disable all continuous/decorative animations      */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-drift,
+  .ambient-particle,
+  .pulse-critical {
+    animation: none !important;
+  }
+
+  .rail-underline::after {
+    animation: none !important;
+    opacity: 0.75;
+  }
+
+  .route-fade,
+  .anim-in {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+
+  .menu-card-hover:hover {
+    transform: none;
+  }
+
+  .hover-lift-game:hover {
+    transform: none;
+  }
+
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    transform: none;
+  }
 }

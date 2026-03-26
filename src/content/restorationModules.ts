@@ -1,3 +1,4 @@
+import { getRestorationModuleImage } from "@/content/assetManifest";
 import type { RestorationModule, RestorationTask } from "@/types/game";
 
 export const restorationModules: RestorationModule[] = [
@@ -7,7 +8,7 @@ export const restorationModules: RestorationModule[] = [
     kicker: "Modulo A",
     summary: "Trecho-piloto, drenagem, alinhamento e seguranca de circulacao para uso educativo.",
     objective: "Liberar um trecho demonstrativo com leitura patrimonial clara e risco controlado.",
-    imageSrc: "/game-assets/backgrounds/ponte.jpg",
+    imageSrc: getRestorationModuleImage("trilhos"),
     subsystems: ["alinhamento", "lastro", "drenagem", "trecho-piloto"],
     taskIds: ["tri-diagnostico", "tri-restauro"],
     contentType: "simulation_2026",
@@ -21,7 +22,7 @@ export const restorationModules: RestorationModule[] = [
     kicker: "Modulo B",
     summary: "Cobertura, ventilacao, acessibilidade e adaptacao para uso museologico.",
     objective: "Transformar galpoes em suporte funcional para acervo, educacao e acolhimento.",
-    imageSrc: "/game-assets/backgrounds/oficina.jpg",
+    imageSrc: getRestorationModuleImage("barracoes"),
     subsystems: ["cobertura", "iluminacao", "ventilacao", "acessibilidade"],
     taskIds: ["bar-diagnostico", "bar-restauro"],
     contentType: "simulation_2026",
@@ -35,7 +36,7 @@ export const restorationModules: RestorationModule[] = [
     kicker: "Modulo C",
     summary: "Locomotiva 18, litorina, oficina e exibicao operacional com conservacao preventiva.",
     objective: "Conectar restauro tecnico, exibicao segura e leitura publica do acervo rodante.",
-    imageSrc: "/game-assets/modes/restauracao.jpg",
+    imageSrc: getRestorationModuleImage("material-rodante"),
     subsystems: ["locomotiva 18", "litorina", "oficina", "inspecao tecnica"],
     taskIds: ["rod-diagnostico", "rod-restauro"],
     contentType: "simulation_2026",
@@ -49,7 +50,7 @@ export const restorationModules: RestorationModule[] = [
     kicker: "Modulo D",
     summary: "Pontes, energia, sanitizacao, sinalizacao e operacao publica do complexo.",
     objective: "Amarrar seguranca operacional com experiencia de visitacao e leitura urbana.",
-    imageSrc: "/game-assets/backgrounds/patio.jpg",
+    imageSrc: getRestorationModuleImage("operacao-publica"),
     subsystems: ["pontes", "energia", "sanitizacao", "sinalizacao"],
     taskIds: ["ope-diagnostico", "ope-restauro"],
     contentType: "simulation_2026",

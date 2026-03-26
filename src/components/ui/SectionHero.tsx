@@ -1,8 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import clsx from "clsx";
+import { motion } from "framer-motion";
 
 import { type FallbackAreaKey } from "@/content/assetManifest";
 
+import { DecorativeCorner } from "./DecorativeCorner";
 import { GameArtwork } from "./GameArtwork";
 
 interface HeroAction {
@@ -24,6 +28,15 @@ interface SectionHeroProps {
   className?: string;
   contentClassName?: string;
 }
+
+const stagger = {
+  animate: { transition: { staggerChildren: 0.07 } },
+};
+
+const fadeUp = {
+  initial: { opacity: 0, y: 14 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.36, ease: "easeOut" } },
+};
 
 export function SectionHero({
   title,
@@ -53,33 +66,71 @@ export function SectionHero({
         sizes="100vw"
       />
 
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(8,10,9,0.04),rgba(8,10,9,0.54)_46%,rgba(8,10,9,0.88))]" />
+      {/* Multi-overlay stack */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(8,10,9,0.12),rgba(8,10,9,0.56)_46%,rgba(8,10,9,0.92))]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(79,104,86,0.12),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(8,10,9,0.36))]" />
 
-      <div className={clsx("absolute inset-0 flex flex-col justify-end p-6 md:p-8 lg:p-10", contentClassName)}>
-        {eyebrow ? <p className="text-xs uppercase tracking-[0.28em] text-[var(--color-paper)]/82">{eyebrow}</p> : null}
-        <h1 className="mt-2 max-w-4xl font-serif text-4xl text-[var(--color-paper)] md:text-5xl">{title}</h1>
-        <p className="mt-4 max-w-3xl text-sm leading-7 text-[var(--color-paper)]/84 md:text-base">{subtitle}</p>
+      {/* Decorative corners */}
+      <DecorativeCorner position="top-left" />
+      <DecorativeCorner position="top-right" />
+      <DecorativeCorner position="bottom-left" />
+      <DecorativeCorner position="bottom-right" />
+
+      {/* Content with stagger */}
+      <motion.div
+        className={clsx("absolute inset-0 flex flex-col justify-end p-6 md:p-8 lg:p-10", contentClassName)}
+        variants={stagger}
+        initial="initial"
+        animate="animate"
+      >
+        {eyebrow ? (
+          <motion.p
+            variants={fadeUp}
+            className="text-xs uppercase tracking-[0.28em] text-[var(--color-latao)]/90"
+          >
+            {eyebrow}
+          </motion.p>
+        ) : null}
+
+        <motion.h1
+          variants={fadeUp}
+          className="mt-3 max-w-4xl font-serif text-4xl leading-tight text-[var(--color-paper)] drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)] md:text-5xl"
+        >
+          {title}
+        </motion.h1>
+
+        <motion.p
+          variants={fadeUp}
+          className="mt-4 max-w-3xl text-sm leading-7 text-[var(--color-paper)]/84 md:text-base"
+        >
+          {subtitle}
+        </motion.p>
 
         {actions?.length ? (
-          <div className="mt-6 flex flex-wrap gap-3">
+          <motion.div variants={fadeUp} className="mt-6 flex flex-wrap gap-3">
             {actions.map((action) => (
-              <Link key={action.href + action.label} href={action.href} className={action.variant === "secondary" ? "btn-secondary" : "btn-primary"}>
+              <Link
+                key={action.href + action.label}
+                href={action.href}
+                className={action.variant === "secondary" ? "btn-secondary" : "btn-primary"}
+              >
                 {action.label}
               </Link>
             ))}
-          </div>
+          </motion.div>
         ) : null}
 
         {chips?.length ? (
-          <div className="mt-5 flex flex-wrap gap-2">
+          <motion.div variants={fadeUp} className="mt-5 flex flex-wrap gap-2">
             {chips.map((chip) => (
               <span key={chip} className="image-badge">
                 {chip}
               </span>
             ))}
-          </div>
+          </motion.div>
         ) : null}
-      </div>
+      </motion.div>
     </section>
   );
 }
