@@ -13,6 +13,8 @@ interface Particle {
   size: string;
   opacity: number;
   drift: string;
+  randomSizeX?: string;
+  randomSizeY?: string;
 }
 
 function generateParticles(): Particle[] {
@@ -24,6 +26,8 @@ function generateParticles(): Particle[] {
     size: `${2 + Math.random() * 2}px`,
     opacity: 0.06 + Math.random() * 0.08,
     drift: `${(Math.random() - 0.5) * 40}px`,
+    randomSizeX: `${4 + Math.random() * 6}px`,
+    randomSizeY: `${10 + Math.random() * 20}px`,
   }));
 }
 
@@ -68,8 +72,8 @@ export function AmbientParticles({ type = "dust" }: { type?: "dust" | "soot" | "
             bottom: "-4px",
             animationDelay: p.delay,
             animationDuration: type === "heat" ? "12s" : p.duration,
-            width: type === "heat" ? `${4 + Math.random() * 6}px` : p.size,
-            height: type === "heat" ? `${10 + Math.random() * 20}px` : p.size,
+            width: type === "heat" ? p.randomSizeX : p.size,
+            height: type === "heat" ? p.randomSizeY : p.size,
             opacity: type === "firefly" ? p.opacity * 4 : p.opacity,
             "--drift-x": p.drift,
           } as React.CSSProperties}

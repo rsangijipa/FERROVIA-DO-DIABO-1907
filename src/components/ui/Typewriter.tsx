@@ -20,15 +20,18 @@ export function Typewriter({
   playSound = true,
 }: TypewriterProps) {
   const [displayText, setDisplayText] = useState("");
+  const [prevText, setPrevText] = useState(text);
   const { playTick } = useSFX();
   const index = useRef(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    // Reset when text changes
+  if (text !== prevText) {
+    setPrevText(text);
     setDisplayText("");
+  }
+
+  useEffect(() => {
     index.current = 0;
-    
     const tick = () => {
       if (index.current < text.length) {
         setDisplayText((prev) => prev + text.charAt(index.current));

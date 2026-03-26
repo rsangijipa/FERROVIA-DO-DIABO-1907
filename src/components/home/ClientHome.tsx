@@ -3,8 +3,7 @@
 import { HomeHub } from "@/components/home/HomeHub";
 import { ModeInitializer } from "@/components/layout/ModeInitializer";
 import { useGameStore } from "@/store/useGameStore";
-import { LandingPage } from "./LandingPage";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 export function ClientHome() {
   const hasAcceptedLanding = useGameStore((state) => state.saveData.hasAcceptedLanding);

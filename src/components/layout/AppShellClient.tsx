@@ -13,7 +13,6 @@ import { useGameStore } from "@/store/useGameStore";
 import { AmbientParticles } from "../ui/AmbientParticles";
 import { ProgressRing } from "../ui/ProgressRing";
 import { ScrollToTop } from "../ui/ScrollToTop";
-import { useSoundscape } from "@/hooks/useSoundscape";
 import { useSFX } from "@/hooks/useSFX";
 import { LandingPage } from "../home/LandingPage";
 import { MobileNav } from "./MobileNav";
