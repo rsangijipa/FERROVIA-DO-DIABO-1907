@@ -1,0 +1,217 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - banner [ref=e6]:
+      - generic [ref=e7]:
+        - generic [ref=e8]:
+          - paragraph [ref=e9]: Madeira-Mamore
+          - paragraph [ref=e10]: Trilhos da Memoria
+        - generic [ref=e11]:
+          - img "Progresso 4%" [ref=e12]:
+            - generic [ref=e15]: "4"
+          - generic [ref=e16]:
+            - img [ref=e17]
+            - text: Curador da Memoria
+          - generic [ref=e19]: 4%
+          - generic [ref=e20]: estavel
+      - generic [ref=e24]: 17% Revitalização
+      - generic [ref=e25]:
+        - link "Hub" [ref=e26] [cursor=pointer]:
+          - /url: /
+          - img [ref=e27]
+          - text: Hub
+        - link "Restauração 2026" [ref=e30] [cursor=pointer]:
+          - /url: /restauracao-2026
+          - img [ref=e31]
+          - text: Restauração 2026
+        - link "Historia Interativa" [ref=e33] [cursor=pointer]:
+          - /url: /historia-interativa
+          - img [ref=e34]
+          - text: Historia Interativa
+        - link "Quiz Tematico" [ref=e37] [cursor=pointer]:
+          - /url: /quiz-tematico
+          - img [ref=e38]
+          - text: Quiz Tematico
+        - link "Museu Vivo" [ref=e40] [cursor=pointer]:
+          - /url: /museu-vivo
+          - img [ref=e41]
+          - text: Museu Vivo
+        - link "Resultado" [ref=e44] [cursor=pointer]:
+          - /url: /resultado-integrado
+          - img [ref=e45]
+          - text: Resultado
+        - link "Config" [ref=e51] [cursor=pointer]:
+          - /url: /config
+          - img [ref=e52]
+          - text: Config
+    - main [ref=e55]:
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - img "Restauração 2026" [ref=e59]
+          - img
+          - img
+          - img
+          - img
+          - generic [ref=e62]:
+            - paragraph [ref=e63]: Programa operacional contemporaneo
+            - heading "Restauração 2026" [level=1] [ref=e64]
+            - paragraph [ref=e65]: Quatro modulos, uma maquina de estado unica e um vertical slice que assume a revitalizacao como simulacao plausivel sobre base documentada.
+            - generic [ref=e66]:
+              - generic [ref=e67]: 0/4 modulos liberados
+              - generic [ref=e68]: 2 tarefas profundas por modulo
+              - generic [ref=e69]: Estado Diagnostico
+        - generic [ref=e70]:
+          - generic [ref=e73]:
+            - generic [ref=e75]:
+              - img [ref=e77]
+              - generic [ref=e80]: Orcamento
+            - generic [ref=e81]: 72%
+          - generic [ref=e86]:
+            - generic [ref=e88]:
+              - img [ref=e90]
+              - generic [ref=e92]: Moral
+            - generic [ref=e93]: 70%
+          - generic [ref=e98]:
+            - generic [ref=e100]:
+              - img [ref=e102]
+              - generic [ref=e104]: Saude
+            - generic [ref=e105]: 68%
+          - generic [ref=e110]:
+            - generic [ref=e112]:
+              - img [ref=e114]
+              - generic [ref=e116]: Progresso
+            - generic [ref=e117]: 66%
+          - generic [ref=e122]:
+            - generic [ref=e124]:
+              - img [ref=e126]
+              - generic [ref=e128]: Preservacao
+            - generic [ref=e129]: 74%
+        - generic [ref=e134]:
+          - generic [ref=e135]: Progresso Técnico
+          - generic [ref=e136]: 29%
+        - generic [ref=e139]:
+          - complementary [ref=e140]:
+            - paragraph [ref=e141]: Modulos da Entrega 1
+            - generic [ref=e142]:
+              - 'button "Modulo A, Trilhos. Estatuto: Diagnostico" [pressed] [ref=e143]':
+                - generic [ref=e144]:
+                  - generic [ref=e145]:
+                    - paragraph [ref=e146]: Modulo A
+                    - heading "Trilhos" [level=2] [ref=e147]
+                  - img [ref=e148]
+                - paragraph [ref=e151]: Trecho-piloto, drenagem, alinhamento e seguranca de circulacao para uso educativo.
+                - generic [ref=e152]:
+                  - generic [ref=e153]: Diagnostico
+                  - generic [ref=e154]: 0/2 tarefas
+              - 'button "Modulo B, Barracoes e Galpoes. Estatuto: Locked" [ref=e155]':
+                - generic [ref=e156]:
+                  - generic [ref=e157]:
+                    - paragraph [ref=e158]: Modulo B
+                    - heading "Barracoes e Galpoes" [level=2] [ref=e159]
+                  - img [ref=e160]
+                - paragraph [ref=e163]: Cobertura, ventilacao, acessibilidade e adaptacao para uso museologico.
+                - generic [ref=e164]:
+                  - generic [ref=e165]: Locked
+                  - generic [ref=e166]: 0/2 tarefas
+              - 'button "Modulo C, Locomotiva e Material Rodante. Estatuto: Locked" [ref=e167]':
+                - generic [ref=e168]:
+                  - generic [ref=e169]:
+                    - paragraph [ref=e170]: Modulo C
+                    - heading "Locomotiva e Material Rodante" [level=2] [ref=e171]
+                  - img [ref=e172]
+                - paragraph [ref=e175]: Locomotiva 18, litorina, oficina e exibicao operacional com conservacao preventiva.
+                - generic [ref=e176]:
+                  - generic [ref=e177]: Locked
+                  - generic [ref=e178]: 0/2 tarefas
+              - 'button "Modulo D, Estruturas e Operacao. Estatuto: Locked" [ref=e179]':
+                - generic [ref=e180]:
+                  - generic [ref=e181]:
+                    - paragraph [ref=e182]: Modulo D
+                    - heading "Estruturas e Operacao" [level=2] [ref=e183]
+                  - img [ref=e184]
+                - paragraph [ref=e187]: Pontes, energia, sanitizacao, sinalizacao e operacao publica do complexo.
+                - generic [ref=e188]:
+                  - generic [ref=e189]: Locked
+                  - generic [ref=e190]: 0/2 tarefas
+          - article [ref=e191]:
+            - generic [ref=e192]:
+              - img "Trilhos" [ref=e194]
+              - generic [ref=e198]:
+                - generic [ref=e199]:
+                  - paragraph [ref=e200]: Modulo A
+                  - heading "Trilhos" [level=2] [ref=e201]
+                - generic [ref=e202]: Diagnostico
+            - generic [ref=e203]:
+              - paragraph [ref=e204]: Liberar um trecho demonstrativo com leitura patrimonial clara e risco controlado.
+              - generic [ref=e205]:
+                - generic [ref=e206]:
+                  - img [ref=e207]
+                  - paragraph [ref=e209]: Simulação plausível de 2026
+                - paragraph [ref=e210]: Simulacao apoiada no uso turistico e educativo contemporaneo do complexo.
+                - paragraph [ref=e211]: Museu, litorina e agenda 2025-2026
+            - generic [ref=e213]:
+              - generic [ref=e218]: Locked
+              - generic [ref=e224]: Diagnóstico
+            - generic [ref=e245]:
+              - generic [ref=e246]:
+                - generic [ref=e247]:
+                  - generic [ref=e248]:
+                    - img [ref=e249]
+                    - text: Tarefa em foco
+                  - heading "Levantamento do trecho-piloto" [level=2] [ref=e251]
+                  - paragraph [ref=e252]: Escolha o metodo de diagnostico do alinhamento, da drenagem e da seguranca de circulacao.
+                  - generic [ref=e253]:
+                    - generic [ref=e254]:
+                      - paragraph [ref=e255]: Custo
+                      - paragraph [ref=e256]: medio
+                    - generic [ref=e257]:
+                      - paragraph [ref=e258]: Tempo
+                      - paragraph [ref=e259]: 2 semanas
+                    - generic [ref=e260]:
+                      - paragraph [ref=e261]: Impacto
+                      - paragraph [ref=e262]: Define a confiabilidade do escopo tecnico.
+                    - generic [ref=e263]:
+                      - paragraph [ref=e264]: Risco
+                      - paragraph [ref=e265]: Subestimar drenagem compromete a liberacao futura.
+                  - generic [ref=e266]:
+                    - generic [ref=e267]:
+                      - img [ref=e268]
+                      - paragraph [ref=e270]: Simulação plausível de 2026
+                    - paragraph [ref=e271]: Simulacao de rotina tecnica contemporanea baseada no uso publico atual do complexo.
+                    - paragraph [ref=e272]: Museu, litorina e agenda 2025-2026
+                  - generic [ref=e273]:
+                    - 'button "Decisão: Drone, georreferenciamento e vistoria de campo. Inspecao mais completa, com tempo de equipe maior." [ref=e274]':
+                      - generic [ref=e275]:
+                        - generic [ref=e276]:
+                          - heading "Drone, georreferenciamento e vistoria de campo" [level=3] [ref=e277]
+                          - paragraph [ref=e278]: Inspecao mais completa, com tempo de equipe maior.
+                        - img [ref=e279]
+                      - paragraph [ref=e281]: O diagnostico sustenta a priorizacao com dados confiaveis e reduz surpresas no trecho-piloto.
+                    - 'button "Decisão: Levantamento rapido focado em liberacao. Economiza tempo, mas deixa duvidas sobre drenagem e risco." [ref=e282]':
+                      - generic [ref=e283]:
+                        - generic [ref=e284]:
+                          - heading "Levantamento rapido focado em liberacao" [level=3] [ref=e285]
+                          - paragraph [ref=e286]: Economiza tempo, mas deixa duvidas sobre drenagem e risco.
+                        - img [ref=e287]
+                      - paragraph [ref=e289]: A equipe ganha velocidade inicial, mas a confianca tecnica fica mais fragil.
+                - generic [ref=e290]:
+                  - paragraph [ref=e291]: Ao concluir este módulo →
+                  - generic [ref=e292]:
+                    - generic [ref=e293]: +10% Progresso Técnico
+                    - generic [ref=e294]: Parte 1 da História
+                    - generic [ref=e295]: Diplomacia e territorio
+                    - generic [ref=e296]: Ala Diplomacia
+              - complementary [ref=e297]:
+                - generic [ref=e298]:
+                  - paragraph [ref=e299]: Subfrentes
+                  - generic [ref=e300]:
+                    - generic [ref=e301]: alinhamento
+                    - generic [ref=e302]: lastro
+                    - generic [ref=e303]: drenagem
+                    - generic [ref=e304]: trecho-piloto
+                - generic [ref=e305]:
+                  - paragraph [ref=e306]: Diário operacional
+                  - list [ref=e307]:
+                    - listitem [ref=e308]: O modulo ainda nao registrou decisoes.
+  - button "Open Next.js Dev Tools" [ref=e314] [cursor=pointer]:
+    - img [ref=e315]
+  - alert [ref=e318]

@@ -27,6 +27,7 @@ interface SectionHeroProps {
   preload?: boolean;
   className?: string;
   contentClassName?: string;
+  compact?: boolean;
 }
 
 const stagger = {
@@ -50,7 +51,10 @@ export function SectionHero({
   preload = false,
   className,
   contentClassName,
+  compact = false,
 }: SectionHeroProps) {
+  const visibleChips = compact ? chips?.slice(0, 2) : chips;
+
   return (
     <section className={clsx("relative overflow-hidden rounded-[1.5rem] golden-frame", className)}>
       <GameArtwork
@@ -62,24 +66,39 @@ export function SectionHero({
         fallbackArea={fallbackArea}
         fallbackLabel={title}
         fadeBottom
-        className="min-h-[22rem] rounded-[1.5rem] border-0"
-        sizes="100vw"
+        className={clsx(
+          "rounded-[1.5rem] border-0",
+          compact ? "min-h-[12rem] sm:min-h-[13.5rem] lg:min-h-[14.5rem]" : "min-h-[18rem] sm:min-h-[20rem] lg:min-h-[22rem]",
+        )}
+        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 80vw, 70vw"
       />
 
-      {/* Multi-overlay stack */}
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(8,10,9,0.12),rgba(8,10,9,0.56)_46%,rgba(8,10,9,0.92))]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(79,104,86,0.12),transparent_55%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(8,10,9,0.36))]" />
+      <div
+        className={clsx(
+          "pointer-events-none absolute inset-0",
+          compact
+            ? "bg-[linear-gradient(180deg,rgba(8,10,9,0.08),rgba(8,10,9,0.44)_46%,rgba(8,10,9,0.84))]"
+            : "bg-[linear-gradient(180deg,rgba(8,10,9,0.12),rgba(8,10,9,0.56)_46%,rgba(8,10,9,0.92))]",
+        )}
+      />
+      {!compact ? <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(79,104,86,0.12),transparent_55%)]" /> : null}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(8,10,9,0.28))]" />
 
-      {/* Decorative corners */}
-      <DecorativeCorner position="top-left" />
-      <DecorativeCorner position="top-right" />
-      <DecorativeCorner position="bottom-left" />
-      <DecorativeCorner position="bottom-right" />
+      {!compact ? (
+        <>
+          <DecorativeCorner position="top-left" />
+          <DecorativeCorner position="top-right" />
+          <DecorativeCorner position="bottom-left" />
+          <DecorativeCorner position="bottom-right" />
+        </>
+      ) : null}
 
-      {/* Content with stagger */}
       <motion.div
-        className={clsx("absolute inset-0 flex flex-col justify-end p-6 md:p-8 lg:p-10", contentClassName)}
+        className={clsx(
+          "absolute inset-0 flex flex-col justify-end",
+          compact ? "p-4 md:p-5 lg:p-6" : "p-6 md:p-8 lg:p-10",
+          contentClassName,
+        )}
         variants={stagger}
         initial="initial"
         animate="animate"
@@ -95,14 +114,20 @@ export function SectionHero({
 
         <motion.h1
           variants={fadeUp}
-          className="mt-3 max-w-4xl font-serif text-4xl leading-tight text-[var(--color-paper)] drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)] md:text-5xl"
+          className={clsx(
+            "max-w-4xl font-serif leading-tight text-[var(--color-paper)] drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]",
+            compact ? "mt-2 text-2xl md:text-3xl" : "mt-3 text-3xl md:text-5xl",
+          )}
         >
           {title}
         </motion.h1>
 
         <motion.p
           variants={fadeUp}
-          className="mt-4 max-w-3xl text-sm leading-7 text-[var(--color-paper)]/84 md:text-base"
+          className={clsx(
+            "max-w-3xl text-[var(--color-paper)]/84",
+            compact ? "mt-2 text-sm leading-6" : "mt-4 text-sm leading-7 md:text-base",
+          )}
         >
           {subtitle}
         </motion.p>
@@ -121,9 +146,9 @@ export function SectionHero({
           </motion.div>
         ) : null}
 
-        {chips?.length ? (
-          <motion.div variants={fadeUp} className="mt-5 flex flex-wrap gap-2">
-            {chips.map((chip) => (
+        {visibleChips?.length ? (
+          <motion.div variants={fadeUp} className={clsx("flex flex-wrap gap-2", compact ? "mt-3" : "mt-5")}>
+            {visibleChips.map((chip) => (
               <span key={chip} className="image-badge">
                 {chip}
               </span>

@@ -9,8 +9,8 @@ const CRITICAL_THRESHOLD = 25;
 
 export function NarrativeBarsPanel({ bars, className }: { bars: NarrativeBars; className?: string }) {
   return (
-    <section className={clsx("card-dark space-y-4 p-5", className)}>
-      <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-muted)]">Barras narrativas</p>
+    <section className={clsx("card-dark space-y-3 p-4", className)}>
+      <p className="text-xs uppercase tracking-[0.18em] text-[var(--color-muted)]">Estado da jornada</p>
       <div className="space-y-3">
         <div>
           <StatusBar label="Saúde" value={bars.saude} colorVar="--color-success" />

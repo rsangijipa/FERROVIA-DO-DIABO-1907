@@ -1,0 +1,136 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e5]:
+      - navigation "Menu principal" [ref=e6]:
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: Madeira-Mamore
+          - paragraph [ref=e9]: Trilhos da Memoria
+        - generic [ref=e10]:
+          - img "Progresso 11%" [ref=e805]:
+            - generic [ref=e14]: "11"
+          - generic [ref=e15]:
+            - img [ref=e16]
+            - text: Curador da Memoria
+          - generic [ref=e18]: 11%
+          - generic [ref=e19]: estavel
+      - navigation [ref=e20]:
+        - link "Hub" [ref=e21] [cursor=pointer]:
+          - /url: /
+          - img [ref=e22]
+          - text: Hub
+        - link "Restauração 2026" [ref=e25] [cursor=pointer]:
+          - /url: /restauracao-2026
+          - img [ref=e26]
+          - text: Restauração 2026
+        - link "Historia Interativa" [ref=e28] [cursor=pointer]:
+          - /url: /historia-interativa
+          - img [ref=e29]
+          - text: Historia Interativa
+        - link "Quiz Tematico" [active] [ref=e32] [cursor=pointer]:
+          - /url: /quiz-tematico
+          - img [ref=e33]
+          - text: Quiz Tematico
+        - link "Museu Vivo" [ref=e35] [cursor=pointer]:
+          - /url: /museu-vivo
+          - img [ref=e36]
+          - text: Museu Vivo
+        - link "Resultado" [ref=e39] [cursor=pointer]:
+          - /url: /resultado-integrado
+          - img [ref=e40]
+          - text: Resultado
+        - link "Config" [ref=e46] [cursor=pointer]:
+          - /url: /config
+          - img [ref=e47]
+          - text: Config
+      - generic [ref=e53]: 22% Revitalização
+      - link "Liberar o módulo Trilhos +10% Progresso Técnico" [ref=e627] [cursor=pointer]:
+        - /url: /restauracao-2026
+        - img [ref=e55]
+        - generic [ref=e59]: Liberar o módulo Trilhos
+        - generic [ref=e60]: +10% Progresso Técnico
+    - main [ref=e809]:
+      - generic [ref=e810]:
+        - generic [ref=e811]:
+          - img "Quiz Tematico" [ref=e813]
+          - img
+          - img
+          - img
+          - img
+          - generic [ref=e816]:
+            - paragraph [ref=e817]: Curadoria em forma de jogo
+            - heading "Quiz Tematico" [level=1] [ref=e818]
+            - paragraph [ref=e819]: Dois modulos completos na Entrega 1, com dificuldade graduada, referencia curta e desbloqueios conectados ao Museu Vivo.
+            - generic [ref=e820]:
+              - generic [ref=e821]: 0/2 modulos concluidos
+              - generic [ref=e822]: 0/10 respostas no modulo
+              - generic [ref=e823]: Diplomacia e territorio
+        - generic [ref=e824]:
+          - complementary [ref=e825]:
+            - paragraph [ref=e826]: Mapa de estudo
+            - generic [ref=e827]:
+              - 'button "Módulo: Diplomacia e territorio. Estatuto: Disponível" [pressed] [ref=e828]':
+                - generic [ref=e829]:
+                  - generic [ref=e830]:
+                    - heading "Diplomacia e territorio" [level=2] [ref=e831]
+                    - paragraph [ref=e832]: Acre, Tratado de Petropolis e funcao geopolitica da ferrovia.
+                  - generic [ref=e833]: Disponível
+                - paragraph [ref=e835]: "Nota mínima: 7/10 para desbloquear ala Diplomacia"
+              - 'button "Módulo: Construcao e engenharia. Estatuto: Disponível" [ref=e836]':
+                - generic [ref=e837]:
+                  - generic [ref=e838]:
+                    - heading "Construcao e engenharia" [level=2] [ref=e839]
+                    - paragraph [ref=e840]: Trajeto, desafios tecnicos, oficina e material rodante.
+                  - generic [ref=e841]: Disponível
+                - paragraph [ref=e843]: "Nota mínima: 7/10 para desbloquear ala Locomotivas"
+              - 'button "Módulo: Trabalho, saude e vida cotidiana. Estatuto: Bloqueado" [ref=e844]':
+                - generic [ref=e845]:
+                  - generic [ref=e846]:
+                    - heading "Trabalho, saude e vida cotidiana" [level=2] [ref=e847]
+                    - paragraph [ref=e848]: Modulo planejado para expansao futura.
+                  - generic [ref=e849]: Bloqueado
+              - 'button "Módulo: Economia, operacao e declinio. Estatuto: Bloqueado" [ref=e850]':
+                - generic [ref=e851]:
+                  - generic [ref=e852]:
+                    - heading "Economia, operacao e declinio" [level=2] [ref=e853]
+                    - paragraph [ref=e854]: Modulo planejado para expansao futura.
+                  - generic [ref=e855]: Bloqueado
+              - 'button "Módulo: Patrimonio, museu e atualidade. Estatuto: Bloqueado" [ref=e856]':
+                - generic [ref=e857]:
+                  - generic [ref=e858]:
+                    - heading "Patrimonio, museu e atualidade" [level=2] [ref=e859]
+                    - paragraph [ref=e860]: Modulo planejado para expansao futura.
+                  - generic [ref=e861]: Bloqueado
+          - article [ref=e862]:
+            - generic [ref=e863]:
+              - img "Diplomacia e territorio" [ref=e865]
+              - generic [ref=e869]:
+                - generic [ref=e870]:
+                  - paragraph [ref=e871]: Diplomacia e territorio
+                  - heading "Modulo em andamento" [level=2] [ref=e872]
+                - generic [ref=e873]: 0 corretas
+            - generic [ref=e874]:
+              - paragraph [ref=e875]: Acre, Tratado de Petropolis e funcao geopolitica da ferrovia.
+              - generic [ref=e876]:
+                - generic [ref=e877]:
+                  - img [ref=e878]
+                  - paragraph [ref=e880]: Fato histórico documentado
+                - paragraph [ref=e881]: Perguntas baseadas em marco diplomatico documentado.
+                - paragraph [ref=e882]: Tratado de Petropolis, 1903
+              - generic [ref=e883]:
+                - generic [ref=e886]: 1/10
+                - generic [ref=e888]: tratado • easy
+                - heading "Qual tratado de 1903 esta diretamente ligado a origem geopolitica da EFMM?" [level=2] [ref=e889]
+                - generic [ref=e890]:
+                  - 'button "Alternativa A: Tratado de Petropolis" [ref=e891]':
+                    - generic [ref=e892]: A
+                    - generic [ref=e893]: Tratado de Petropolis
+                  - 'button "Alternativa B: Tratado de Madrid" [ref=e894]':
+                    - generic [ref=e895]: B
+                    - generic [ref=e896]: Tratado de Madrid
+                  - 'button "Alternativa C: Tratado de Ayacucho" [ref=e897]':
+                    - generic [ref=e898]: C
+                    - generic [ref=e899]: Tratado de Ayacucho
+                  - 'button "Alternativa D: Tratado de Assuncao" [ref=e900]':
+                    - generic [ref=e901]: D
+                    - generic [ref=e902]: Tratado de Assuncao
+  - alert [ref=e371]: Quiz Temático | Ferrovia do Diabo

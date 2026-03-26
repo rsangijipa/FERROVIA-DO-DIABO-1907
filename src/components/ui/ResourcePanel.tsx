@@ -15,15 +15,15 @@ const resourceItems = [
 
 export function ResourcePanel({ resources }: { resources: Resources }) {
   return (
-    <section className="card-dark grid gap-3 p-4 md:grid-cols-5">
+    <section className="card-dark grid gap-2 p-3 md:grid-cols-5">
       {resourceItems.map((item) => (
         <div
           key={item.key}
-          className="rounded-2xl border border-[color:rgba(197,154,93,0.12)] bg-[color:rgba(12,15,14,0.16)] p-3"
+          className="rounded-2xl border border-[color:rgba(197,154,93,0.12)] bg-[color:rgba(12,15,14,0.12)] p-2.5"
         >
           <StatusBar
             label={
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-2 text-xs">
                 <ResourceIcon resource={item.key} />
                 <span>{item.label}</span>
               </span>

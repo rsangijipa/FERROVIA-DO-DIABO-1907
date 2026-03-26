@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useGameStore } from "@/store/useGameStore";
 
 const PARTICLE_COUNT = 8;
 
@@ -26,11 +27,12 @@ function generateParticles(): Particle[] {
 
 export function AmbientParticles() {
   const [particles, setParticles] = useState<Particle[]>([]);
+  const reducedMotion = useGameStore((store) => store.settings.reducedMotion);
 
   useEffect(() => {
     // Check reduced motion preference
     const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (mql.matches) return;
+    if (mql.matches || reducedMotion) return;
 
     // Generate initial particles asynchronously to avoid cascading renders
     const rafId = requestAnimationFrame(() => setParticles(generateParticles()));
@@ -47,9 +49,9 @@ export function AmbientParticles() {
       cancelAnimationFrame(rafId);
       mql.removeEventListener("change", handler);
     };
-  }, []);
+  }, [reducedMotion]);
 
-  if (particles.length === 0) return null;
+  if (reducedMotion || particles.length === 0) return null;
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[1] overflow-hidden" aria-hidden>

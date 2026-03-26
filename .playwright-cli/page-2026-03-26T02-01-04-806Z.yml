@@ -1,0 +1,172 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e5]:
+      - navigation "Menu principal" [ref=e6]:
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: Madeira-Mamore
+          - paragraph [ref=e9]: Trilhos da Memoria
+        - generic [ref=e10]:
+          - img "Progresso 11%" [ref=e805]:
+            - generic [ref=e14]: "11"
+          - generic [ref=e15]:
+            - img [ref=e16]
+            - text: Curador da Memoria
+          - generic [ref=e18]: 11%
+          - generic [ref=e19]: estavel
+      - navigation [ref=e20]:
+        - link "Hub" [ref=e21] [cursor=pointer]:
+          - /url: /
+          - img [ref=e22]
+          - text: Hub
+        - link "Restauração 2026" [ref=e25] [cursor=pointer]:
+          - /url: /restauracao-2026
+          - img [ref=e26]
+          - text: Restauração 2026
+        - link "Historia Interativa" [ref=e28] [cursor=pointer]:
+          - /url: /historia-interativa
+          - img [ref=e29]
+          - text: Historia Interativa
+        - link "Quiz Tematico" [ref=e32] [cursor=pointer]:
+          - /url: /quiz-tematico
+          - img [ref=e33]
+          - text: Quiz Tematico
+        - link "Museu Vivo" [ref=e35] [cursor=pointer]:
+          - /url: /museu-vivo
+          - img [ref=e36]
+          - text: Museu Vivo
+        - link "Resultado" [ref=e39] [cursor=pointer]:
+          - /url: /resultado-integrado
+          - img [ref=e40]
+          - text: Resultado
+        - link "Config" [ref=e46] [cursor=pointer]:
+          - /url: /config
+          - img [ref=e47]
+          - text: Config
+      - generic [ref=e53]: 22% Revitalização
+      - link "Liberar o módulo Trilhos +10% Progresso Técnico" [ref=e627] [cursor=pointer]:
+        - /url: /restauracao-2026
+        - img [ref=e55]
+        - generic [ref=e59]: Liberar o módulo Trilhos
+        - generic [ref=e60]: +10% Progresso Técnico
+    - main [ref=e649]:
+      - generic [ref=e650]:
+        - generic [ref=e651]:
+          - img "Historia Interativa" [ref=e653]
+          - img
+          - img
+          - img
+          - img
+          - generic [ref=e656]:
+            - paragraph [ref=e657]: Capitulo interativo de patrimonio
+            - heading "Historia Interativa" [level=1] [ref=e658]
+            - paragraph [ref=e659]: Entrega 1 com 2 partes completas. Cada cena cruza contexto historico, fala dramatizada, decisao e impacto em saude, moral e progresso.
+            - generic [ref=e660]:
+              - generic [ref=e661]: 0/2 partes concluidas
+              - generic [ref=e806]: 1/8 cenas resolvidas
+              - generic [ref=e663]: Parte 1 em andamento
+        - generic [ref=e664]:
+          - complementary [ref=e665]:
+            - generic [ref=e666]:
+              - paragraph [ref=e667]: Barras narrativas
+              - generic [ref=e668]:
+                - generic [ref=e671]:
+                  - generic [ref=e672]: Saúde
+                  - generic [ref=e673]: 72%
+                - generic [ref=e678]:
+                  - generic [ref=e679]: Moral
+                  - generic [ref=e680]: 76%
+                - generic [ref=e685]:
+                  - generic [ref=e686]: Progresso
+                  - generic [ref=e687]: 72%
+            - generic [ref=e692]:
+              - generic [ref=e693]: Memória Histórica
+              - generic [ref=e694]: 31%
+            - article [ref=e697]:
+              - paragraph [ref=e698]: Estrutura da campanha
+              - generic [ref=e699]:
+                - generic [ref=e700]:
+                  - generic [ref=e701]:
+                    - generic [ref=e702]:
+                      - paragraph [ref=e703]: Parte 1
+                      - heading "Tratado e promessa" [level=2] [ref=e704]
+                    - generic [ref=e705]: Ativa
+                  - paragraph [ref=e706]: A disputa pelo Acre vira decisao diplomatica e promessa ferroviaria.
+                  - paragraph [ref=e708]: Ao concluir → libera Quiz + peça do Museu
+                - generic [ref=e709]:
+                  - generic [ref=e710]:
+                    - generic [ref=e711]:
+                      - paragraph [ref=e712]: Parte 2
+                      - heading "Entrar na mata" [level=2] [ref=e713]
+                    - generic [ref=e714]: Ativa
+                  - paragraph [ref=e715]: Acampamentos, logistica e o choque humano da abertura do tracado.
+                  - paragraph [ref=e717]: Ao concluir → libera Quiz + peça do Museu
+                - generic [ref=e718]:
+                  - generic [ref=e719]:
+                    - generic [ref=e720]:
+                      - paragraph [ref=e721]: Parte 3
+                      - heading "Doenca, hospital e sobrevivencia" [level=2] [ref=e722]
+                    - generic [ref=e723]: Planejada
+                  - paragraph [ref=e724]: Capitulo planejado para a proxima expansao de conteudo.
+                - generic [ref=e725]:
+                  - generic [ref=e726]:
+                    - generic [ref=e727]:
+                      - paragraph [ref=e728]: Parte 4
+                      - heading "Engenharia e travessias" [level=2] [ref=e729]
+                    - generic [ref=e730]: Planejada
+                  - paragraph [ref=e731]: Capitulo planejado para a proxima expansao de conteudo.
+                - generic [ref=e732]:
+                  - generic [ref=e733]:
+                    - generic [ref=e734]:
+                      - paragraph [ref=e735]: Parte 5
+                      - heading "Inauguracao, utilidade e crise" [level=2] [ref=e736]
+                    - generic [ref=e737]: Planejada
+                  - paragraph [ref=e738]: Capitulo planejado para a proxima expansao de conteudo.
+                - generic [ref=e739]:
+                  - generic [ref=e740]:
+                    - generic [ref=e741]:
+                      - paragraph [ref=e742]: Parte 6
+                      - heading "Ruina, tombamento e reabertura" [level=2] [ref=e743]
+                    - generic [ref=e744]: Planejada
+                  - paragraph [ref=e745]: Capitulo planejado para a proxima expansao de conteudo.
+          - article [ref=e746]:
+            - img "Tratado e promessa" [ref=e748]
+            - generic [ref=e751]:
+              - generic [ref=e752]:
+                - generic [ref=e753]:
+                  - paragraph [ref=e754]: Parte 1 • Cena 1/4
+                  - heading "A compensacao ferroviaria" [level=1] [ref=e755]
+                - generic [ref=e756]: Setup
+              - paragraph [ref=e757]: Em 1903, a negociacao pelo Acre transforma a estrada de ferro em compromisso diplomatico.
+              - generic [ref=e758]:
+                - generic [ref=e761]: BD
+                - generic [ref=e763]:
+                  - paragraph [ref=e764]: Barao do Rio Branco
+                  - paragraph [ref=e765]: “"Se a promessa for aceita, ela precisa parecer viavel desde o papel", sussurra um assessor no gabinete.”
+              - generic [ref=e766]:
+                - generic [ref=e767]:
+                  - paragraph [ref=e768]: Personagem
+                  - paragraph [ref=e769]: Barao do Rio Branco
+                - generic [ref=e770]:
+                  - paragraph [ref=e771]: Lugar
+                  - paragraph [ref=e772]: Porto Velho
+                - generic [ref=e773]:
+                  - paragraph [ref=e774]: Âncora histórica
+                  - paragraph [ref=e775]: Tratado de Petropolis e compensacao ferroviaria.
+              - generic [ref=e776]:
+                - generic [ref=e777]:
+                  - img [ref=e778]
+                  - paragraph [ref=e780]: Fato histórico documentado
+                - paragraph [ref=e781]: Fato historico documentado; a fala e a escolha dramatizam um debate plausivel de epoca.
+                - paragraph [ref=e782]: Tratado de Petropolis, 1903
+              - generic [ref=e783]:
+                - generic [ref=e784]:
+                  - img [ref=e785]
+                  - text: Outcome tags
+                - generic [ref=e788]:
+                  - generic [ref=e789]: diplomacia
+                  - generic [ref=e790]: promessa
+                  - generic [ref=e791]: territorio
+              - generic [ref=e792]:
+                - paragraph [ref=e807]: A promessa ganha peso politico e passa a organizar a narrativa publica da obra.
+                - button "Avancar cena" [ref=e808] [cursor=pointer]
+  - alert [ref=e371]: História Interativa | Ferrovia do Diabo

@@ -1,0 +1,192 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e5]:
+      - navigation "Menu principal" [ref=e6]:
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: Madeira-Mamore
+          - paragraph [ref=e9]: Trilhos da Memoria
+        - generic [ref=e10]:
+          - img "Progresso 7%" [ref=e639]:
+            - generic [ref=e14]: "7"
+          - generic [ref=e15]:
+            - img [ref=e16]
+            - text: Curador da Memoria
+          - generic [ref=e18]: 7%
+          - generic [ref=e19]: estavel
+      - navigation [ref=e20]:
+        - link "Hub" [ref=e21] [cursor=pointer]:
+          - /url: /
+          - img [ref=e22]
+          - text: Hub
+        - link "Restauração 2026" [ref=e25] [cursor=pointer]:
+          - /url: /restauracao-2026
+          - img [ref=e26]
+          - text: Restauração 2026
+        - link "Historia Interativa" [ref=e28] [cursor=pointer]:
+          - /url: /historia-interativa
+          - img [ref=e29]
+          - text: Historia Interativa
+        - link "Quiz Tematico" [ref=e32] [cursor=pointer]:
+          - /url: /quiz-tematico
+          - img [ref=e33]
+          - text: Quiz Tematico
+        - link "Museu Vivo" [ref=e35] [cursor=pointer]:
+          - /url: /museu-vivo
+          - img [ref=e36]
+          - text: Museu Vivo
+        - link "Resultado" [ref=e39] [cursor=pointer]:
+          - /url: /resultado-integrado
+          - img [ref=e40]
+          - text: Resultado
+        - link "Config" [ref=e46] [cursor=pointer]:
+          - /url: /config
+          - img [ref=e47]
+          - text: Config
+      - generic [ref=e53]: 20% Revitalização
+      - link "Liberar o módulo Trilhos +10% Progresso Técnico" [ref=e627] [cursor=pointer]:
+        - /url: /restauracao-2026
+        - img [ref=e55]
+        - generic [ref=e59]: Liberar o módulo Trilhos
+        - generic [ref=e60]: +10% Progresso Técnico
+    - main [ref=e372]:
+      - generic [ref=e373]:
+        - generic [ref=e374]:
+          - img "Restauração 2026" [ref=e376]
+          - img
+          - img
+          - img
+          - img
+          - generic [ref=e379]:
+            - paragraph [ref=e380]: Programa operacional contemporaneo
+            - heading "Restauração 2026" [level=1] [ref=e381]
+            - paragraph [ref=e382]: Quatro modulos, uma maquina de estado unica e um vertical slice que assume a revitalizacao como simulacao plausivel sobre base documentada.
+            - generic [ref=e383]:
+              - generic [ref=e384]: 0/4 modulos liberados
+              - generic [ref=e385]: 2 tarefas profundas por modulo
+              - generic [ref=e640]: Estado Contratacao
+        - generic [ref=e387]:
+          - generic [ref=e390]:
+            - generic [ref=e392]:
+              - img [ref=e394]
+              - generic [ref=e397]: Orcamento
+            - generic [ref=e398]: 64%
+          - generic [ref=e403]:
+            - generic [ref=e405]:
+              - img [ref=e407]
+              - generic [ref=e409]: Moral
+            - generic [ref=e410]: 70%
+          - generic [ref=e415]:
+            - generic [ref=e417]:
+              - img [ref=e419]
+              - generic [ref=e421]: Saude
+            - generic [ref=e422]: 68%
+          - generic [ref=e427]:
+            - generic [ref=e429]:
+              - img [ref=e431]
+              - generic [ref=e433]: Progresso
+            - generic [ref=e434]: 76%
+          - generic [ref=e439]:
+            - generic [ref=e441]:
+              - img [ref=e443]
+              - generic [ref=e445]: Preservacao
+            - generic [ref=e446]: 82%
+        - generic [ref=e451]:
+          - generic [ref=e452]: Progresso Técnico
+          - generic [ref=e453]: 38%
+        - generic [ref=e456]:
+          - complementary [ref=e457]:
+            - paragraph [ref=e458]: Modulos da Entrega 1
+            - generic [ref=e459]:
+              - 'button "Modulo A, Trilhos. Estatuto: Contratacao" [pressed] [ref=e641]':
+                - generic [ref=e461]:
+                  - generic [ref=e462]:
+                    - paragraph [ref=e463]: Modulo A
+                    - heading "Trilhos" [level=2] [ref=e464]
+                  - img [ref=e465]
+                - paragraph [ref=e468]: Trecho-piloto, drenagem, alinhamento e seguranca de circulacao para uso educativo.
+                - generic [ref=e469]:
+                  - generic [ref=e470]: Contratacao
+                  - generic [ref=e471]: 1/2 tarefas
+              - 'button "Modulo B, Barracoes e Galpoes. Estatuto: Locked" [ref=e472]':
+                - generic [ref=e473]:
+                  - generic [ref=e474]:
+                    - paragraph [ref=e475]: Modulo B
+                    - heading "Barracoes e Galpoes" [level=2] [ref=e476]
+                  - img [ref=e477]
+                - paragraph [ref=e480]: Cobertura, ventilacao, acessibilidade e adaptacao para uso museologico.
+                - generic [ref=e481]:
+                  - generic [ref=e482]: Locked
+                  - generic [ref=e483]: 0/2 tarefas
+              - 'button "Modulo C, Locomotiva e Material Rodante. Estatuto: Locked" [ref=e484]':
+                - generic [ref=e485]:
+                  - generic [ref=e486]:
+                    - paragraph [ref=e487]: Modulo C
+                    - heading "Locomotiva e Material Rodante" [level=2] [ref=e488]
+                  - img [ref=e489]
+                - paragraph [ref=e492]: Locomotiva 18, litorina, oficina e exibicao operacional com conservacao preventiva.
+                - generic [ref=e493]:
+                  - generic [ref=e494]: Locked
+                  - generic [ref=e495]: 0/2 tarefas
+              - 'button "Modulo D, Estruturas e Operacao. Estatuto: Locked" [ref=e496]':
+                - generic [ref=e497]:
+                  - generic [ref=e498]:
+                    - paragraph [ref=e499]: Modulo D
+                    - heading "Estruturas e Operacao" [level=2] [ref=e500]
+                  - img [ref=e501]
+                - paragraph [ref=e504]: Pontes, energia, sanitizacao, sinalizacao e operacao publica do complexo.
+                - generic [ref=e505]:
+                  - generic [ref=e506]: Locked
+                  - generic [ref=e507]: 0/2 tarefas
+          - article [ref=e508]:
+            - generic [ref=e509]:
+              - img "Trilhos" [ref=e511]
+              - generic [ref=e515]:
+                - generic [ref=e516]:
+                  - paragraph [ref=e517]: Modulo A
+                  - heading "Trilhos" [level=2] [ref=e518]
+                - generic [ref=e519]: Contratacao
+            - generic [ref=e520]:
+              - paragraph [ref=e521]: Liberar um trecho demonstrativo com leitura patrimonial clara e risco controlado.
+              - generic [ref=e522]:
+                - generic [ref=e523]:
+                  - img [ref=e524]
+                  - paragraph [ref=e526]: Simulação plausível de 2026
+                - paragraph [ref=e527]: Simulacao apoiada no uso turistico e educativo contemporaneo do complexo.
+                - paragraph [ref=e528]: Museu, litorina e agenda 2025-2026
+            - generic [ref=e530]:
+              - generic [ref=e535]: Locked
+              - generic [ref=e541]: Diagnóstico
+              - generic [ref=e632]: Priorização
+              - generic [ref=e644]: Contratação
+            - generic [ref=e562]:
+              - generic [ref=e563]:
+                - generic [ref=e564]:
+                  - paragraph [ref=e633]: Etapa operacional
+                  - heading "Contratacao" [level=2] [ref=e645]
+                  - paragraph [ref=e569]: Amarre equipe, compra e responsabilidade antes da obra entrar em campo.
+                  - button "Avancar etapa" [active] [ref=e635] [cursor=pointer]
+                - generic [ref=e607]:
+                  - paragraph [ref=e608]: Ao concluir este módulo →
+                  - generic [ref=e609]:
+                    - generic [ref=e610]: +10% Progresso Técnico
+                    - generic [ref=e611]: Parte 1 da História
+                    - generic [ref=e612]: Diplomacia e territorio
+                    - generic [ref=e613]: Ala Diplomacia
+              - complementary [ref=e614]:
+                - generic [ref=e615]:
+                  - paragraph [ref=e616]: Subfrentes
+                  - generic [ref=e617]:
+                    - generic [ref=e618]: alinhamento
+                    - generic [ref=e619]: lastro
+                    - generic [ref=e620]: drenagem
+                    - generic [ref=e621]: trecho-piloto
+                - generic [ref=e622]:
+                  - paragraph [ref=e623]: Diário operacional
+                  - list [ref=e624]:
+                    - listitem [ref=e636]:
+                      - generic [ref=e637]: "#1"
+                      - generic [ref=e638]: Base tecnica consolidada para a priorizacao.
+                    - listitem [ref=e646]:
+                      - generic [ref=e647]: "#2"
+                      - generic [ref=e648]: Etapa avancada para contracting.
+  - alert [ref=e371]: Restauração 2026 | Ferrovia do Diabo

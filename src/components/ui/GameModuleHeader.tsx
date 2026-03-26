@@ -34,8 +34,8 @@ export function GameModuleHeader({
         fadeBottom
         fallbackArea={fallbackArea}
         fallbackLabel={title}
-        className="min-h-[10rem] rounded-2xl border-0"
-        sizes="(max-width: 768px) 100vw, 50vw"
+        className="min-h-[8rem] rounded-2xl border-0 sm:min-h-[10rem]"
+        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 70vw, 50vw"
       />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_30%,rgba(8,10,9,0.82))]" />
       <div className="absolute inset-x-0 bottom-0 p-4">

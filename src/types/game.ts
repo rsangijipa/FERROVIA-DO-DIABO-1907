@@ -25,6 +25,7 @@ export type DramaticRole = "setup" | "pressure" | "decision" | "consequence";
 export type Difficulty = "easy" | "medium" | "hard";
 
 export type MuseumColorState = "locked" | "discovered" | "restored" | "complete";
+export type TutorialStepId = "restoration" | "history" | "quiz" | "museum";
 
 export interface EditorialMeta {
   contentType: ContentType;
@@ -87,7 +88,7 @@ export interface RestorationTask extends EditorialMeta {
   moduleId: string;
   title: string;
   summary: string;
-  stage: "diagnosis" | "restoration";
+  stage: "diagnosis" | "prioritization" | "contracting" | "restoration" | "validation";
   cost: string;
   time: string;
   impact: string;
@@ -203,6 +204,13 @@ export interface SaveData {
   lastUpdated: string;
 }
 
+export interface TutorialProgress {
+  started: boolean;
+  completed: boolean;
+  activeStep: TutorialStepId;
+  completedSteps: TutorialStepId[];
+}
+
 export interface Player {
   id: string;
   name: string;
@@ -215,6 +223,8 @@ export interface RestorationModuleProgress {
   completedTaskIds: string[];
   selectedChoiceIds: string[];
   log: string[];
+  lastResolvedTaskId: string | null;
+  lastChoiceId: string | null;
 }
 
 export interface HistoryProgress {
@@ -247,4 +257,18 @@ export interface ProgressState {
   history: HistoryProgress;
   quiz: Record<string, QuizModuleProgress>;
   museum: MuseumProgress;
+}
+
+export interface RestorationDecisionFeedback {
+  moduleId: string;
+  taskId: string;
+  taskTitle: string;
+  choiceId: string;
+  choiceLabel: string;
+  outcome: string;
+  timelineNote: string;
+  resourceDelta: Partial<Resources>;
+  unlockedEntryIds: string[];
+  nextStage: RestorationStage;
+  impactSummary: string;
 }

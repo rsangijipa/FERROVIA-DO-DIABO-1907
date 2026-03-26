@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Archive, BookOpenText, Factory, ScrollText, Settings2, Target, Trophy } from "lucide-react";
+import { Archive, BookOpenText, CheckCircle2, Circle, Factory, ScrollText, Settings2, Target, Trophy } from "lucide-react";
 
 import { hubAssets, modeCovers } from "@/content/assetManifest";
 import { museumAreas } from "@/content/museumContent";
@@ -13,7 +13,6 @@ import { PILLAR_COLORS, PILLAR_LABELS, type PillarId } from "@/lib/campaign/camp
 import { useGameStore } from "@/store/useGameStore";
 
 import { EditorialSeal } from "../ui/EditorialSeal";
-
 import { ModeCard } from "../ui/ModeCard";
 import { SectionHero } from "../ui/SectionHero";
 import { StatusBar } from "../ui/StatusBar";
@@ -54,6 +53,25 @@ const fadeUpItem = {
   animate: { opacity: 1, y: 0, transition: { duration: 0.32, ease: "easeOut" } },
 } as const;
 
+const tutorialStepMeta = {
+  restoration: {
+    label: "Tomar 1 decisão em Restauração",
+    href: "/restauracao-2026",
+  },
+  history: {
+    label: "Avançar 1 cena da História",
+    href: "/historia-interativa",
+  },
+  quiz: {
+    label: "Responder 1 pergunta do Quiz",
+    href: "/quiz-tematico",
+  },
+  museum: {
+    label: "Abrir 1 entrada do Museu",
+    href: "/museu-vivo",
+  },
+} as const;
+
 export function HomeHub() {
   const playerProgress = useGameStore((store) => store.player.progress);
   const unlockedEntries = useGameStore((store) => store.progress.museum.unlockedEntryIds.length);
@@ -64,95 +82,135 @@ export function HomeHub() {
   );
   const progress = useGameStore((store) => store.progress);
   const resources = useGameStore((store) => store.restorationResources);
+  const tutorial = useGameStore((store) => store.tutorial);
+  const startTutorial = useGameStore((store) => store.startTutorial);
   const campaign = getCampaignState(progress, resources);
+  const nextTutorialStep = tutorialStepMeta[tutorial.activeStep];
+  const tutorialProgress = Math.round((tutorial.completedSteps.length / 4) * 100);
 
   const cards = [
     {
       href: "/restauracao-2026",
       title: "Restauração 2026",
-      description: "Programa operacional contemporaneo em 4 modulos, com etapas e validacao tecnica.",
+      description: "Tome decisões técnicas e avance o trecho-piloto da campanha.",
       icon: Factory,
       imageSrc: hubAssets.cards.restauracao2026,
       fallbackArea: "restauracao2026" as const,
-      metrics: ["4 modulos", "2 tarefas por modulo", "Simulacao 2026"],
+      metrics: ["4 módulos ativos"],
     },
     {
       href: "/historia-interativa",
-      title: "Historia Interativa",
-      description: "Vertical slice com 2 partes completas e escolhas ligadas a saude, moral e progresso.",
+      title: "História Interativa",
+      description: "Leia a cena atual e escolha o próximo passo da jornada.",
       icon: ScrollText,
       imageSrc: hubAssets.cards.historiaInterativa,
       fallbackArea: "historiaInterativa" as const,
-      metrics: ["2 partes ativas", "8 cenas", "Base historica"],
+      metrics: ["2 partes disponíveis"],
     },
     {
       href: "/quiz-tematico",
       title: "Quiz Tematico",
-      description: "Dois modulos robustos, dificuldade graduada e desbloqueios conectados ao museu.",
+      description: "Responda perguntas curtas e desbloqueie novas alas do museu.",
       icon: BookOpenText,
       imageSrc: hubAssets.cards.quizTematico,
       fallbackArea: "quizTematico" as const,
-      metrics: ["20 perguntas", "2 modulos", "Selos editoriais"],
+      metrics: ["20 perguntas"],
     },
     {
       href: "/museu-vivo",
       title: "Museu Vivo",
-      description: "Mapa inicial com 3 alas operacionais e fichas que ligam jogo, uso historico e memoria atual.",
+      description: "Abra entradas já liberadas e veja o payoff da campanha.",
       icon: Archive,
       imageSrc: hubAssets.cards.museuVivo,
       fallbackArea: "museuVivo" as const,
-      metrics: ["3 alas ativas", `${unlockedEntries} entradas`, "Progressao visual"],
+      metrics: [`${unlockedEntries} entradas abertas`],
     },
   ];
 
   return (
     <section className="space-y-6">
-      {/* Main hero */}
       <SectionHero
-        eyebrow="Hub editorial e centro de operacoes da memoria"
+        eyebrow="Entre e jogue"
         title="Madeira-Mamore: Trilhos da Memoria"
-        subtitle="Uma experiencia patrimonial jogavel que liga diplomacia, trabalho, memoria e revitalizacao do complexo da EFMM."
+        subtitle="Escolha a próxima etapa da campanha e continue desbloqueando história, quiz e museu."
         imageSrc={hubAssets.heroMain}
         imageAlt="Patio ferroviario da Madeira-Mamore"
         chips={[`Progresso ${playerProgress}%`, `${unlockedEntries} entradas no Museu`, `${completedAreas} alas completas`]}
-        actions={[
-          { href: "/restauracao-2026", label: "Comecar Jornada" },
-          { href: "#linha-do-tempo", label: "Explorar a EFMM em 60 segundos", variant: "secondary" },
-        ]}
+        actions={
+          tutorial.completed
+            ? [{ href: "/restauracao-2026", label: "Continuar campanha" }]
+            : [{ href: nextTutorialStep.href, label: tutorial.started ? "Continuar missão guiada" : "Começar missão guiada" }]
+        }
         fallbackArea="hub"
         preload
+        compact
       />
 
-      {/* Mission Panel */}
+      {!tutorial.completed ? (
+        <article className="card-light p-5 md:p-6">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">Jogue agora</p>
+              <h2 className="mt-2 font-serif text-2xl text-[var(--color-ink)]">Missão guiada em 4 passos</h2>
+              <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--color-ink-soft)]">
+                Siga a trilha principal sem precisar ler tudo antes: decida, avance, responda e veja o payoff no museu.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="image-badge image-badge-gold">{tutorialProgress}% da missão inicial</span>
+                <span className="image-badge">Próximo passo: {nextTutorialStep.label}</span>
+              </div>
+            </div>
+            <Link href={nextTutorialStep.href} onClick={() => startTutorial()} className="btn-primary shrink-0">
+              {tutorial.started ? "Ir para o próximo passo" : "Começar missão guiada"}
+            </Link>
+          </div>
+
+          <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            {(["restoration", "history", "quiz", "museum"] as const).map((stepId) => {
+              const completed = tutorial.completedSteps.includes(stepId);
+              const step = tutorialStepMeta[stepId];
+              const Icon = completed ? CheckCircle2 : Circle;
+              return (
+                <div
+                  key={stepId}
+                  className={`rounded-2xl border p-4 ${
+                    completed
+                      ? "border-[color:rgba(94,138,97,0.32)] bg-[color:rgba(94,138,97,0.1)]"
+                      : tutorial.activeStep === stepId
+                        ? "border-[color:rgba(191,122,79,0.32)] bg-[color:rgba(191,122,79,0.08)]"
+                        : "border-[color:rgba(183,106,60,0.18)] bg-[color:rgba(31,35,32,0.04)]"
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <Icon size={16} className={completed ? "text-[var(--color-success)]" : "text-[var(--color-cobre)]"} />
+                    <p className="text-[0.65rem] uppercase tracking-[0.16em] text-[var(--color-moss)]">Passo</p>
+                  </div>
+                  <h3 className="mt-2 font-serif text-lg text-[var(--color-ink)]">{step.label}</h3>
+                </div>
+              );
+            })}
+          </div>
+        </article>
+      ) : null}
+
       <article className="card-dark p-5 md:p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
               <Target size={14} className="shrink-0 text-[var(--color-cobre)]" />
-              <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-cobre)]">Missão atual</p>
+              <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-cobre)]">Próxima jogada</p>
             </div>
             {campaign.currentMission ? (
               <>
                 <h2 className="mt-2 font-serif text-2xl text-[var(--color-paper)]">{campaign.currentMission.title}</h2>
-                <div className="mt-3 grid gap-3 sm:grid-cols-3" aria-live="polite">
-                  <div className="rounded-2xl border border-[color:rgba(233,223,201,0.08)] bg-[color:rgba(12,15,14,0.18)] p-3">
-                    <p className="text-[0.65rem] uppercase tracking-[0.16em] text-[var(--color-latao)]">Recompensa</p>
-                    <p className="mt-1 text-sm text-[var(--color-paper)]">{campaign.currentMission.reward}</p>
-                  </div>
-                  <div className="rounded-2xl border border-[color:rgba(233,223,201,0.08)] bg-[color:rgba(12,15,14,0.18)] p-3">
-                    <p className="text-[0.65rem] uppercase tracking-[0.16em] text-[var(--color-latao)]">Impacto</p>
-                    <p className="mt-1 text-sm text-[var(--color-paper)]">{campaign.currentMission.impact}</p>
-                  </div>
-                  <div className="rounded-2xl border border-[color:rgba(233,223,201,0.08)] bg-[color:rgba(12,15,14,0.18)] p-3">
-                    <p className="text-[0.65rem] uppercase tracking-[0.16em] text-[var(--color-latao)]">Próximo desbloqueio</p>
-                    <p className="mt-1 text-sm text-[var(--color-paper)]">{campaign.nextUnlock ?? "—"}</p>
-                  </div>
-                </div>
+                <p className="mt-3 text-sm leading-7 text-[var(--color-muted)]">
+                  {campaign.currentMission.impact}. Recompensa: {campaign.currentMission.reward}.
+                </p>
                 <Link
-                  href={modeRoutes.find(m => m.id === campaign.recommendedModule)?.href ?? "/"}
+                  href={modeRoutes.find((m) => m.id === campaign.recommendedModule)?.href ?? "/"}
                   className="btn-primary mt-4 inline-flex items-center gap-2"
                 >
-                  Ir para o módulo recomendado
+                  Jogar etapa recomendada
                 </Link>
               </>
             ) : (
@@ -169,8 +227,7 @@ export function HomeHub() {
           </div>
         </div>
 
-        {/* 4 Pillar Bars */}
-        <div className="mt-5 grid gap-3 grid-cols-2 lg:grid-cols-4">
+        <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
           {(["tecnico", "historico", "conhecimento", "acervo"] as PillarId[]).map((pillar) => (
             <StatusBar
               key={pillar}
@@ -182,23 +239,70 @@ export function HomeHub() {
         </div>
       </article>
 
-      {/* EFMM historica / hoje */}
+      <motion.div
+        className="grid gap-4 md:grid-cols-2 xl:grid-cols-4"
+        variants={staggerContainer}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, amount: 0.15 }}
+      >
+        {cards.map((card) => (
+          <motion.div key={card.href} variants={fadeUpItem} className="min-w-0">
+            <ModeCard
+              href={card.href}
+              title={card.title}
+              description={card.description}
+              icon={card.icon}
+              imageSrc={card.imageSrc}
+              imageAlt={card.title}
+              fallbackArea={card.fallbackArea}
+              metrics={card.metrics}
+              actionLabel="Entrar"
+            />
+          </motion.div>
+        ))}
+      </motion.div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <ModeCard
+          href="/resultado-integrado"
+          title="Resultado Integrado"
+          description="Veja seu perfil atual e descubra onde vale continuar jogando."
+          icon={Trophy}
+          imageSrc={modeCovers.resultadoIntegrado}
+          imageAlt="Resultado integrado"
+          fallbackArea="resultadoIntegrado"
+          metrics={["Perfil da campanha"]}
+          actionLabel="Ver resultado"
+        />
+        <ModeCard
+          href="/config"
+          title="Config"
+          description="Ajuste fonte, contraste e movimento para jogar com mais conforto."
+          icon={Settings2}
+          imageSrc={hubAssets.heroMain}
+          imageAlt="Configuracoes"
+          fallbackArea="hub"
+          metrics={["Acessibilidade"]}
+          actionLabel="Ajustar"
+        />
+      </div>
+
       <div className="grid gap-4 lg:grid-cols-2">
         <article className="card-light relative overflow-hidden p-6">
           <div className="absolute inset-0 opacity-[0.06]">
             <Image src={hubAssets.efmmHistorica} alt="" fill className="object-cover" sizes="50vw" />
           </div>
           <div className="relative">
-            <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-moss)]">EFMM historica</p>
-            <h2 className="mt-2 font-serif text-2xl text-[var(--color-ink)]">Ferrovia estrategica da borracha</h2>
+            <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-moss)]">Contexto histórico</p>
+            <h2 className="mt-2 font-serif text-2xl text-[var(--color-ink)]">Ferrovia estratégica da borracha</h2>
             <p className="mt-3 text-sm leading-7 text-[var(--color-ink-soft)]">
-              1907-1912, 366 km, Porto Velho-Guajara-Mirim. O jogo trata a origem da EFMM como encontro entre
-              diplomacia, territorio, engenharia e custo humano.
+              1907-1912, 366 km, Porto Velho-Guajara-Mirim. O jogo cruza diplomacia, território, engenharia e custo humano.
             </p>
             <EditorialSeal
               contentType="historical_fact"
               sourceRef="construction-1907-1912"
-              confidenceNote="Fato historico documentado sobre cronologia e funcao da ferrovia."
+              confidenceNote="Fato histórico documentado sobre cronologia e função da ferrovia."
               compact
               className="mt-4"
             />
@@ -210,16 +314,15 @@ export function HomeHub() {
             <Image src={hubAssets.efmmHoje} alt="" fill className="object-cover" sizes="50vw" />
           </div>
           <div className="relative">
-            <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">EFMM hoje</p>
-            <h2 className="mt-2 font-serif text-2xl text-[var(--color-paper)]">Complexo revitalizado e ativado</h2>
+            <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">Contexto atual</p>
+            <h2 className="mt-2 font-serif text-2xl text-[var(--color-paper)]">Complexo revitalizado e ativo</h2>
             <p className="mt-3 text-sm leading-7 text-[var(--color-muted)]">
-              Museu, visitacao, litorina, agenda cultural e exibicoes da Locomotiva 18 sustentam a camada contemporanea
-              do produto e legitimam a simulacao de 2026.
+              Museu, visitação, litorina e agenda cultural sustentam a camada contemporânea da campanha.
             </p>
             <EditorialSeal
               contentType="contemporary_fact"
               sourceRef="activation-2025-2026"
-              confidenceNote="Situacao contemporanea documentada sobre o uso atual do complexo."
+              confidenceNote="Situação contemporânea documentada sobre o uso atual do complexo."
               compact
               className="mt-4"
             />
@@ -227,34 +330,8 @@ export function HomeHub() {
         </article>
       </div>
 
-      {/* Mode cards with stagger */}
-      <motion.div
-        className="grid gap-4 md:grid-cols-2 xl:grid-cols-4"
-        variants={staggerContainer}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, amount: 0.15 }}
-      >
-        {cards.map((card) => (
-          <motion.div key={card.href} variants={fadeUpItem}>
-            <ModeCard
-              href={card.href}
-              title={card.title}
-              description={card.description}
-              icon={card.icon}
-              imageSrc={card.imageSrc}
-              imageAlt={card.title}
-              fallbackArea={card.fallbackArea}
-              metrics={card.metrics}
-            />
-          </motion.div>
-        ))}
-      </motion.div>
-
-      {/* Timeline with rail image */}
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(320px,0.8fr)]">
         <section id="linha-do-tempo" className="card-dark relative overflow-hidden p-6">
-          {/* Rail background */}
           <div className="absolute inset-0 opacity-[0.04]">
             <Image src={hubAssets.timeline.rail} alt="" fill className="object-cover" sizes="65vw" />
           </div>
@@ -279,7 +356,7 @@ export function HomeHub() {
                   <EditorialSeal
                     contentType={item.type}
                     sourceRef={item.sourceRef}
-                    confidenceNote={item.type === "historical_fact" ? "Fato historico documentado." : "Situacao contemporanea documentada."}
+                    confidenceNote={item.type === "historical_fact" ? "Fato histórico documentado." : "Situação contemporânea documentada."}
                     compact
                     className="mt-3"
                   />
@@ -306,7 +383,7 @@ export function HomeHub() {
                   <EditorialSeal
                     contentType="contemporary_fact"
                     sourceRef={item.sourceRef}
-                    confidenceNote="Situacao contemporanea documentada."
+                    confidenceNote="Situação contemporânea documentada."
                     compact
                     className="mt-3"
                   />
@@ -316,11 +393,10 @@ export function HomeHub() {
           </article>
 
           <article className="card-dark p-5">
-            <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-muted)]">Colecao desbloqueada</p>
-            <h2 className="mt-2 font-serif text-xl text-[var(--color-paper)]">Museu Vivo em progresso</h2>
+            <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-muted)]">Museu em progresso</p>
+            <h2 className="mt-2 font-serif text-xl text-[var(--color-paper)]">Payoff desbloqueado</h2>
             <p className="mt-3 text-sm leading-7 text-[var(--color-muted)]">
-              Cada modulo jogado desbloqueia entradas que respondem a quatro perguntas: o que e, como era usado, onde
-              aparece no jogo e por que isso importa hoje.
+              Cada módulo jogado libera entradas que explicam o que era, como era usado e por que ainda importa hoje.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               <span className="image-badge image-badge-gold">{unlockedEntries} entradas liberadas</span>
@@ -328,30 +404,6 @@ export function HomeHub() {
             </div>
           </article>
         </aside>
-      </div>
-
-      {/* Footer cards */}
-      <div className="grid gap-4 md:grid-cols-2">
-        <ModeCard
-          href="/resultado-integrado"
-          title="Resultado Integrado"
-          description="Dossie parcial da campanha com formula por peso e leitura do seu perfil final."
-          icon={Trophy}
-          imageSrc={modeCovers.resultadoIntegrado}
-          imageAlt="Resultado integrado"
-          fallbackArea="resultadoIntegrado"
-          metrics={["Restauração 35%", "Historia 25%", "Museu + Quiz 40%"]}
-        />
-        <ModeCard
-          href="/config"
-          title="Config"
-          description="Acessibilidade, conforto visual e ajustes de leitura para manter o tom do patrimonio legivel."
-          icon={Settings2}
-          imageSrc={hubAssets.heroMain}
-          imageAlt="Configuracoes"
-          fallbackArea="hub"
-          metrics={["Fonte", "Contraste", "Reducao de movimento"]}
-        />
       </div>
     </section>
   );

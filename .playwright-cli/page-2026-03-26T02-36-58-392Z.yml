@@ -1,0 +1,120 @@
+- generic [ref=e1]:
+  - generic [ref=e5]:
+    - banner [ref=e6]:
+      - generic [ref=e7]:
+        - generic [ref=e8]:
+          - paragraph [ref=e9]: Madeira-Mamore
+          - paragraph [ref=e10]: Trilhos da Memoria
+        - generic [ref=e11]:
+          - img "Progresso 4%" [ref=e12]:
+            - generic [ref=e15]: "4"
+          - generic [ref=e16]:
+            - img [ref=e17]
+            - text: Curador da Memoria
+          - generic [ref=e19]: 4%
+          - generic [ref=e20]: estavel
+      - generic [ref=e24]: 17% Revitalização
+      - generic [ref=e25]:
+        - link "Hub" [ref=e26] [cursor=pointer]:
+          - /url: /
+          - img [ref=e27]
+          - text: Hub
+        - link "Restauração 2026" [ref=e30] [cursor=pointer]:
+          - /url: /restauracao-2026
+          - img [ref=e31]
+          - text: Restauração 2026
+        - link "Historia Interativa" [ref=e33] [cursor=pointer]:
+          - /url: /historia-interativa
+          - img [ref=e34]
+          - text: Historia Interativa
+        - link "Quiz Tematico" [ref=e37] [cursor=pointer]:
+          - /url: /quiz-tematico
+          - img [ref=e38]
+          - text: Quiz Tematico
+        - link "Museu Vivo" [ref=e40] [cursor=pointer]:
+          - /url: /museu-vivo
+          - img [ref=e41]
+          - text: Museu Vivo
+        - link "Resultado" [active] [ref=e44] [cursor=pointer]:
+          - /url: /resultado-integrado
+          - img [ref=e45]
+          - text: Resultado
+        - link "Config" [ref=e51] [cursor=pointer]:
+          - /url: /config
+          - img [ref=e52]
+          - text: Config
+    - main [ref=e408]:
+      - generic [ref=e409]:
+        - generic [ref=e410]:
+          - img "Resultado Integrado" [ref=e412]
+          - img
+          - img
+          - img
+          - img
+          - generic [ref=e415]:
+            - paragraph [ref=e416]: Dossie final da Entrega 1
+            - heading "Operador do Legado" [level=1] [ref=e417]
+            - paragraph [ref=e418]: Perfil de Curador da Memoria. O resultado cruza restauracao, historia, quiz e museu com pesos fixos e leitura de predominancia.
+            - generic [ref=e419]:
+              - generic [ref=e420]: Score ponderado 18%
+              - generic [ref=e421]: Perfil Operador do Legado
+              - generic [ref=e422]: Progresso geral 4%
+        - article [ref=e423]:
+          - paragraph [ref=e424]: Leitura da campanha
+          - paragraph [ref=e425]: A revitalização mal começou. Concentre-se em restauração técnica para ganhar tração e depois avance nos demais pilares.
+          - generic [ref=e426]:
+            - generic [ref=e427]:
+              - paragraph [ref=e428]: Pilar dominante
+              - paragraph [ref=e429]: Progresso Técnico
+            - generic [ref=e430]:
+              - paragraph [ref=e431]: Pilar mais fraco
+              - paragraph [ref=e432]: Conhecimento
+            - generic [ref=e433]:
+              - paragraph [ref=e434]: Mais desbloqueou
+              - paragraph [ref=e435]: Restauração 2026
+        - generic [ref=e436]:
+          - article [ref=e437]:
+            - img "Operador do Legado" [ref=e439]
+            - generic [ref=e440]:
+              - paragraph [ref=e441]: Perfil da campanha
+              - heading "Operador do Legado" [level=2] [ref=e442]
+              - paragraph [ref=e443]: 18%
+              - paragraph [ref=e444]: Score ponderado
+          - article [ref=e445]:
+            - paragraph [ref=e446]: Pesos oficiais
+            - generic [ref=e447]:
+              - generic [ref=e449]:
+                - generic [ref=e450]: Progresso Técnico (29%)
+                - generic [ref=e451]: 29%
+              - generic [ref=e455]:
+                - generic [ref=e456]: Memória Histórica (21%)
+                - generic [ref=e457]: 21%
+              - generic [ref=e461]:
+                - generic [ref=e462]: Conhecimento (0%)
+                - generic [ref=e463]: 0%
+              - generic [ref=e466]:
+                - generic [ref=e467]: Acervo do Museu (7%)
+                - generic [ref=e468]: 7%
+        - generic [ref=e471]:
+          - article [ref=e472]:
+            - paragraph [ref=e473]: Leitura da jornada
+            - heading "Timeline do seu slice" [level=2] [ref=e474]
+            - list [ref=e475]:
+              - listitem [ref=e476]: 0/4 modulos de restauração liberados
+              - listitem [ref=e478]: 0/2 partes historicas concluidas
+              - listitem [ref=e480]: 0/20 acertos no quiz tematico
+              - listitem [ref=e482]: 1/9 entradas do Museu Vivo desbloqueadas
+          - article [ref=e484]:
+            - paragraph [ref=e485]: Predominância
+            - heading "Operador do Legado" [level=3] [ref=e486]
+            - paragraph [ref=e487]: O perfil nasce da area mais forte da sua campanha combinada ao nivel de maturidade do museu.
+        - generic [ref=e488]:
+          - article [ref=e489]:
+            - paragraph [ref=e490]: Museu e replay
+            - paragraph [ref=e491]: Ainda existem alas planejadas e entradas nao vistas. O replay muda o dossie porque destrava outras leituras de memoria.
+          - article [ref=e492]:
+            - paragraph [ref=e493]: Entrega 1
+            - paragraph [ref=e494]: "Este resultado e parcial por desenho: ele ja funciona com o vertical slice atual e cresce sem quebrar a formula quando novos lotes entrarem."
+  - button "Open Next.js Dev Tools" [ref=e404] [cursor=pointer]:
+    - img [ref=e405]
+  - alert [ref=e495]: Resultado Integrado | Ferrovia do Diabo

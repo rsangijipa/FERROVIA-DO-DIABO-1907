@@ -49,7 +49,7 @@ function ArtworkFrame({
   return (
     <div
       className={clsx(
-        "relative isolate overflow-hidden rounded-[1rem] border border-[color:var(--color-border)] bg-[color:rgba(31,35,32,0.86)] artwork-inset-shadow",
+        "relative isolate w-full overflow-hidden rounded-[1rem] border border-[color:var(--color-border)] bg-[color:rgba(31,35,32,0.86)] artwork-inset-shadow",
         className,
       )}
       style={{ aspectRatio }}

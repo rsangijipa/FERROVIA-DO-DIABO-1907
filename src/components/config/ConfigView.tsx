@@ -14,7 +14,6 @@ export function ConfigView() {
   const setFontScale = useGameStore((s) => s.setFontScale);
   const toggleHighContrast = useGameStore((s) => s.toggleHighContrast);
   const toggleReducedMotion = useGameStore((s) => s.toggleReducedMotion);
-  const toggleSound = useGameStore((s) => s.toggleSound);
   const resetCampaign = useGameStore((s) => s.resetCampaign);
 
   const [resetStep, setResetStep] = useState<0 | 1 | 2>(0);
@@ -70,7 +69,6 @@ export function ConfigView() {
             {[
               { label: "Alto contraste", active: settings.highContrast, onClick: toggleHighContrast },
               { label: "Reduzir animações", active: settings.reducedMotion, onClick: toggleReducedMotion },
-              { label: "Som ambiente", active: settings.soundEnabled, onClick: toggleSound },
             ].map((item) => (
               <motion.button
                 key={item.label}
@@ -94,6 +92,9 @@ export function ConfigView() {
               </motion.button>
             ))}
           </div>
+          <p className="text-xs leading-6 text-[var(--color-muted)]">
+            O controle de som fica oculto nesta fase porque o produto ainda nao tem camada de audio jogavel integrada.
+          </p>
         </div>
 
         {/* Danger Zone */}

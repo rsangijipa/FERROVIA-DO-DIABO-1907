@@ -1,0 +1,138 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e5]:
+      - navigation "Menu principal" [ref=e6]:
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: Madeira-Mamore
+          - paragraph [ref=e9]: Trilhos da Memoria
+        - generic [ref=e10]:
+          - img "Progresso 12%" [ref=e903]:
+            - generic [ref=e14]: "12"
+          - generic [ref=e15]:
+            - img [ref=e16]
+            - text: Curador da Memoria
+          - generic [ref=e18]: 12%
+          - generic [ref=e19]: estavel
+      - navigation [ref=e20]:
+        - link "Hub" [ref=e21] [cursor=pointer]:
+          - /url: /
+          - img [ref=e22]
+          - text: Hub
+        - link "Restauração 2026" [ref=e25] [cursor=pointer]:
+          - /url: /restauracao-2026
+          - img [ref=e26]
+          - text: Restauração 2026
+        - link "Historia Interativa" [ref=e28] [cursor=pointer]:
+          - /url: /historia-interativa
+          - img [ref=e29]
+          - text: Historia Interativa
+        - link "Quiz Tematico" [ref=e32] [cursor=pointer]:
+          - /url: /quiz-tematico
+          - img [ref=e33]
+          - text: Quiz Tematico
+        - link "Museu Vivo" [active] [ref=e35] [cursor=pointer]:
+          - /url: /museu-vivo
+          - img [ref=e36]
+          - text: Museu Vivo
+        - link "Resultado" [ref=e39] [cursor=pointer]:
+          - /url: /resultado-integrado
+          - img [ref=e40]
+          - text: Resultado
+        - link "Config" [ref=e46] [cursor=pointer]:
+          - /url: /config
+          - img [ref=e47]
+          - text: Config
+      - generic [ref=e53]: 23% Revitalização
+      - link "Liberar o módulo Trilhos +10% Progresso Técnico" [ref=e627] [cursor=pointer]:
+        - /url: /restauracao-2026
+        - img [ref=e55]
+        - generic [ref=e59]: Liberar o módulo Trilhos
+        - generic [ref=e60]: +10% Progresso Técnico
+    - main [ref=e920]:
+      - generic [ref=e921]:
+        - generic [ref=e922]:
+          - img "Museu Vivo" [ref=e924]
+          - img
+          - img
+          - img
+          - img
+          - generic [ref=e927]:
+            - paragraph [ref=e928]: Payoff do jogo
+            - heading "Museu Vivo" [level=1] [ref=e929]
+            - paragraph [ref=e930]: Mapa inicial com 3 alas operacionais e 9 alas planejadas. Cada entrada conecta o que e, como era usado, onde aparece no jogo e por que importa hoje.
+            - generic [ref=e931]:
+              - generic [ref=e932]: 1 entradas desbloqueadas
+              - generic [ref=e933]: 1/9 alas descobertas
+              - generic [ref=e934]: 0 entradas vistas
+        - generic [ref=e935]:
+          - generic [ref=e936]:
+            - generic [ref=e937]:
+              - img "Mapa do museu" [ref=e938]
+              - paragraph [ref=e941]: Mapa do museu
+            - generic [ref=e942]:
+              - 'button "Ala: Diplomacia. Status: Descoberta" [pressed] [ref=e943] [cursor=pointer]':
+                - img [ref=e945]
+                - generic [ref=e948]: Diplomacia
+                - generic [ref=e949]: Descoberta
+              - 'button "Ala: Locomotivas. Status: Trancada" [ref=e950]':
+                - img [ref=e952]
+                - generic [ref=e959]: Locomotivas
+                - generic [ref=e960]: Trancada
+              - 'button "Ala: Hospital e Candelaria. Status: Trancada" [ref=e961]':
+                - img [ref=e963]
+                - generic [ref=e965]: Hospital e Candelaria
+                - generic [ref=e966]: Trancada
+              - 'button "Ala: Construcao. Status: Trancada" [ref=e967]':
+                - img [ref=e969]
+                - generic [ref=e973]: Construcao
+                - generic [ref=e974]: Trancada
+              - 'button "Ala: Trilhos e pontes. Status: Trancada" [ref=e975]':
+                - img [ref=e977]
+                - generic [ref=e981]: Trilhos e pontes
+                - generic [ref=e982]: Trancada
+              - 'button "Ala: Trabalhadores e cotidiano. Status: Trancada" [ref=e983]':
+                - img [ref=e985]
+                - generic [ref=e990]: Trabalhadores e cotidiano
+                - generic [ref=e991]: Trancada
+              - 'button "Ala: Borracha e circulacao. Status: Trancada" [ref=e992]':
+                - img [ref=e994]
+                - generic [ref=e998]: Borracha e circulacao
+                - generic [ref=e999]: Trancada
+              - 'button "Ala: Ruina e preservacao. Status: Trancada" [ref=e1000]':
+                - img [ref=e1002]
+                - generic [ref=e1005]: Ruina e preservacao
+                - generic [ref=e1006]: Trancada
+              - 'button "Ala: Reabertura e turismo. Status: Trancada" [ref=e1007]':
+                - img [ref=e1009]
+                - generic [ref=e1011]: Reabertura e turismo
+                - generic [ref=e1012]: Trancada
+          - article [ref=e1013]:
+            - img "Diplomacia" [ref=e1015]
+            - generic [ref=e1018]:
+              - generic [ref=e1019]:
+                - generic [ref=e1020]:
+                  - paragraph [ref=e1021]: Ala selecionada
+                  - heading "Diplomacia" [level=1] [ref=e1022]
+                - generic [ref=e1023]: Descoberta
+              - paragraph [ref=e1024]: "Complete para ganhar: +8% Acervo do Museu"
+              - generic [ref=e1025]:
+                - generic [ref=e1026]:
+                  - img [ref=e1027]
+                  - paragraph [ref=e1029]: Fato histórico documentado
+                - paragraph [ref=e1030]: Ala apoiada em fatos diplomaticos documentados.
+                - paragraph [ref=e1031]: Tratado de Petropolis, 1903
+              - 'button "Entrada: Tratado de Petropolis. Status: Nova" [ref=e1033]':
+                - generic [ref=e1034]:
+                  - img "Tratado de Petropolis" [ref=e1036]
+                  - generic [ref=e1037]:
+                    - generic [ref=e1038]:
+                      - heading "Tratado de Petropolis" [level=2] [ref=e1039]
+                      - generic [ref=e1040]: Nova
+                    - paragraph [ref=e1041]: Documento de origem da promessa ferroviaria.
+                    - paragraph [ref=e1042]: "Desbloqueado por: Quiz Temático"
+                - generic [ref=e1043]:
+                  - generic [ref=e1044]:
+                    - img [ref=e1045]
+                    - paragraph [ref=e1047]: Fato histórico documentado
+                  - paragraph [ref=e1048]: Tratado de Petropolis, 1903
+  - alert [ref=e371]: Museu Vivo | Ferrovia do Diabo

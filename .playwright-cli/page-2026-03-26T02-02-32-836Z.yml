@@ -1,0 +1,293 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e5]:
+      - navigation "Menu principal" [ref=e6]:
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: Madeira-Mamore
+          - paragraph [ref=e9]: Trilhos da Memoria
+        - generic [ref=e10]:
+          - img "Progresso 12%" [ref=e903]:
+            - generic [ref=e14]: "12"
+          - generic [ref=e15]:
+            - img [ref=e16]
+            - text: Curador da Memoria
+          - generic [ref=e18]: 12%
+          - generic [ref=e19]: estavel
+      - navigation [ref=e20]:
+        - link "Hub" [active] [ref=e21] [cursor=pointer]:
+          - /url: /
+          - img [ref=e22]
+          - text: Hub
+        - link "Restauração 2026" [ref=e25] [cursor=pointer]:
+          - /url: /restauracao-2026
+          - img [ref=e26]
+          - text: Restauração 2026
+        - link "Historia Interativa" [ref=e28] [cursor=pointer]:
+          - /url: /historia-interativa
+          - img [ref=e29]
+          - text: Historia Interativa
+        - link "Quiz Tematico" [ref=e32] [cursor=pointer]:
+          - /url: /quiz-tematico
+          - img [ref=e33]
+          - text: Quiz Tematico
+        - link "Museu Vivo" [ref=e35] [cursor=pointer]:
+          - /url: /museu-vivo
+          - img [ref=e36]
+          - text: Museu Vivo
+        - link "Resultado" [ref=e39] [cursor=pointer]:
+          - /url: /resultado-integrado
+          - img [ref=e40]
+          - text: Resultado
+        - link "Config" [ref=e46] [cursor=pointer]:
+          - /url: /config
+          - img [ref=e47]
+          - text: Config
+      - generic [ref=e53]: 24% Revitalização
+      - link "Liberar o módulo Trilhos +10% Progresso Técnico" [ref=e627] [cursor=pointer]:
+        - /url: /restauracao-2026
+        - img [ref=e55]
+        - generic [ref=e59]: Liberar o módulo Trilhos
+        - generic [ref=e60]: +10% Progresso Técnico
+    - main [ref=e1106]:
+      - generic [ref=e1107]:
+        - generic [ref=e1108]:
+          - img "Patio ferroviario da Madeira-Mamore" [ref=e1110]
+          - img
+          - img
+          - img
+          - img
+          - generic [ref=e1113]:
+            - paragraph [ref=e1114]: Hub editorial e centro de operacoes da memoria
+            - 'heading "Madeira-Mamore: Trilhos da Memoria" [level=1] [ref=e1115]'
+            - paragraph [ref=e1116]: Uma experiencia patrimonial jogavel que liga diplomacia, trabalho, memoria e revitalizacao do complexo da EFMM.
+            - generic [ref=e1117]:
+              - link "Comecar Jornada" [ref=e1118] [cursor=pointer]:
+                - /url: /restauracao-2026
+              - link "Explorar a EFMM em 60 segundos" [ref=e1119] [cursor=pointer]:
+                - /url: "#linha-do-tempo"
+            - generic [ref=e1120]:
+              - generic [ref=e1121]: Progresso 12%
+              - generic [ref=e1122]: 1 entradas no Museu
+              - generic [ref=e1123]: 0 alas completas
+        - article [ref=e1124]:
+          - generic [ref=e1125]:
+            - generic [ref=e1126]:
+              - generic [ref=e1127]:
+                - img [ref=e1128]
+                - paragraph [ref=e1132]: Missão atual
+              - heading "Liberar o módulo Trilhos" [level=2] [ref=e1133]
+              - generic [ref=e1134]:
+                - generic [ref=e1135]:
+                  - paragraph [ref=e1136]: Recompensa
+                  - paragraph [ref=e1137]: Desbloqueia capítulos + Quiz Diplomacia
+                - generic [ref=e1138]:
+                  - paragraph [ref=e1139]: Impacto
+                  - paragraph [ref=e1140]: +10% Progresso Técnico
+                - generic [ref=e1141]:
+                  - paragraph [ref=e1142]: Próximo desbloqueio
+                  - paragraph [ref=e1143]: Desbloqueia capítulos + Quiz Diplomacia
+              - link "Ir para o módulo recomendado" [ref=e1144] [cursor=pointer]:
+                - /url: /restauracao-2026
+            - generic [ref=e1145]:
+              - paragraph [ref=e1146]: Revitalização da EFMM
+              - paragraph [ref=e1147]: 24%
+          - generic [ref=e1148]:
+            - generic [ref=e1150]:
+              - generic [ref=e1151]: Progresso Técnico
+              - generic [ref=e1152]: 38%
+            - generic [ref=e1156]:
+              - generic [ref=e1157]: Memória Histórica
+              - generic [ref=e1158]: 31%
+            - generic [ref=e1162]:
+              - generic [ref=e1163]: Conhecimento
+              - generic [ref=e1164]: 5%
+            - generic [ref=e1168]:
+              - generic [ref=e1169]: Acervo do Museu
+              - generic [ref=e1170]: 11%
+        - generic [ref=e1173]:
+          - article [ref=e1174]:
+            - generic [ref=e1176]:
+              - paragraph [ref=e1177]: EFMM historica
+              - heading "Ferrovia estrategica da borracha" [level=2] [ref=e1178]
+              - paragraph [ref=e1179]: 1907-1912, 366 km, Porto Velho-Guajara-Mirim. O jogo trata a origem da EFMM como encontro entre diplomacia, territorio, engenharia e custo humano.
+              - generic [ref=e1180]:
+                - generic [ref=e1181]:
+                  - img [ref=e1182]
+                  - paragraph [ref=e1184]: Fato histórico documentado
+                - paragraph [ref=e1185]: Obras da EFMM, 1907-1912
+          - article [ref=e1186]:
+            - generic [ref=e1188]:
+              - paragraph [ref=e1189]: EFMM hoje
+              - heading "Complexo revitalizado e ativado" [level=2] [ref=e1190]
+              - paragraph [ref=e1191]: Museu, visitacao, litorina, agenda cultural e exibicoes da Locomotiva 18 sustentam a camada contemporanea do produto e legitimam a simulacao de 2026.
+              - generic [ref=e1192]:
+                - generic [ref=e1193]:
+                  - img [ref=e1194]
+                  - paragraph [ref=e1197]: Situação contemporânea documentada
+                - paragraph [ref=e1198]: Museu, litorina e agenda 2025-2026
+        - generic [ref=e1199]:
+          - link "Restauração 2026 Restauração 2026 Programa operacional contemporaneo em 4 modulos, com etapas e validacao tecnica. 4 modulos 2 tarefas por modulo Simulacao 2026" [ref=e1201] [cursor=pointer]:
+            - /url: /restauracao-2026
+            - img "Restauração 2026" [ref=e1203]
+            - generic [ref=e1206]:
+              - generic [ref=e1207]:
+                - img [ref=e1209]
+                - heading "Restauração 2026" [level=2] [ref=e1211]
+              - paragraph [ref=e1212]: Programa operacional contemporaneo em 4 modulos, com etapas e validacao tecnica.
+              - generic [ref=e1213]:
+                - generic [ref=e1214]: 4 modulos
+                - generic [ref=e1215]: 2 tarefas por modulo
+                - generic [ref=e1216]: Simulacao 2026
+          - link "Historia Interativa Historia Interativa Vertical slice com 2 partes completas e escolhas ligadas a saude, moral e progresso. 2 partes ativas 8 cenas Base historica" [ref=e1218] [cursor=pointer]:
+            - /url: /historia-interativa
+            - img "Historia Interativa" [ref=e1220]
+            - generic [ref=e1223]:
+              - generic [ref=e1224]:
+                - img [ref=e1226]
+                - heading "Historia Interativa" [level=2] [ref=e1229]
+              - paragraph [ref=e1230]: Vertical slice com 2 partes completas e escolhas ligadas a saude, moral e progresso.
+              - generic [ref=e1231]:
+                - generic [ref=e1232]: 2 partes ativas
+                - generic [ref=e1233]: 8 cenas
+                - generic [ref=e1234]: Base historica
+          - link "Quiz Tematico Quiz Tematico Dois modulos robustos, dificuldade graduada e desbloqueios conectados ao museu. 20 perguntas 2 modulos Selos editoriais" [ref=e1236] [cursor=pointer]:
+            - /url: /quiz-tematico
+            - img "Quiz Tematico" [ref=e1238]
+            - generic [ref=e1241]:
+              - generic [ref=e1242]:
+                - img [ref=e1244]
+                - heading "Quiz Tematico" [level=2] [ref=e1246]
+              - paragraph [ref=e1247]: Dois modulos robustos, dificuldade graduada e desbloqueios conectados ao museu.
+              - generic [ref=e1248]:
+                - generic [ref=e1249]: 20 perguntas
+                - generic [ref=e1250]: 2 modulos
+                - generic [ref=e1251]: Selos editoriais
+          - link "Museu Vivo Museu Vivo Mapa inicial com 3 alas operacionais e fichas que ligam jogo, uso historico e memoria atual. 3 alas ativas 1 entradas Progressao visual" [ref=e1253] [cursor=pointer]:
+            - /url: /museu-vivo
+            - img "Museu Vivo" [ref=e1255]
+            - generic [ref=e1258]:
+              - generic [ref=e1259]:
+                - img [ref=e1261]
+                - heading "Museu Vivo" [level=2] [ref=e1264]
+              - paragraph [ref=e1265]: Mapa inicial com 3 alas operacionais e fichas que ligam jogo, uso historico e memoria atual.
+              - generic [ref=e1266]:
+                - generic [ref=e1267]: 3 alas ativas
+                - generic [ref=e1268]: 1 entradas
+                - generic [ref=e1269]: Progressao visual
+        - generic [ref=e1270]:
+          - generic [ref=e1273]:
+            - paragraph [ref=e1274]: Linha do tempo curta
+            - generic [ref=e1275]:
+              - article [ref=e1276]:
+                - paragraph [ref=e1277]: "1903"
+                - heading "Tratado de Petropolis" [level=3] [ref=e1278]
+                - generic [ref=e1279]:
+                  - generic [ref=e1280]:
+                    - img [ref=e1281]
+                    - paragraph [ref=e1283]: Fato histórico documentado
+                  - paragraph [ref=e1284]: Tratado de Petropolis, 1903
+              - article [ref=e1285]:
+                - paragraph [ref=e1286]: "1907"
+                - heading "Inicio das obras" [level=3] [ref=e1287]
+                - generic [ref=e1288]:
+                  - generic [ref=e1289]:
+                    - img [ref=e1290]
+                    - paragraph [ref=e1292]: Fato histórico documentado
+                  - paragraph [ref=e1293]: Obras da EFMM, 1907-1912
+              - article [ref=e1294]:
+                - paragraph [ref=e1295]: "1912"
+                - heading "Inauguracao da ferrovia" [level=3] [ref=e1296]
+                - generic [ref=e1297]:
+                  - generic [ref=e1298]:
+                    - img [ref=e1299]
+                    - paragraph [ref=e1301]: Fato histórico documentado
+                  - paragraph [ref=e1302]: Obras da EFMM, 1907-1912
+              - article [ref=e1303]:
+                - paragraph [ref=e1304]: "2008"
+                - heading "Tombamento pelo Iphan" [level=3] [ref=e1305]
+                - generic [ref=e1306]:
+                  - generic [ref=e1307]:
+                    - img [ref=e1308]
+                    - paragraph [ref=e1310]: Fato histórico documentado
+                  - paragraph [ref=e1311]: Iphan, tombamento em 2008
+              - article [ref=e1312]:
+                - paragraph [ref=e1313]: "2024"
+                - heading "Reabertura do complexo" [level=3] [ref=e1314]
+                - generic [ref=e1315]:
+                  - generic [ref=e1316]:
+                    - img [ref=e1317]
+                    - paragraph [ref=e1320]: Situação contemporânea documentada
+                  - paragraph [ref=e1321]: Reabertura publica em 2024
+              - article [ref=e1322]:
+                - paragraph [ref=e1323]: 2025-26
+                - heading "Ativacao cultural e turistica" [level=3] [ref=e1324]
+                - generic [ref=e1325]:
+                  - generic [ref=e1326]:
+                    - img [ref=e1327]
+                    - paragraph [ref=e1330]: Situação contemporânea documentada
+                  - paragraph [ref=e1331]: Museu, litorina e agenda 2025-2026
+          - complementary [ref=e1332]:
+            - article [ref=e1333]:
+              - generic [ref=e1334]:
+                - generic [ref=e1335]:
+                  - paragraph [ref=e1336]: Hoje no complexo
+                  - heading "Status do ecossistema cultural" [level=2] [ref=e1337]
+                - img [ref=e1338]
+              - generic [ref=e1341]:
+                - generic [ref=e1342]:
+                  - heading "Museu e visitacao" [level=3] [ref=e1343]
+                  - paragraph [ref=e1344]: O complexo reaberto em 2024 sustenta o eixo de patrimonio vivo com visita guiada e leitura publica.
+                  - generic [ref=e1345]:
+                    - generic [ref=e1346]:
+                      - img [ref=e1347]
+                      - paragraph [ref=e1350]: Situação contemporânea documentada
+                    - paragraph [ref=e1351]: Reabertura publica em 2024
+                - generic [ref=e1352]:
+                  - heading "Litorina e exibicoes" [level=3] [ref=e1353]
+                  - paragraph [ref=e1354]: A agenda contemporanea legitima o modulo de material rodante e a camada de simulacao 2026.
+                  - generic [ref=e1355]:
+                    - generic [ref=e1356]:
+                      - img [ref=e1357]
+                      - paragraph [ref=e1360]: Situação contemporânea documentada
+                    - paragraph [ref=e1361]: Museu, litorina e agenda 2025-2026
+                - generic [ref=e1362]:
+                  - heading "Programacao cultural" [level=3] [ref=e1363]
+                  - paragraph [ref=e1364]: Eventos como noites no museu ajudam o hub a falar de memoria e operacao no mesmo produto.
+                  - generic [ref=e1365]:
+                    - generic [ref=e1366]:
+                      - img [ref=e1367]
+                      - paragraph [ref=e1370]: Situação contemporânea documentada
+                    - paragraph [ref=e1371]: Museu, litorina e agenda 2025-2026
+            - article [ref=e1372]:
+              - paragraph [ref=e1373]: Colecao desbloqueada
+              - heading "Museu Vivo em progresso" [level=2] [ref=e1374]
+              - paragraph [ref=e1375]: "Cada modulo jogado desbloqueia entradas que respondem a quatro perguntas: o que e, como era usado, onde aparece no jogo e por que isso importa hoje."
+              - generic [ref=e1376]:
+                - generic [ref=e1377]: 1 entradas liberadas
+                - generic [ref=e1378]: 0 alas completas
+        - generic [ref=e1379]:
+          - link "Resultado integrado Resultado Integrado Dossie parcial da campanha com formula por peso e leitura do seu perfil final. Restauração 35% Historia 25% Museu + Quiz 40%" [ref=e1380] [cursor=pointer]:
+            - /url: /resultado-integrado
+            - img "Resultado integrado" [ref=e1382]
+            - generic [ref=e1385]:
+              - generic [ref=e1386]:
+                - img [ref=e1388]
+                - heading "Resultado Integrado" [level=2] [ref=e1394]
+              - paragraph [ref=e1395]: Dossie parcial da campanha com formula por peso e leitura do seu perfil final.
+              - generic [ref=e1396]:
+                - generic [ref=e1397]: Restauração 35%
+                - generic [ref=e1398]: Historia 25%
+                - generic [ref=e1399]: Museu + Quiz 40%
+          - link "Configuracoes Config Acessibilidade, conforto visual e ajustes de leitura para manter o tom do patrimonio legivel. Fonte Contraste Reducao de movimento" [ref=e1400] [cursor=pointer]:
+            - /url: /config
+            - img "Configuracoes" [ref=e1402]
+            - generic [ref=e1405]:
+              - generic [ref=e1406]:
+                - img [ref=e1408]
+                - heading "Config" [level=2] [ref=e1411]
+              - paragraph [ref=e1412]: Acessibilidade, conforto visual e ajustes de leitura para manter o tom do patrimonio legivel.
+              - generic [ref=e1413]:
+                - generic [ref=e1414]: Fonte
+                - generic [ref=e1415]: Contraste
+                - generic [ref=e1416]: Reducao de movimento
+  - alert [ref=e371]: Painel de Controle | Ferrovia do Diabo

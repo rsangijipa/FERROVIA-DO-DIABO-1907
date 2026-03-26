@@ -15,6 +15,7 @@ import { useGameStore } from "@/store/useGameStore";
 import type { RestorationStage } from "@/types/game";
 
 import { EditorialSeal } from "../ui/EditorialSeal";
+import { FeedbackStamp } from "../ui/FeedbackStamp";
 import { GameModuleHeader } from "../ui/GameModuleHeader";
 import { ResourcePanel } from "../ui/ResourcePanel";
 import { SectionHero } from "../ui/SectionHero";
@@ -32,9 +33,19 @@ const stageLabel: Record<RestorationStage, string> = {
 };
 
 const stageCopy: Partial<Record<RestorationStage, string>> = {
+  diagnosis: "Levante evidencias do trecho e transforme observacao tecnica em base confiavel para as escolhas seguintes.",
   prioritization: "Transforme o diagnostico em escopo, marcos e lote prioritario da Entrega 1.",
   contracting: "Amarre equipe, compra e responsabilidade antes da obra entrar em campo.",
+  restoration: "Execute a frente principal equilibrando prazo, leitura patrimonial e seguranca operacional.",
   validation: "Confira o fechamento tecnico e a leitura patrimonial antes da liberacao ao publico.",
+};
+
+const resourceLabel: Record<string, string> = {
+  orcamento: "Orcamento",
+  moral: "Moral",
+  saudeSanitaria: "Saude",
+  progressoTecnico: "Progresso",
+  preservacao: "Preservacao",
 };
 
 const crossfade = {
@@ -47,8 +58,9 @@ export function RestorationMode() {
   const resources = useGameStore((store) => store.restorationResources);
   const progress = useGameStore((store) => store.progress.restoration);
   const fullProgress = useGameStore((store) => store.progress);
-  const advanceModule = useGameStore((store) => store.advanceRestorationModule);
   const resolveChoice = useGameStore((store) => store.resolveRestorationTaskChoice);
+  const restorationFeedback = useGameStore((store) => store.restorationFeedback);
+  const dismissRestorationFeedback = useGameStore((store) => store.dismissRestorationFeedback);
 
   const firstPlayableModule = restorationModules.find((module) => progress[module.id].stage !== "locked")?.id ?? restorationModules[0].id;
   const [selectedModuleId, setSelectedModuleId] = useState(firstPlayableModule);
@@ -56,7 +68,10 @@ export function RestorationMode() {
   const selectedModule = restorationModules.find((module) => module.id === safeSelectedModuleId) ?? restorationModules[0];
   const selectedProgress = progress[selectedModule.id];
   const activeTask = restorationTasks.find(
-    (task) => task.moduleId === selectedModule.id && task.stage === selectedProgress.stage,
+    (task) =>
+      task.moduleId === selectedModule.id &&
+      task.stage === selectedProgress.stage &&
+      !selectedProgress.completedTaskIds.includes(task.id),
   );
   const releasedModules = restorationModules.filter((module) => progress[module.id].stage === "released").length;
   const isCritical = resources.orcamento <= 25 || resources.saudeSanitaria <= 25;
@@ -72,7 +87,7 @@ export function RestorationMode() {
         subtitle="Quatro modulos, uma maquina de estado unica e um vertical slice que assume a revitalizacao como simulacao plausivel sobre base documentada."
         imageSrc={restorationAssets.hero}
         imageAlt="Restauração 2026"
-        chips={[`${releasedModules}/4 modulos liberados`, "2 tarefas profundas por modulo", `Estado ${stageLabel[selectedProgress.stage]}`]}
+        chips={[`${releasedModules}/4 modulos liberados`, "5 etapas decisorias por modulo", `Estado ${stageLabel[selectedProgress.stage]}`]}
         fallbackArea="restauracao2026"
         preload
       />
@@ -117,7 +132,7 @@ export function RestorationMode() {
                   <p className="mt-3 text-sm leading-6 text-[var(--color-muted)]">{module.summary}</p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     <span className="image-badge">{stageLabel[moduleProgress.stage]}</span>
-                    <span className="image-badge">{moduleProgress.completedTaskIds.length}/2 tarefas</span>
+                    <span className="image-badge">{moduleProgress.completedTaskIds.length}/{module.taskIds.length} etapas</span>
                   </div>
                 </button>
               );
@@ -215,13 +230,69 @@ export function RestorationMode() {
                         ? "Modulo liberado para uso e leitura publica na Entrega 1."
                         : stageCopy[selectedProgress.stage] ?? "Etapa concluida."}
                     </p>
-                    {selectedProgress.stage !== "released" ? (
-                      <button className="btn-primary mt-5" onClick={() => advanceModule(selectedModule.id)}>
-                        Avancar etapa
-                      </button>
+                    {selectedProgress.stage === "released" ? (
+                      <div className="mt-5 flex items-center gap-3">
+                        <FeedbackStamp type="completed" />
+                        <p className="text-sm text-[var(--color-muted)]">Este modulo agora sustenta os proximos desbloqueios da campanha.</p>
+                      </div>
                     ) : null}
                   </div>
                 )}
+
+                {restorationFeedback?.moduleId === selectedModule.id ? (
+                  <div className="rounded-2xl border border-[color:rgba(212,163,103,0.26)] bg-[color:rgba(212,163,103,0.08)] p-4">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div>
+                        <div className="flex items-center gap-3">
+                          <FeedbackStamp type="unlocked" />
+                          <div>
+                            <p className="text-xs uppercase tracking-[0.16em] text-[var(--color-latao)]">O que mudou agora</p>
+                            <h3 className="mt-1 font-serif text-xl text-[var(--color-paper)]">{restorationFeedback.choiceLabel}</h3>
+                          </div>
+                        </div>
+                        <p className="mt-3 text-sm leading-7 text-[var(--color-paper)]/86">{restorationFeedback.outcome}</p>
+                      </div>
+                      <button type="button" className="image-badge" onClick={dismissRestorationFeedback}>
+                        Fechar resumo
+                      </button>
+                    </div>
+                    <div className="mt-4 grid gap-3 md:grid-cols-2">
+                      <div className="rounded-2xl border border-[color:rgba(233,223,201,0.08)] bg-[color:rgba(12,15,14,0.12)] p-4">
+                        <p className="text-xs uppercase tracking-[0.16em] text-[var(--color-latao)]">Impacto de campanha</p>
+                        <p className="mt-2 text-sm leading-6 text-[var(--color-muted)]">{restorationFeedback.impactSummary}</p>
+                      </div>
+                      <div className="rounded-2xl border border-[color:rgba(233,223,201,0.08)] bg-[color:rgba(12,15,14,0.12)] p-4">
+                        <p className="text-xs uppercase tracking-[0.16em] text-[var(--color-latao)]">Proximo estado</p>
+                        <p className="mt-2 text-sm leading-6 text-[var(--color-muted)]">{stageLabel[restorationFeedback.nextStage]}</p>
+                      </div>
+                    </div>
+                    <div className="mt-4 grid gap-3 md:grid-cols-2">
+                      <div className="rounded-2xl border border-[color:rgba(233,223,201,0.08)] bg-[color:rgba(12,15,14,0.12)] p-4">
+                        <p className="text-xs uppercase tracking-[0.16em] text-[var(--color-latao)]">Recursos alterados</p>
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          {Object.entries(restorationFeedback.resourceDelta).map(([key, value]) => (
+                            <span key={key} className="image-badge">
+                              {resourceLabel[key] ?? key} {value && value > 0 ? `+${value}` : value}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-[color:rgba(233,223,201,0.08)] bg-[color:rgba(12,15,14,0.12)] p-4">
+                        <p className="text-xs uppercase tracking-[0.16em] text-[var(--color-latao)]">Desbloqueios</p>
+                        {restorationFeedback.unlockedEntryIds.length > 0 ? (
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {restorationFeedback.unlockedEntryIds.map((entryId) => (
+                              <span key={entryId} className="image-badge image-badge-gold">{entryId}</span>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="mt-2 text-sm text-[var(--color-muted)]">Nenhuma nova entrada destravada nesta decisao.</p>
+                        )}
+                      </div>
+                    </div>
+                    <p className="mt-4 text-sm leading-6 text-[var(--color-muted)]">{restorationFeedback.timelineNote}</p>
+                  </div>
+                ) : null}
 
                 {/* Module reward labels */}
                 {moduleReward && selectedProgress.stage !== "released" && (
