@@ -54,6 +54,8 @@ export function MuseumNode({ icon: Icon, label, state, active = false, onClick, 
     <button
       type="button"
       onClick={onClick}
+      aria-pressed={active}
+      aria-label={`Ala: ${label}. Status: ${stateLabels[state]}`}
       className={clsx(
         "group flex flex-col items-center gap-2 rounded-2xl border p-4 text-center transition-all duration-200",
         style.bg,

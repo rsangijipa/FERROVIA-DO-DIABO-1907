@@ -201,6 +201,8 @@ export function CodexView() {
                             key={entry.id}
                             type="button"
                             onClick={() => viewMuseumEntry(entry.id)}
+                            aria-expanded={viewed}
+                            aria-label={`Entrada: ${entry.title}. Status: ${viewed ? "Vista" : "Nova"}`}
                             className={`w-full rounded-2xl border p-5 text-left transition-all duration-200 ${
                               viewed
                                 ? "border-[color:rgba(212,163,103,0.3)] bg-[color:rgba(212,163,103,0.08)]"

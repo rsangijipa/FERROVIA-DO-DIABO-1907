@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
+import { getCampaignReading } from "@/lib/campaign/campaignEngine";
 import { historyChapters, historyScenesByChapterId } from "@/content/historyContent";
 import { museumAreas } from "@/content/museumContent";
 import { quizModules, quizQuestionsByModuleId } from "@/content/quizContent";
@@ -8,6 +9,7 @@ import { restorationModules, restorationTaskById } from "@/content/restorationMo
 import { unlockRules } from "@/content/unlockRules";
 import { applyResourceDelta, clamp, stateFromResources } from "@/lib/gameUtils";
 import { SAVE_VERSION, STORAGE_KEY } from "@/lib/storage";
+import { restorationStages } from "@/lib/constants";
 import type {
   GlobalStateLevel,
   HistoryProgress,
@@ -38,15 +40,7 @@ const initialBars: NarrativeBars = {
   progresso: 68,
 };
 
-const restorationStages: RestorationStage[] = [
-  "locked",
-  "diagnosis",
-  "prioritization",
-  "contracting",
-  "restoration",
-  "validation",
-  "released",
-];
+
 
 const availableHistoryChapters = historyChapters.filter((chapter) => chapter.status === "available");
 const availableQuizModules = quizModules.filter((module) => module.status === "available");

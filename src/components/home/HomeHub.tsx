@@ -8,6 +8,7 @@ import { Archive, BookOpenText, Factory, ScrollText, Settings2, Target, Trophy }
 import { hubAssets, modeCovers } from "@/content/assetManifest";
 import { museumAreas } from "@/content/museumContent";
 import { getCampaignState } from "@/lib/campaign/campaignEngine";
+import { modeRoutes } from "@/lib/constants";
 import { PILLAR_COLORS, PILLAR_LABELS, type PillarId } from "@/lib/campaign/campaignTypes";
 import { useGameStore } from "@/store/useGameStore";
 
@@ -64,16 +65,6 @@ export function HomeHub() {
   const progress = useGameStore((store) => store.progress);
   const resources = useGameStore((store) => store.restorationResources);
   const campaign = getCampaignState(progress, resources);
-
-  const modeRoutes: Record<string, string> = {
-    restauracao2026: "/restauracao-2026",
-    historiaInterativa: "/historia-interativa",
-    quizTematico: "/quiz-tematico",
-    museuVivo: "/museu-vivo",
-    resultadoIntegrado: "/resultado-integrado",
-    hub: "/",
-    config: "/config",
-  };
 
   const cards = [
     {
@@ -143,7 +134,7 @@ export function HomeHub() {
             {campaign.currentMission ? (
               <>
                 <h2 className="mt-2 font-serif text-2xl text-[var(--color-paper)]">{campaign.currentMission.title}</h2>
-                <div className="mt-3 grid gap-3 sm:grid-cols-3">
+                <div className="mt-3 grid gap-3 sm:grid-cols-3" aria-live="polite">
                   <div className="rounded-2xl border border-[color:rgba(233,223,201,0.08)] bg-[color:rgba(12,15,14,0.18)] p-3">
                     <p className="text-[0.65rem] uppercase tracking-[0.16em] text-[var(--color-latao)]">Recompensa</p>
                     <p className="mt-1 text-sm text-[var(--color-paper)]">{campaign.currentMission.reward}</p>
@@ -158,7 +149,7 @@ export function HomeHub() {
                   </div>
                 </div>
                 <Link
-                  href={modeRoutes[campaign.recommendedModule] ?? "/"}
+                  href={modeRoutes.find(m => m.id === campaign.recommendedModule)?.href ?? "/"}
                   className="btn-primary mt-4 inline-flex items-center gap-2"
                 >
                   Ir para o módulo recomendado

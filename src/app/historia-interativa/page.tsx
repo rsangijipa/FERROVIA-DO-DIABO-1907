@@ -1,9 +1,17 @@
-"use client";
-
+import type { Metadata } from "next";
 import { NarrativeMode } from "@/components/narrative/NarrativeMode";
-import { useMode } from "@/lib/useMode";
+import { ModeInitializer } from "@/components/layout/ModeInitializer";
+
+export const metadata: Metadata = {
+  title: "História Interativa | Ferrovia do Diabo",
+  description: "Vivencie as memórias e relatos históricos que moldaram a EFMM e a região da Amazônia",
+};
 
 export default function HistoriaInterativaPage() {
-  useMode("historiaInterativa");
-  return <NarrativeMode />;
+  return (
+    <>
+      <ModeInitializer mode="historiaInterativa" />
+      <NarrativeMode />
+    </>
+  );
 }

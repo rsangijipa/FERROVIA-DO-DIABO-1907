@@ -99,6 +99,8 @@ export function RestorationMode() {
                   key={module.id}
                   type="button"
                   onClick={() => !locked && setSelectedModuleId(module.id)}
+                  aria-pressed={active}
+                  aria-label={`${module.kicker}, ${module.title}. Estatuto: ${stageLabel[moduleProgress.stage]}`}
                   className={`w-full rounded-2xl border p-4 text-left transition-all duration-200 ${
                     active
                       ? "border-[color:var(--color-cobre)] bg-[color:rgba(183,106,60,0.16)] glow-badge"
@@ -189,6 +191,7 @@ export function RestorationMode() {
                           key={choice.id}
                           type="button"
                           onClick={() => resolveChoice(selectedModule.id, choice.id)}
+                          aria-label={`Decisão: ${choice.label}. ${choice.summary}`}
                           className="rounded-2xl border border-[color:rgba(197,154,93,0.3)] bg-[color:rgba(44,42,40,0.74)] p-4 text-left transition-all duration-200 hover:border-[color:var(--color-cobre)] hover-lift-game"
                         >
                           <div className="flex items-start justify-between gap-3">

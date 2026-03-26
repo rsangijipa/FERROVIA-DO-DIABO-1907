@@ -1,13 +1,14 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { BookMarked } from "lucide-react";
+import { ArrowRight, BookMarked, History, MapPin, MessageSquare, Undo2 } from "lucide-react";
 
 import { getHistoryChapterImage, historyAssets } from "@/content/assetManifest";
-import { historyChapters, historyScenesByChapterId } from "@/content/historyContent";
+import { historyChapters, historyChapterById, historyScenesByChapterId } from "@/content/historyContent";
 import { characters, places } from "@/content/entities";
 import { getPillarScores } from "@/lib/campaign/campaignEngine";
 import { historyToQuiz } from "@/lib/campaign/campaignRewards";
+import { choiceLetters } from "@/lib/constants";
 import { useGameStore } from "@/store/useGameStore";
 
 import { CharacterPortrait } from "../ui/CharacterPortrait";
@@ -24,7 +25,7 @@ const dramaticRoleLabel = {
   consequence: "Consequence",
 } as const;
 
-const choiceLetters = ["A", "B", "C", "D"];
+
 
 const crossfade = {
   initial: { opacity: 0, scale: 0.98 },

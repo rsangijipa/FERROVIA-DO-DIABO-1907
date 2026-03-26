@@ -1,9 +1,17 @@
-"use client";
-
+import type { Metadata } from "next";
 import { CodexView } from "@/components/codex/CodexView";
-import { useMode } from "@/lib/useMode";
+import { ModeInitializer } from "@/components/layout/ModeInitializer";
+
+export const metadata: Metadata = {
+  title: "Museu Vivo | Ferrovia do Diabo",
+  description: "Acervo histórico com dados reais das expedições de campo ao longo do Rio Madeira.",
+};
 
 export default function MuseuVivoPage() {
-  useMode("museuVivo");
-  return <CodexView />;
+  return (
+    <>
+      <ModeInitializer mode="museuVivo" />
+      <CodexView />
+    </>
+  );
 }

@@ -7,6 +7,7 @@ import clsx from "clsx";
 import { getQuizModuleImage, quizAssets } from "@/content/assetManifest";
 import { quizModules, quizQuestionsByModuleId } from "@/content/quizContent";
 import { quizToMuseum } from "@/lib/campaign/campaignRewards";
+import { choiceLetters } from "@/lib/constants";
 import { museumAreas } from "@/content/museumContent";
 import { useGameStore } from "@/store/useGameStore";
 
@@ -15,7 +16,7 @@ import { FeedbackStamp } from "../ui/FeedbackStamp";
 import { GameModuleHeader } from "../ui/GameModuleHeader";
 import { SectionHero } from "../ui/SectionHero";
 
-const choiceLetters = ["A", "B", "C", "D"];
+
 
 const crossfade = {
   initial: { opacity: 0, y: 8 },
@@ -71,6 +72,8 @@ export function QuizMode() {
                   key={module.id}
                   type="button"
                   onClick={() => !locked && setSelectedModuleId(module.id)}
+                  aria-pressed={active}
+                  aria-label={`Módulo: ${module.title}. Estatuto: ${locked ? "Bloqueado" : isExcellence ? "Excelência" : progress.status === "completed" ? "Concluído" : "Disponível"}`}
                   className={`w-full rounded-2xl border p-4 text-left transition-all duration-200 ${
                     active
                       ? "border-[color:var(--color-cobre)] bg-[color:rgba(183,106,60,0.14)] glow-badge"
@@ -188,6 +191,8 @@ export function QuizMode() {
                           type="button"
                           onClick={() => answerQuiz(selectedModule.id, index)}
                           disabled={isAnswered}
+                          aria-pressed={isSelected}
+                          aria-label={`Alternativa ${choiceLetters[index]}: ${option}`}
                           className={clsx(
                             "flex items-start gap-3 rounded-2xl border p-4 text-left transition-all duration-200",
                             showCorrect

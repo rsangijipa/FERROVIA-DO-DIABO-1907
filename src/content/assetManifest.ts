@@ -226,14 +226,6 @@ export const modeCovers = {
   resultadoIntegrado: resultAssets.hero,
 } as const satisfies Record<ModeCoverId, string>;
 
-export const resourceIcons = {
-  orcamento: "/game-assets/icons/orcamento.png",
-  moral: "/game-assets/icons/moral.png",
-  saudeSanitaria: "/game-assets/icons/saude.png",
-  progressoTecnico: "/game-assets/icons/progresso.png",
-  preservacao: "/game-assets/icons/preservacao.png",
-} as const satisfies Record<keyof Resources, string>;
-
 export const areaFallbacks = {
   app: hubAssets.heroMain,
   hub: hubAssets.heroMain,
@@ -250,7 +242,7 @@ export const areaFallbacks = {
 /* ------------------------------------------------------------------ */
 
 export type PageBackgroundKey = keyof typeof pageBackgrounds;
-export type ResourceIconKey = keyof typeof resourceIcons;
+
 export type FallbackAreaKey = keyof typeof areaFallbacks;
 
 export const resolvePageBackground = (pathname: string, currentMode?: ModeId) => {
