@@ -12,6 +12,7 @@ interface Particle {
   duration: string;
   size: string;
   opacity: number;
+  drift: string;
 }
 
 function generateParticles(): Particle[] {
@@ -22,10 +23,11 @@ function generateParticles(): Particle[] {
     duration: `${22 + Math.random() * 18}s`,
     size: `${2 + Math.random() * 2}px`,
     opacity: 0.06 + Math.random() * 0.08,
+    drift: `${(Math.random() - 0.5) * 40}px`,
   }));
 }
 
-export function AmbientParticles() {
+export function AmbientParticles({ type = "dust" }: { type?: "dust" | "soot" | "firefly" | "heat" }) {
   const [particles, setParticles] = useState<Particle[]>([]);
   const reducedMotion = useGameStore((store) => store.settings.reducedMotion);
 
@@ -34,7 +36,8 @@ export function AmbientParticles() {
     const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (mql.matches || reducedMotion) return;
 
-    // Generate initial particles asynchronously to avoid cascading renders
+    // Heat and soot should be denser
+    const countMultiplier = type === "soot" || type === "heat" ? 2 : 1;
     const rafId = requestAnimationFrame(() => setParticles(generateParticles()));
 
     const handler = (e: MediaQueryListEvent) => {
@@ -49,25 +52,27 @@ export function AmbientParticles() {
       cancelAnimationFrame(rafId);
       mql.removeEventListener("change", handler);
     };
-  }, [reducedMotion]);
+  }, [reducedMotion, type]);
 
-  if (reducedMotion || particles.length === 0) return null;
+  if (reducedMotion || (particles.length === 0 && type !== "heat")) return null;
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[1] overflow-hidden" aria-hidden>
+      {type === "heat" && <div className="heat-wave" />}
       {particles.map((p) => (
         <div
           key={p.id}
-          className="ambient-particle"
+          className={`ambient-particle ${type !== "dust" ? type : ""} ${type === "heat" || type === "soot" ? "particle-dense" : ""}`}
           style={{
             left: p.left,
             bottom: "-4px",
             animationDelay: p.delay,
-            animationDuration: p.duration,
-            width: p.size,
-            height: p.size,
-            opacity: p.opacity,
-          }}
+            animationDuration: type === "heat" ? "12s" : p.duration,
+            width: type === "heat" ? `${4 + Math.random() * 6}px` : p.size,
+            height: type === "heat" ? `${10 + Math.random() * 20}px` : p.size,
+            opacity: type === "firefly" ? p.opacity * 4 : p.opacity,
+            "--drift-x": p.drift,
+          } as React.CSSProperties}
         />
       ))}
     </div>

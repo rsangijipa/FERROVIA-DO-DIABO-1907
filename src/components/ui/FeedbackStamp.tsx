@@ -47,12 +47,9 @@ export function FeedbackStamp({ type, className }: FeedbackStampProps) {
   const Icon = config.icon;
 
   return (
-    <motion.div
-      initial={{ scale: 0.6, opacity: 0, rotate: -8 }}
-      animate={{ scale: 1, opacity: 1, rotate: 0 }}
-      transition={{ type: "spring", stiffness: 300, damping: 18 }}
+    <div
       className={clsx(
-        "inline-flex items-center gap-2 rounded-xl border-2 px-4 py-2",
+        "inline-flex items-center gap-2 rounded-xl border-2 px-4 py-2 anim-stamp",
         className,
       )}
       style={{
@@ -63,6 +60,6 @@ export function FeedbackStamp({ type, className }: FeedbackStampProps) {
     >
       <Icon size={16} strokeWidth={2.5} />
       <span className="text-xs font-bold uppercase tracking-[0.18em]">{config.label}</span>
-    </motion.div>
+    </div>
   );
 }

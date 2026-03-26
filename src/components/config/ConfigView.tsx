@@ -92,9 +92,6 @@ export function ConfigView() {
               </motion.button>
             ))}
           </div>
-          <p className="text-xs leading-6 text-[var(--color-muted)]">
-            O controle de som fica oculto nesta fase porque o produto ainda nao tem camada de audio jogavel integrada.
-          </p>
         </div>
 
         {/* Danger Zone */}

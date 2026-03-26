@@ -17,6 +17,8 @@ import { GameArtwork } from "../ui/GameArtwork";
 import { NarrativeBarsPanel } from "../ui/NarrativeBarsPanel";
 import { SectionHero } from "../ui/SectionHero";
 import { StatusBar } from "../ui/StatusBar";
+import { Typewriter } from "../ui/Typewriter";
+import { useSFX } from "@/hooks/useSFX";
 
 const dramaticRoleLabel = {
   setup: "Setup",
@@ -41,6 +43,7 @@ export function NarrativeMode() {
   const advanceHistoryScene = useGameStore((store) => store.advanceHistoryScene);
 
   const pillarScores = getPillarScores(fullProgress, resources);
+  const { playClick } = useSFX();
 
   const currentChapter = historyChapters.find((chapter) => chapter.id === history.currentChapterId) ?? historyChapters[0];
   const scenes = historyScenesByChapterId[currentChapter.id] ?? [];
@@ -119,7 +122,7 @@ export function NarrativeMode() {
         <AnimatePresence mode="wait">
           <motion.article
             key={currentScene?.id ?? "completed"}
-            className="card-dark overflow-hidden"
+            className="card-dark overflow-hidden historical-lens"
             {...crossfade}
           >
             {currentScene ? (
@@ -143,23 +146,25 @@ export function NarrativeMode() {
                       <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-latao)]">
                         Parte {currentChapter.part} • Cena {history.currentSceneIndex + 1}/{scenes.length}
                       </p>
-                      <h1 className="mt-2 font-serif text-3xl text-[var(--color-paper)]">{currentScene.title}</h1>
+                      <h1 className="mt-2 font-serif text-2xl md:text-3xl text-[var(--color-paper)] chromatic-text">{currentScene.title}</h1>
                     </div>
                     <span className="rounded-full border border-[color:rgba(212,163,103,0.28)] bg-[color:rgba(212,163,103,0.1)] px-3 py-2 text-xs uppercase tracking-[0.16em] text-[var(--color-latao)]">
                       {dramaticRoleLabel[currentScene.dramaticRole]}
                     </span>
                   </div>
 
-                  <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">{currentScene.context}</p>
+                  <div className="mt-4 text-sm leading-7 text-[var(--color-muted)] h-14 md:h-20 lg:h-auto overflow-y-auto">
+                    <Typewriter text={currentScene.context} speed={20} />
+                  </div>
 
                   {/* Dialogue with character portrait and quotation */}
-                  <div className="mt-5 flex gap-4 rounded-2xl border border-[color:rgba(212,163,103,0.16)] bg-[color:rgba(12,15,14,0.2)] p-5">
+                  <div className="mt-5 flex items-start gap-3 md:gap-4 rounded-2xl border border-[color:rgba(212,163,103,0.16)] bg-[color:rgba(12,15,14,0.2)] p-4 md:p-5">
                     {currentCharacter && (
                       <CharacterPortrait
                         characterId={currentCharacter.id}
                         name={currentCharacter.name}
-                        size={56}
-                        className="mt-1"
+                        size={48}
+                        className="mt-1 shrink-0"
                       />
                     )}
                     <div className="min-w-0 flex-1">
@@ -170,7 +175,7 @@ export function NarrativeMode() {
                       )}
                       <p className="mt-2 font-serif text-base italic leading-7 text-[var(--color-paper)]">
                         <span className="mr-1 text-lg text-[var(--color-latao)]">&ldquo;</span>
-                        {currentScene.dialogue}
+                        <Typewriter text={currentScene.dialogue} speed={35} />
                         <span className="ml-1 text-lg text-[var(--color-latao)]">&rdquo;</span>
                       </p>
                     </div>
@@ -215,8 +220,10 @@ export function NarrativeMode() {
                   {/* Consequence or choices */}
                   {history.pendingConsequence ? (
                     <div className="mt-5 rounded-2xl border border-[color:rgba(212,163,103,0.24)] bg-[color:rgba(212,163,103,0.08)] p-5">
-                      <p className="text-sm leading-7 text-[var(--color-paper)]">{history.pendingConsequence}</p>
-                      <button className="btn-primary mt-4" onClick={advanceHistoryScene}>
+                      <p className="text-sm leading-7 text-[var(--color-paper)]">
+                        <Typewriter text={history.pendingConsequence} speed={25} />
+                      </p>
+                      <button className="btn-primary mt-4" onClick={() => { playClick(); advanceHistoryScene(); }}>
                         Avancar cena
                       </button>
                     </div>
@@ -226,7 +233,7 @@ export function NarrativeMode() {
                         <button
                           key={choice.id}
                           type="button"
-                          onClick={() => chooseHistoryChoice(choice.id)}
+                          onClick={() => { playClick(); chooseHistoryChoice(choice.id); }}
                           className="group rounded-2xl border border-[color:rgba(212,163,103,0.2)] bg-[color:rgba(12,15,14,0.2)] p-4 text-left transition-all duration-200 hover:border-[color:var(--color-cobre)] hover-lift-game"
                         >
                           <div className="flex items-start gap-3">

@@ -9,7 +9,6 @@ import { restorationModules, restorationTaskById } from "@/content/restorationMo
 import { unlockRules } from "@/content/unlockRules";
 import { applyResourceDelta, clamp, stateFromResources } from "@/lib/gameUtils";
 import { SAVE_VERSION, STORAGE_KEY } from "@/lib/storage";
-import { restorationStages } from "@/lib/constants";
 import type {
   GlobalStateLevel,
   HistoryProgress,
@@ -29,23 +28,23 @@ import type {
 } from "@/types/game";
 
 const initialResources: Resources = {
-  orcamento: 72,
-  moral: 70,
-  saudeSanitaria: 68,
-  progressoTecnico: 66,
-  preservacao: 74,
+  orcamento: 0,
+  moral: 0,
+  saudeSanitaria: 0,
+  progressoTecnico: 0,
+  preservacao: 0,
 };
 
 const initialBars: NarrativeBars = {
-  saude: 72,
-  moral: 70,
-  progresso: 68,
+  saude: 0,
+  moral: 0,
+  progresso: 0,
 };
+
 
 
 
 const availableHistoryChapters = historyChapters.filter((chapter) => chapter.status === "available");
-const availableQuizModules = quizModules.filter((module) => module.status === "available");
 const legacyMuseumMap: Record<string, string> = {
   "codex-tratado-petropolis": "museu-tratado",
   "codex-locomotiva-18": "museu-locomotiva-18",
@@ -99,12 +98,20 @@ const buildInitialProgress = (): ProgressState => ({
     viewedEntryIds: [],
     selectedAreaId: museumAreas[0]?.id ?? null,
   } satisfies MuseumProgress,
+  audioLogs: [],
+  foundArtifacts: [],
+  reputation: {
+    tecnico: 0,
+    historico: 0,
+    conhecimento: 0,
+    acervo: 0,
+  },
 });
 
 const buildInitialPlayer = (): Player => ({
   id: "player-local",
-  name: "Curador da Memoria",
-  progress: 6,
+  name: "Curador da Memória",
+  progress: 0,
   achievements: [],
 });
 
@@ -112,6 +119,7 @@ const buildInitialSaveData = (): SaveData => ({
   version: SAVE_VERSION,
   currentMode: "hub",
   lastUpdated: new Date().toISOString(),
+  hasAcceptedLanding: false,
 });
 
 const buildInitialTutorial = (): TutorialProgress => ({
@@ -125,29 +133,14 @@ const buildInitialSettings = (): Settings => ({
   fontScale: 1,
   highContrast: false,
   reducedMotion: false,
-  soundEnabled: true,
 });
 
-const chapterSceneCount = availableHistoryChapters.reduce((acc, chapter) => acc + (historyScenesByChapterId[chapter.id]?.length ?? 0), 0);
-const quizQuestionCount = availableQuizModules.reduce((acc, module) => acc + (quizQuestionsByModuleId[module.id]?.length ?? 0), 0);
 
-const calculatePlayerProgress = (progress: ProgressState) => {
-  const restorationValue = restorationModules.reduce((acc, module) => {
-    const stageIndex = restorationStages.indexOf(progress.restoration[module.id]?.stage ?? "locked");
-    return acc + stageIndex / (restorationStages.length - 1);
-  }, 0) / restorationModules.length;
+import { getCampaignState } from "@/lib/campaign/campaignEngine";
 
-  const historyValue = chapterSceneCount === 0
-    ? 0
-    : (progress.history.completedSceneIds.length + (progress.history.pendingConsequence ? 0.5 : 0)) / chapterSceneCount;
-
-  const quizAnswered = availableQuizModules.reduce((acc, module) => acc + progress.quiz[module.id].answers.length, 0);
-  const quizValue = quizQuestionCount === 0 ? 0 : quizAnswered / quizQuestionCount;
-
-  const museumEntriesTotal = museumAreas.filter((area) => area.status === "available").reduce((acc, area) => acc + area.entryIds.length, 0);
-  const museumValue = museumEntriesTotal === 0 ? 0 : progress.museum.unlockedEntryIds.length / museumEntriesTotal;
-
-  return Math.round(((restorationValue * 0.35) + (historyValue * 0.25) + (quizValue * 0.2) + (museumValue * 0.2)) * 100);
+const calculatePlayerProgress = (progress: ProgressState, resources: Resources) => {
+  const campaign = getCampaignState(progress, resources);
+  return campaign.overallProgress;
 };
 
 const buildTutorialProgress = (progress: ProgressState, current?: TutorialProgress): TutorialProgress => {
@@ -208,6 +201,18 @@ const unlockEntriesFromSource = (sourceId: string, unlockedEntryIds: string[]) =
   return nextUnlocked;
 };
 
+const unlockAudioLogsFromSource = (sourceId: string, unlockedAudioIds: string[]) => {
+  const nextUnlocked = [...unlockedAudioIds];
+  unlockRules
+    .filter((rule) => rule.sourceId === sourceId && rule.audioLogId)
+    .forEach((rule) => {
+      if (rule.audioLogId && !nextUnlocked.includes(rule.audioLogId)) {
+        nextUnlocked.push(rule.audioLogId);
+      }
+    });
+  return nextUnlocked;
+};
+
 export interface GameStore {
   player: Player;
   saveData: SaveData;
@@ -221,7 +226,6 @@ export interface GameStore {
   setFontScale: (scale: number) => void;
   toggleHighContrast: () => void;
   toggleReducedMotion: () => void;
-  toggleSound: () => void;
   startTutorial: () => void;
   dismissRestorationFeedback: () => void;
   advanceRestorationModule: (moduleId: string) => void;
@@ -232,13 +236,17 @@ export interface GameStore {
   nextQuizQuestion: (moduleId: string) => void;
   selectMuseumArea: (areaId: string) => void;
   viewMuseumEntry: (entryId: string) => void;
+  unlockAudioLog: (logId: string) => void;
+  discoverArtifact: (artifactId: string) => void;
+  acceptLanding: () => void;
+  logout: () => void;
   resetCampaign: () => void;
 }
 
 const buildInitialState = () => {
   const progress = buildInitialProgress();
   return {
-    player: { ...buildInitialPlayer(), progress: calculatePlayerProgress(progress) },
+    player: { ...buildInitialPlayer(), progress: calculatePlayerProgress(progress, initialResources) },
     saveData: buildInitialSaveData(),
     settings: buildInitialSettings(),
     tutorial: buildInitialTutorial(),
@@ -295,13 +303,6 @@ export const useGameStore = create<GameStore>()(
           },
         })),
 
-      toggleSound: () =>
-        set((state) => ({
-          settings: {
-            ...state.settings,
-            soundEnabled: !state.settings.soundEnabled,
-          },
-        })),
 
       dismissRestorationFeedback: () =>
         set(() => ({
@@ -357,7 +358,7 @@ export const useGameStore = create<GameStore>()(
             progress: nextProgress,
             player: {
               ...state.player,
-              progress: calculatePlayerProgress(nextProgress),
+              progress: calculatePlayerProgress(nextProgress, state.restorationResources),
             },
             tutorial: buildTutorialProgress(nextProgress, state.tutorial),
             saveData: {
@@ -386,6 +387,8 @@ export const useGameStore = create<GameStore>()(
           const nextGlobalState = stateFromResources(nextResources);
           const previousUnlockedEntries = state.progress.museum.unlockedEntryIds;
           const nextUnlockedEntries = unlockEntriesFromSource(choice.id, previousUnlockedEntries);
+          const previousUnlockedAudio = state.progress.audioLogs;
+          const nextUnlockedAudio = unlockAudioLogsFromSource(choice.id, previousUnlockedAudio);
           const stageTasks = restorationModules
             .flatMap((module) => module.taskIds)
             .map((taskId) => restorationTaskById[taskId])
@@ -395,7 +398,7 @@ export const useGameStore = create<GameStore>()(
             ? getNextRestorationStage(moduleProgress.stage)
             : moduleProgress.stage;
 
-          const nextProgress = {
+          const nextProgress: ProgressState = {
             ...state.progress,
             restoration: {
               ...state.progress.restoration,
@@ -412,6 +415,13 @@ export const useGameStore = create<GameStore>()(
             museum: {
               ...state.progress.museum,
               unlockedEntryIds: nextUnlockedEntries,
+            },
+            audioLogs: nextUnlockedAudio,
+            foundArtifacts: state.progress.foundArtifacts,
+            reputation: {
+              ...state.progress.reputation,
+              tecnico: state.progress.reputation.tecnico + (choice.resourceDelta.progressoTecnico ?? 0) / 10,
+              acervo: state.progress.reputation.acervo + (choice.resourceDelta.preservacao ?? 0) / 10,
             },
           };
 
@@ -441,7 +451,7 @@ export const useGameStore = create<GameStore>()(
             },
             player: {
               ...state.player,
-              progress: calculatePlayerProgress(nextProgress),
+              progress: calculatePlayerProgress(nextProgress, nextResources),
             },
             saveData: {
               ...state.saveData,
@@ -477,6 +487,12 @@ export const useGameStore = create<GameStore>()(
               ...state.progress.museum,
               unlockedEntryIds: unlockEntriesFromSource(choice.id, state.progress.museum.unlockedEntryIds),
             },
+            audioLogs: unlockAudioLogsFromSource(choice.id, state.progress.audioLogs),
+            reputation: {
+              ...state.progress.reputation,
+              historico: state.progress.reputation.historico + (choice.delta.moral ?? 0) / 10,
+              conhecimento: state.progress.reputation.conhecimento + (choice.delta.progresso ?? 0) / 10,
+            },
           };
 
           return {
@@ -484,7 +500,7 @@ export const useGameStore = create<GameStore>()(
             tutorial: buildTutorialProgress(nextProgress, state.tutorial),
             player: {
               ...state.player,
-              progress: calculatePlayerProgress(nextProgress),
+              progress: calculatePlayerProgress(nextProgress, state.restorationResources),
             },
             saveData: {
               ...state.saveData,
@@ -529,7 +545,7 @@ export const useGameStore = create<GameStore>()(
             tutorial: buildTutorialProgress(nextProgress, state.tutorial),
             player: {
               ...state.player,
-              progress: calculatePlayerProgress(nextProgress),
+              progress: calculatePlayerProgress(nextProgress, state.restorationResources),
             },
             saveData: {
               ...state.saveData,
@@ -574,7 +590,7 @@ export const useGameStore = create<GameStore>()(
             tutorial: buildTutorialProgress(nextProgress, state.tutorial),
             player: {
               ...state.player,
-              progress: calculatePlayerProgress(nextProgress),
+              progress: calculatePlayerProgress(nextProgress, state.restorationResources),
             },
             saveData: {
               ...state.saveData,
@@ -610,7 +626,7 @@ export const useGameStore = create<GameStore>()(
             tutorial: buildTutorialProgress(nextProgress, state.tutorial),
             player: {
               ...state.player,
-              progress: calculatePlayerProgress(nextProgress),
+              progress: calculatePlayerProgress(nextProgress, state.restorationResources),
             },
             saveData: {
               ...state.saveData,
@@ -647,10 +663,56 @@ export const useGameStore = create<GameStore>()(
             tutorial: buildTutorialProgress(nextProgress, state.tutorial),
             player: {
               ...state.player,
-              progress: calculatePlayerProgress(nextProgress),
+              progress: calculatePlayerProgress(nextProgress, state.restorationResources),
             },
           };
         }),
+
+      unlockAudioLog: (logId) =>
+        set((state) => {
+          const nextProgress = {
+            ...state.progress,
+            audioLogs: [...state.progress.audioLogs, logId],
+          };
+          return {
+            progress: nextProgress,
+            player: {
+              ...state.player,
+              progress: calculatePlayerProgress(nextProgress, state.restorationResources),
+            },
+          };
+        }),
+
+      discoverArtifact: (artifactId) =>
+        set((state) => {
+          const nextProgress = {
+            ...state.progress,
+            foundArtifacts: [...state.progress.foundArtifacts, artifactId],
+          };
+          return {
+            progress: nextProgress,
+            player: {
+              ...state.player,
+              progress: calculatePlayerProgress(nextProgress, state.restorationResources),
+            },
+          };
+        }),
+
+      acceptLanding: () =>
+        set((state) => ({
+          saveData: {
+            ...state.saveData,
+            hasAcceptedLanding: true,
+          },
+        })),
+
+      logout: () =>
+        set((state) => ({
+          saveData: {
+            ...state.saveData,
+            hasAcceptedLanding: false,
+          },
+        })),
 
       resetCampaign: () =>
         set(() => ({
@@ -726,7 +788,23 @@ export const useGameStore = create<GameStore>()(
         }
 
         nextState.tutorial = buildTutorialProgress(nextState.progress, nextState.tutorial);
-        nextState.player.progress = calculatePlayerProgress(nextState.progress);
+        nextState.player.progress = calculatePlayerProgress(nextState.progress, nextState.restorationResources);
+
+        if (typeof nextState.saveData === "object" && nextState.saveData) {
+          (nextState.saveData as Record<string, unknown>).hasAcceptedLanding = 
+            (nextState.saveData as Record<string, unknown>).hasAcceptedLanding ?? false;
+        }
+
+        // Ensure reputation exists in Phase 4/5
+        if (!nextState.progress.reputation) {
+          nextState.progress.reputation = {
+            tecnico: 0,
+            historico: 0,
+            conhecimento: 0,
+            acervo: 0,
+          };
+        }
+
         return nextState as unknown as GameStore;
       },
     },

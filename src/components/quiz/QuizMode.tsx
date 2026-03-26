@@ -176,7 +176,7 @@ export function QuizMode() {
                       {question.topic} • {question.difficulty}
                     </div>
                   </div>
-                  <h2 className="mt-4 font-serif text-2xl text-[var(--color-paper)]">{question.prompt}</h2>
+                  <h2 className="mt-4 font-serif text-xl md:text-2xl text-[var(--color-paper)]">{question.prompt}</h2>
 
                   <div className="mt-5 grid gap-3">
                     {question.options.map((option, index) => {

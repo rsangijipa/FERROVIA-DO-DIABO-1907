@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import { HomeHub } from "@/components/home/HomeHub";
-import { ModeInitializer } from "@/components/layout/ModeInitializer";
+import { ClientHome } from "@/components/home/ClientHome";
 
 export const metadata: Metadata = {
-  title: "Painel de Controle | Ferrovia do Diabo",
-  description: "Gerencie o progresso e os desafios da restauração da EFMM.",
+  title: "Ferrovia do Diabo | 1907 — 1912",
+  description: "Uma experiência imersiva de restauração e memória da Estrada de Ferro Madeira-Mamoré.",
 };
 
 export default function HomePage() {
-  return (
-    <>
-      <ModeInitializer mode="hub" />
-      <HomeHub />
-    </>
-  );
+  return <ClientHome />;
 }

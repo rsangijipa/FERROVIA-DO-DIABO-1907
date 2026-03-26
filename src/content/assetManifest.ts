@@ -24,12 +24,15 @@ type AssetFallbackArea =
   | "resultadoIntegrado"
   | "menu-card";
 
+
+/* ------------------------------------------------------------------ */
+
 /* ------------------------------------------------------------------ */
 /*  Shared backgrounds (v3)                                            */
 /* ------------------------------------------------------------------ */
 
 export const sharedBackgrounds = {
-  darkGrid: "/game-assets-v3/shared/backgrounds/app-dark-grid.jpg",
+  darkGrid: "/game-assets-v3/shared/backgrounds/app-paper-grid.jpg",
   mapLines: "/game-assets-v3/shared/backgrounds/app-map-lines.jpg",
   paperGrid: "/game-assets-v3/shared/backgrounds/app-paper-grid.jpg",
 } as const;
@@ -40,6 +43,7 @@ export const sharedBackgrounds = {
 
 export const hubAssets = {
   heroMain: "/game-assets-v3/hub/hero-hub-main.jpg",
+  heroBlueprint: "/game-assets-v3/hub/hero-hub-blueprint.jpg",
   continueCampaign: "/game-assets-v3/hub/continue-campaign.jpg",
   efmmHistorica: "/game-assets-v3/hub/efmm-historica.jpg",
   efmmHoje: "/game-assets-v3/hub/efmm-hoje.jpg",

@@ -10,4 +10,6 @@ export const unlockRules: UnlockRule[] = [
   { id: "unlock-7", sourceType: "quiz", sourceId: "qc-05", museumEntryId: "museu-locomotiva-18" },
   { id: "unlock-8", sourceType: "restoration", sourceId: "rod-restauro-a", museumEntryId: "museu-oficina-aberta" },
   { id: "unlock-9", sourceType: "quiz", sourceId: "qc-09", museumEntryId: "museu-litorina" },
+  { id: "audio-1", sourceType: "restoration", sourceId: "rod-restauro-a", museumEntryId: "museu-oficina-aberta", audioLogId: "log-construction-noise" },
+  { id: "audio-2", sourceType: "history", sourceId: "c2-s2-a", museumEntryId: "museu-quinino", audioLogId: "log-hospital-whisper" },
 ];

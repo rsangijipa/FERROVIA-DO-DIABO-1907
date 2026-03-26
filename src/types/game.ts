@@ -177,11 +177,21 @@ export interface MuseumArea extends EditorialMeta {
   status: "available" | "planned";
 }
 
+export interface AudioLog extends EditorialMeta {
+  id: string;
+  title: string;
+  speaker: string;
+  date: string;
+  transcript: string;
+  unlockedAt?: string;
+}
+
 export interface UnlockRule {
   id: string;
   sourceType: "restoration" | "history" | "quiz" | "milestone";
   sourceId: string;
   museumEntryId: string;
+  audioLogId?: string;
 }
 
 export interface Achievement {
@@ -195,13 +205,13 @@ export interface Settings {
   fontScale: number;
   highContrast: boolean;
   reducedMotion: boolean;
-  soundEnabled: boolean;
 }
 
 export interface SaveData {
   version: number;
   currentMode: ModeId;
   lastUpdated: string;
+  hasAcceptedLanding: boolean;
 }
 
 export interface TutorialProgress {
@@ -257,6 +267,9 @@ export interface ProgressState {
   history: HistoryProgress;
   quiz: Record<string, QuizModuleProgress>;
   museum: MuseumProgress;
+  audioLogs: string[];
+  foundArtifacts: string[];
+  reputation: Record<string, number>;
 }
 
 export interface RestorationDecisionFeedback {

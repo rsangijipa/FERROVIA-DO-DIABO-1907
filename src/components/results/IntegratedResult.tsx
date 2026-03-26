@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { Trophy } from "lucide-react";
 
 import { getProfileImage, resultAssets } from "@/content/assetManifest";
 import { museumAreas } from "@/content/museumContent";
@@ -32,39 +33,7 @@ const resolveProfile = (restoration: number, history: number, quiz: number, muse
   }
   return "Operador do Legado";
 };
-
-function useCountUp(target: number, duration = 1200): number {
-  const [value, setValue] = useState(0);
-  const prefersRM = useRef(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    prefersRM.current = mediaQuery.matches;
-    
-    if (prefersRM.current) {
-      const rafId = requestAnimationFrame(() => setValue(target));
-      return () => cancelAnimationFrame(rafId);
-    }
-
-    let start: number | null = null;
-    let raf: number;
-    const animate = (ts: number) => {
-      if (start === null) start = ts;
-      const elapsed = ts - start;
-      const progress = Math.min(elapsed / duration, 1);
-      // Ease out cubic
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setValue(Math.round(target * eased));
-      if (progress < 1) {
-        raf = requestAnimationFrame(animate);
-      }
-    };
-    raf = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(raf);
-  }, [target, duration]);
-
-  return value;
-}
+import { AnimatedNumber } from "../ui/AnimatedNumber";
 
 export function IntegratedResult() {
   const progress = useGameStore((store) => store.progress);
@@ -84,38 +53,28 @@ export function IntegratedResult() {
   ];
   const weakestPillar = pillarEntries.reduce((a, b) => (b[1] < a[1] ? b : a))[0];
 
-  // What unlocked most — the module that contributed the most museum entries
+  const profile = resolveProfile(
+    pillarScores.tecnico,
+    pillarScores.historico,
+    pillarScores.conhecimento,
+    pillarScores.acervo,
+  );
+
   const whatUnlockedMost = progress.museum.unlockedEntryIds.length > 0
     ? campaign.dominantPillar === "tecnico" ? "Restauração 2026"
     : campaign.dominantPillar === "historico" ? "História Interativa"
     : campaign.dominantPillar === "conhecimento" ? "Quiz Temático"
     : "Museu Vivo"
     : "nenhum módulo ainda";
-  const releasedModules = restorationModules.filter((module) => progress.restoration[module.id].stage === "released").length;
-  const averageResource = (resources.orcamento + resources.moral + resources.saudeSanitaria + resources.progressoTecnico + resources.preservacao) / 5;
-  const restorationScore = clampPercent((releasedModules / restorationModules.length) * 55 + averageResource * 0.45);
-
-  const totalHistoryScenes = 8;
-  const historyScore = clampPercent((progress.history.completedSceneIds.length / totalHistoryScenes) * 70 + ((progress.history.bars.saude + progress.history.bars.moral + progress.history.bars.progresso) / 3) * 0.3);
 
   const availableQuizModules = quizModules.filter((module) => module.status === "available");
-  const quizCorrect = availableQuizModules.reduce((acc, module) => acc + progress.quiz[module.id].correct, 0);
-  const totalQuizQuestions = availableQuizModules.reduce((acc, module) => acc + (quizQuestionsByModuleId[module.id]?.length ?? 0), 0);
-  const quizScore = totalQuizQuestions === 0 ? 0 : clampPercent((quizCorrect / totalQuizQuestions) * 100);
-
-  const availableMuseumEntries = museumAreas.filter((area) => area.status === "available").reduce((acc, area) => acc + area.entryIds.length, 0);
-  const museumScore = availableMuseumEntries === 0
-    ? 0
-    : clampPercent(((progress.museum.unlockedEntryIds.length / availableMuseumEntries) * 60) + ((progress.museum.viewedEntryIds.length / availableMuseumEntries) * 40));
-
-  const weightedScore = clampPercent((restorationScore * 0.35) + (historyScore * 0.25) + (quizScore * 0.2) + (museumScore * 0.2));
-  const profile = resolveProfile(restorationScore, historyScore, quizScore, museumScore);
-  const animatedScore = useCountUp(weightedScore);
+  const totalQuizQuestions = availableQuizModules.reduce((acc: number, module) => acc + (quizQuestionsByModuleId[module.id]?.length ?? 0), 0);
+  const availableMuseumEntries = museumAreas.filter((area) => area.status === "available").reduce((acc: number, area) => acc + area.entryIds.length, 0);
 
   const timeline = [
-    `${releasedModules}/4 modulos de restauração liberados`,
-    `${progress.history.completedChapterIds.length}/2 partes historicas concluidas`,
-    `${quizCorrect}/${totalQuizQuestions} acertos no quiz tematico`,
+    `${restorationModules.filter((m) => progress.restoration[m.id].stage === "released").length}/4 módulos de restauração liberados`,
+    `${progress.history.completedChapterIds.length}/2 partes históricas concluídas`,
+    `${availableQuizModules.reduce((acc: number, m) => acc + progress.quiz[m.id].correct, 0)} acertos no quiz temático`,
     `${progress.museum.unlockedEntryIds.length}/${availableMuseumEntries} entradas do Museu Vivo desbloqueadas`,
   ];
 
@@ -127,7 +86,7 @@ export function IntegratedResult() {
         subtitle={`Perfil de ${player.name}. O resultado cruza restauracao, historia, quiz e museu com pesos fixos e leitura de predominancia.`}
         imageSrc={resultAssets.hero}
         imageAlt="Resultado Integrado"
-        chips={[`Score ponderado ${weightedScore}%`, `Perfil ${profile}`, `Progresso geral ${playerProgress}%`]}
+        chips={[`Score ponderado ${campaign.overallProgress}%`, `Perfil ${profile}`, `Progresso geral ${playerProgress}%`]}
         fallbackArea="resultadoIntegrado"
         preload
       />
@@ -152,6 +111,41 @@ export function IntegratedResult() {
         </div>
       </article>
 
+      {/* Reputation Reflection */}
+      <article className="card-dark p-5 md:p-6 overflow-hidden relative">
+        <div className="absolute top-0 right-0 p-4 opacity-10">
+          <Trophy size={80} strokeWidth={1} />
+        </div>
+        <div className="relative">
+          <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-latao)]">Reflexo da Reputação</p>
+          <h2 className="mt-2 font-serif text-xl md:text-2xl text-[var(--color-paper)]">Como o mundo vê sua curadoria</h2>
+          <p className="mt-3 text-sm leading-7 text-[var(--color-muted)] max-w-2xl">
+            Suas escolhas na história e na manutenção técnica moldam sua imagem perante a posteridade e a comunidade local.
+          </p>
+          
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {Object.entries(progress.reputation).map(([key, val]) => (
+              <div key={key} className="rounded-2xl border border-[color:rgba(212,163,103,0.12)] bg-[color:rgba(12,15,14,0.3)] p-4">
+                <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[var(--color-muted)]">{PILLAR_LABELS[key as PillarId]}</p>
+                <p className="mt-2 font-serif text-2xl text-[var(--color-paper)]">{Math.round(val)} <span className="text-xs font-sans text-[var(--color-latao)]">PTS</span></p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6 rounded-2xl border border-[color:rgba(94,138,97,0.2)] bg-[color:rgba(94,138,97,0.06)] p-4">
+            <p className="text-xs italic text-[var(--color-paper)] opacity-80">
+              {Object.entries(progress.reputation).reduce((a, b) => (b[1] > a[1] ? b : a))[1] > 0
+                ? `Seu destaque no pilar ${PILLAR_LABELS[Object.entries(progress.reputation).reduce((a, b) => (b[1] > a[1] ? b : a))[0] as PillarId]} indica uma abordagem focada em ${
+                   Object.entries(progress.reputation).reduce((a, b) => (b[1] > a[1] ? b : a))[0] === "tecnico" ? "eficiência e pragmatismo"
+                   : Object.entries(progress.reputation).reduce((a, b) => (b[1] > a[1] ? b : a))[0] === "historico" ? "humanidade e justiça"
+                   : "educação e preservação"
+                  }.`
+                : "Sua reputação ainda está sendo construída através de suas decisões no campo."}
+            </p>
+          </div>
+        </div>
+      </article>
+
       {/* Profile card with image and animated score */}
       <div className="grid gap-4 lg:grid-cols-[minmax(0,0.6fr)_minmax(0,1fr)]">
         <motion.article
@@ -167,13 +161,16 @@ export function IntegratedResult() {
               fill
               className="object-cover"
               sizes="160px"
+              priority
               onError={() => {}}
             />
           </div>
           <div className="mt-5 text-center">
             <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-latao)]">Perfil da campanha</p>
-            <h2 className="mt-2 font-serif text-2xl text-[var(--color-paper)]">{profile}</h2>
-            <p className="mt-4 font-serif text-5xl font-bold text-[var(--color-latao)]">{animatedScore}%</p>
+            <h2 className="mt-2 font-serif text-xl md:text-2xl text-[var(--color-paper)]">{profile}</h2>
+            <p className="mt-4 font-serif text-5xl font-bold text-[var(--color-latao)]">
+              <AnimatedNumber value={campaign.overallProgress} />%
+            </p>
             <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[var(--color-muted)]">Score ponderado</p>
           </div>
         </motion.article>
@@ -202,7 +199,7 @@ export function IntegratedResult() {
       <div className="grid gap-4 lg:grid-cols-2">
         <article className="card-dark p-5">
           <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-muted)]">Leitura da jornada</p>
-          <h2 className="mt-2 font-serif text-2xl text-[var(--color-paper)]">Timeline do seu slice</h2>
+          <h2 className="mt-2 font-serif text-xl md:text-2xl text-[var(--color-paper)]">Timeline do seu slice</h2>
           <ul className="mt-4 space-y-3">
             {timeline.map((item, i) => (
               <motion.li

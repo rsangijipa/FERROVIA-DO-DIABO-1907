@@ -17,10 +17,13 @@ import type { RestorationStage } from "@/types/game";
 import { EditorialSeal } from "../ui/EditorialSeal";
 import { FeedbackStamp } from "../ui/FeedbackStamp";
 import { GameModuleHeader } from "../ui/GameModuleHeader";
+import { ArtifactBench } from "../ui/ArtifactBench";
+import { BlueprintLine } from "../ui/BlueprintLine";
 import { ResourcePanel } from "../ui/ResourcePanel";
 import { SectionHero } from "../ui/SectionHero";
 import { StagePipeline } from "../ui/StagePipeline";
 import { StatusBar } from "../ui/StatusBar";
+import { useSFX } from "@/hooks/useSFX";
 
 const stageLabel: Record<RestorationStage, string> = {
   locked: "Locked",
@@ -56,11 +59,16 @@ const crossfade = {
 
 export function RestorationMode() {
   const resources = useGameStore((store) => store.restorationResources);
+  const { playClick, playTick, playIndustrial, playFailure, playSuccess } = useSFX();
   const progress = useGameStore((store) => store.progress.restoration);
   const fullProgress = useGameStore((store) => store.progress);
-  const resolveChoice = useGameStore((store) => store.resolveRestorationTaskChoice);
-  const restorationFeedback = useGameStore((store) => store.restorationFeedback);
-  const dismissRestorationFeedback = useGameStore((store) => store.dismissRestorationFeedback);
+  const resolveRestorationTaskChoice = useGameStore((state) => state.resolveRestorationTaskChoice);
+  const discoverArtifact = useGameStore((state) => state.discoverArtifact);
+  const restorationFeedback = useGameStore((state) => state.restorationFeedback);
+  const dismissRestorationFeedback = useGameStore((state) => state.dismissRestorationFeedback);
+
+  const [discoveredArtifactId, setDiscoveredArtifactId] = useState<string | null>(null);
+  const [activeCrisis, setActiveCrisis] = useState<{ title: string; body: string; choiceA: string; choiceB: string } | null>(null);
 
   const firstPlayableModule = restorationModules.find((module) => progress[module.id].stage !== "locked")?.id ?? restorationModules[0].id;
   const [selectedModuleId, setSelectedModuleId] = useState(firstPlayableModule);
@@ -113,7 +121,15 @@ export function RestorationMode() {
                 <button
                   key={module.id}
                   type="button"
-                  onClick={() => !locked && setSelectedModuleId(module.id)}
+                  onClick={() => {
+                    if (!locked) {
+                      playClick();
+                      setSelectedModuleId(module.id);
+                    } else {
+                      playFailure();
+                    }
+                  }}
+                  onMouseEnter={() => !locked && playTick()}
                   aria-pressed={active}
                   aria-label={`${module.kicker}, ${module.title}. Estatuto: ${stageLabel[moduleProgress.stage]}`}
                   className={`w-full rounded-2xl border p-4 text-left transition-all duration-200 ${
@@ -125,7 +141,7 @@ export function RestorationMode() {
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <p className="text-xs uppercase tracking-[0.18em] text-[var(--color-latao)]">{module.kicker}</p>
-                      <h2 className="mt-2 font-serif text-xl text-[var(--color-paper)]">{module.title}</h2>
+                      <h2 className="mt-1 font-serif text-lg md:text-xl text-[var(--color-paper)]">{module.title}</h2>
                     </div>
                     {locked ? <Lock size={16} className="text-[var(--color-muted)]" /> : <CheckCircle2 size={16} className="text-[var(--color-latao)]" />}
                   </div>
@@ -141,8 +157,15 @@ export function RestorationMode() {
         </aside>
 
         {/* Right: module detail */}
-        <AnimatePresence mode="wait">
-          <motion.article key={selectedModule.id} className="card-dark overflow-hidden" {...crossfade}>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.article
+            key={selectedModule.id}
+            className="card-dark overflow-hidden relative"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+          >
             {/* Module header with artwork */}
             <GameModuleHeader
               kicker={selectedModule.kicker}
@@ -177,7 +200,7 @@ export function RestorationMode() {
                       <Wrench size={14} />
                       Tarefa em foco
                     </div>
-                    <h2 className="mt-3 font-serif text-2xl text-[var(--color-paper)]">{activeTask.title}</h2>
+                    <h2 className="mt-3 font-serif text-xl md:text-2xl text-[var(--color-paper)]">{activeTask.title}</h2>
                     <p className="mt-3 text-sm leading-7 text-[var(--color-muted)]">{activeTask.summary}</p>
                     <div className="mt-4 grid gap-3 md:grid-cols-2">
                       {[
@@ -200,18 +223,52 @@ export function RestorationMode() {
                       className="mt-4"
                     />
 
+                    <BlueprintLine className="mt-6" delay={0.2} />
+
                     <div className="mt-5 grid gap-3">
                       {activeTask.choices.map((choice) => (
                         <button
                           key={choice.id}
                           type="button"
-                          onClick={() => resolveChoice(selectedModule.id, choice.id)}
+                          onClick={() => {
+                            playIndustrial();
+                            resolveRestorationTaskChoice(selectedModule.id, choice.id);
+                            
+                            // 10% chance for a Crisis Event
+                            if (Math.random() < 0.1) {
+                              playFailure(); // Crisis sounds bad
+                              const potentialCrises = [
+                                { 
+                                  title: "Surto de Malária", 
+                                  body: "Uma frente de trabalho foi atingida por um surto súbito. Você desvia recursos da saúde para manter o prazo ou interrompe a obra?",
+                                  choiceA: "Priorizar Saúde (-10 Órgão, +5 Moral)",
+                                  choiceB: "Manter Prazo (-10 Moral, +5 Progresso)"
+                                },
+                                { 
+                                  title: "Sabotagem Técnica", 
+                                  body: "Ferramentas essenciais foram danificadas. Investigar os culpados ou comprar reposição imediata no mercado negro?",
+                                  choiceA: "Investigar (-5 Moral, +5 Preservação)",
+                                  choiceB: "Comprar (-15 Orçamento, +5 Progresso)"
+                                }
+                              ];
+                              setActiveCrisis(potentialCrises[Math.floor(Math.random() * potentialCrises.length)]);
+                            }
+
+                            // 20% chance to discover a random artifact
+                            if (Math.random() < 0.2) {
+                              playSuccess();
+                              const artifacts = ["artefato-ferramenta-inglesa", "artefato-medalha-ferrovia", "artefato-frasco-quinino"];
+                              const randomArtifact = artifacts[Math.floor(Math.random() * artifacts.length)];
+                              setDiscoveredArtifactId(randomArtifact);
+                              discoverArtifact(randomArtifact);
+                            }
+                          }}
                           aria-label={`Decisão: ${choice.label}. ${choice.summary}`}
                           className="rounded-2xl border border-[color:rgba(197,154,93,0.3)] bg-[color:rgba(44,42,40,0.74)] p-4 text-left transition-all duration-200 hover:border-[color:var(--color-cobre)] hover-lift-game"
                         >
                           <div className="flex items-start justify-between gap-3">
-                            <div>
-                              <h3 className="font-semibold text-[var(--color-paper)]">{choice.label}</h3>
+                            <div className="min-w-0">
+                              <h3 className="font-semibold text-sm md:text-base text-[var(--color-paper)]">{choice.label}</h3>
                               <p className="mt-2 text-sm leading-6 text-[var(--color-muted)]">{choice.summary}</p>
                             </div>
                             <ArrowRight size={16} className="mt-1 text-[var(--color-latao)]" />
@@ -252,7 +309,7 @@ export function RestorationMode() {
                         </div>
                         <p className="mt-3 text-sm leading-7 text-[var(--color-paper)]/86">{restorationFeedback.outcome}</p>
                       </div>
-                      <button type="button" className="image-badge" onClick={dismissRestorationFeedback}>
+                        <button type="button" className="image-badge" onClick={() => { playClick(); dismissRestorationFeedback(); }}>
                         Fechar resumo
                       </button>
                     </div>
@@ -354,6 +411,51 @@ export function RestorationMode() {
           </motion.article>
         </AnimatePresence>
       </div>
+
+      <AnimatePresence>
+        {activeCrisis && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-[color:rgba(8,10,9,0.95)] p-4 backdrop-blur-md"
+          >
+            <motion.article 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              className="card-dark max-w-sm p-6 border-[color:var(--color-danger)] shadow-[0_0_50px_rgba(239,68,68,0.2)]"
+            >
+              <div className="flex items-center gap-3 text-[var(--color-danger)]">
+                <span className="pulse-critical h-2 w-2 rounded-full bg-current" />
+                <p className="text-xs uppercase tracking-[0.24em]">Evento de Crise</p>
+              </div>
+              <h2 className="mt-4 font-serif text-3xl text-[var(--color-paper)]">{activeCrisis.title}</h2>
+              <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">{activeCrisis.body}</p>
+              <div className="mt-8 flex flex-col gap-3">
+                  <button 
+                  onClick={() => { playClick(); setActiveCrisis(null); }}
+                  className="btn-primary w-full text-center"
+                >
+                  {activeCrisis.choiceA}
+                </button>
+                <button 
+                  onClick={() => { playClick(); setActiveCrisis(null); }}
+                  className="border border-[color:rgba(233,223,201,0.2)] bg-[color:rgba(233,223,201,0.04)] text-[var(--color-paper)] rounded-2xl p-4 text-sm hover:bg-[color:rgba(233,223,201,0.1)] transition-colors"
+                >
+                  {activeCrisis.choiceB}
+                </button>
+              </div>
+            </motion.article>
+          </motion.div>
+        )}
+
+        {discoveredArtifactId && (
+          <ArtifactBench 
+            artifactId={discoveredArtifactId} 
+            onClose={() => setDiscoveredArtifactId(null)} 
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }

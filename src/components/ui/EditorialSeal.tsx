@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import clsx from "clsx";
 import { BookOpen, Clock, FlaskConical } from "lucide-react";
 
@@ -35,11 +36,19 @@ export function EditorialSeal({ contentType, sourceRef, confidenceNote, compact 
   const evidence = evidenceById[sourceRef];
   const Icon = style.icon;
 
+  // Simulate manual stamp rotation
+  const rotation = (sourceRef.length % 5) - 2; // Stable "random" rotation based on sourceRef
+
   return (
-    <div className={clsx("rounded-xl border p-3", style.className, className)}>
-      <div className="flex items-center gap-2">
-        <Icon size={13} strokeWidth={2} className="shrink-0 opacity-80" />
-        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em]">{style.label}</p>
+    <motion.div
+      initial={{ opacity: 0, y: 4 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className={clsx("rounded-xl border p-3 shadow-sm", style.className, className)}
+    >
+      <div className="flex items-start gap-2">
+        <Icon size={13} strokeWidth={2.5} className="mt-0.5 shrink-0 opacity-80" />
+        <p className="text-[0.68rem] font-bold uppercase tracking-[0.18em] leading-tight">{style.label}</p>
       </div>
       {!compact ? (
         <>
@@ -47,8 +56,8 @@ export function EditorialSeal({ contentType, sourceRef, confidenceNote, compact 
           {evidence ? <p className="mt-2 text-xs uppercase tracking-[0.16em] text-current/75">{evidence.shortRef}</p> : null}
         </>
       ) : evidence ? (
-        <p className="mt-1 text-[0.72rem] uppercase tracking-[0.14em] text-current/80">{evidence.shortRef}</p>
+        <p className="mt-1.5 text-[0.72rem] uppercase tracking-[0.14em] font-medium text-current/80">{evidence.shortRef}</p>
       ) : null}
-    </div>
+    </motion.div>
   );
 }

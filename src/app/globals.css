@@ -12,7 +12,7 @@
   --color-moss: #4f6856;
   --color-rio: #55707c;
   --color-tide: #7cb0b7;
-  --color-paper: #ece3d1;
+  --color-paper: #efead7;
   --color-parchment: #f5eddc;
   --color-ink: #2e251e;
   --color-ink-soft: rgba(46, 37, 30, 0.82);
@@ -100,6 +100,31 @@ html[data-high-contrast="true"] .hero-bottom-fade {
     linear-gradient(90deg, rgba(236, 227, 209, 0.02) 1px, transparent 1px);
   background-size: 42px 42px, 42px 42px;
   opacity: 0.46;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Extra Premium layers                                               */
+/* ------------------------------------------------------------------ */
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  opacity: 0.035;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.mist-overlay {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  height: 25vh;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(0deg, rgba(46, 69, 57, 0.12) 0%, transparent 100%);
+  filter: blur(40px);
+  opacity: 0.6;
 }
 
 /* ------------------------------------------------------------------ */
@@ -364,18 +389,58 @@ html[data-high-contrast="true"] .hero-bottom-fade {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Stamp Animation                                                    */
+/* ------------------------------------------------------------------ */
+
+.anim-stamp {
+  animation: stamp-down 350ms cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+
+@keyframes stamp-down {
+  0% {
+    opacity: 0;
+    transform: scale(1.6) rotate(-8deg);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.9) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /*  Ambient particles (CSS-only)                                       */
 /* ------------------------------------------------------------------ */
 
 .ambient-particle {
-  position: fixed;
-  width: 3px;
-  height: 3px;
+  position: absolute;
+  background: var(--color-paper);
   border-radius: 50%;
-  background: rgba(212, 163, 103, 0.12);
-  pointer-events: none;
+  box-shadow: 0 0 10px rgba(233, 223, 201, 0.2);
+  transform: translateY(100vh);
   animation: particle-float 30s linear infinite;
+  pointer-events: none;
   z-index: 1;
+}
+
+.ambient-particle.soot {
+  background: #1a1a1a;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+}
+
+.ambient-particle.firefly {
+  background: var(--color-latao);
+  box-shadow: 0 0 12px var(--color-latao);
+  opacity: 0.8;
+  animation: particle-float 20s linear infinite, firefly-flicker 3s ease-in-out infinite alternate;
+}
+
+@keyframes firefly-flicker {
+  0% { opacity: 0.2; transform: scale(0.8) translateY(100vh); }
+  100% { opacity: 0.9; transform: scale(1.1) translateY(100vh); }
 }
 
 @keyframes particle-float {
@@ -386,9 +451,55 @@ html[data-high-contrast="true"] .hero-bottom-fade {
   10% { opacity: 0.12; }
   90% { opacity: 0.08; }
   100% {
-    transform: translate(40px, -100vh);
+    transform: translate(var(--drift-x, 40px), -100vh);
     opacity: 0;
   }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Heat Waves & Atmospheric Distortion                               */
+/* ------------------------------------------------------------------ */
+
+.heat-wave {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: transparent;
+  backdrop-filter: blur(0px);
+  mask-image: linear-gradient(to top, black, transparent);
+  animation: heat-shimmer 4s ease-in-out infinite alternate;
+}
+
+@keyframes heat-shimmer {
+  0% {
+    backdrop-filter: blur(0.5px) brightness(1.02);
+    transform: translateY(0) scaleX(1);
+  }
+  50% {
+    backdrop-filter: blur(1.5px) brightness(1.05);
+    transform: translateY(-5px) scaleX(1.01);
+  }
+  100% {
+    backdrop-filter: blur(0.8px) brightness(1.03);
+    transform: translateY(-10px) scaleX(1);
+  }
+}
+
+.ambient-particle.heat {
+  background: rgba(255, 200, 100, 0.2);
+  box-shadow: 0 0 15px rgba(255, 150, 50, 0.1);
+  filter: blur(1px);
+  animation: particle-float 15s linear infinite, heat-flicker 2s ease-in-out infinite alternate;
+}
+
+@keyframes heat-flicker {
+  0% { transform: scale(1) translate(0, 0); opacity: 0.1; }
+  100% { transform: scale(1.5) translate(10px, -10px); opacity: 0.3; }
+}
+
+.particle-dense {
+  opacity: 0.15 !important;
 }
 
 /* ------------------------------------------------------------------ */
@@ -464,4 +575,52 @@ html[data-reduced-motion="true"] .hover-lift-game:hover,
 html[data-reduced-motion="true"] .btn-primary:hover,
 html[data-reduced-motion="true"] .btn-secondary:hover {
   transform: none;
+}
+
+/* --- Narrative Effects --- */
+.effect-fever {
+  filter: sepia(0.4) saturate(1.4) blur(0.5px);
+  animation: fever-pulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes fever-pulse {
+  from { filter: sepia(0.3) saturate(1.2) blur(0.3px); }
+  to { filter: sepia(0.5) saturate(1.6) blur(0.8px); }
+}
+
+.effect-sepia-history {
+  filter: sepia(0.6) contrast(1.1) brightness(0.9);
+}
+.glow-badge {
+  box-shadow: 0 0 15px rgba(212, 163, 103, 0.3);
+}
+
+/* --- Historical Lens --- */
+.historical-lens {
+  position: relative;
+}
+
+.historical-lens::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.1) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 50;
+  opacity: 0.2;
+}
+
+.historical-lens .chromatic-text {
+  text-shadow:
+    1px 0 1px rgba(255,0,0,0.4),
+    -1px 0 1px rgba(0,255,255,0.4);
+}
+
+.historical-lens img {
+  filter: sepia(0.2) contrast(1.1) brightness(0.9);
 }

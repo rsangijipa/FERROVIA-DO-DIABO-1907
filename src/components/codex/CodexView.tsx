@@ -150,7 +150,7 @@ export function CodexView() {
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div>
                       <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-latao)]">Ala selecionada</p>
-                      <h1 className="mt-2 font-serif text-3xl text-[var(--color-paper)]">{selectedArea.title}</h1>
+                      <h1 className="mt-2 font-serif text-2xl md:text-3xl text-[var(--color-paper)]">{selectedArea.title}</h1>
                     </div>
                     <span className="image-badge image-badge-gold">
                       {getAreaColorState(selectedArea.id, museum.unlockedEntryIds, museum.viewedEntryIds) === "complete" ? "Completa" : getAreaColorState(selectedArea.id, museum.unlockedEntryIds, museum.viewedEntryIds) === "restored" ? "Restaurada" : getAreaColorState(selectedArea.id, museum.unlockedEntryIds, museum.viewedEntryIds) === "discovered" ? "Descoberta" : "Trancada"}
@@ -222,7 +222,7 @@ export function CodexView() {
                               </div>
                               <div className="min-w-0 flex-1">
                                 <div className="flex items-center justify-between gap-3">
-                                  <h2 className="font-serif text-xl text-[var(--color-paper)]">{entry.title}</h2>
+                                  <h2 className="font-serif text-lg md:text-xl text-[var(--color-paper)]">{entry.title}</h2>
                                   <span className={`image-badge ${viewed ? "image-badge-gold" : ""}`}>{viewed ? "Vista" : "Nova"}</span>
                                 </div>
                                 <p className="mt-2 text-sm leading-6 text-[var(--color-muted)]">{entry.summary}</p>
