@@ -32,7 +32,8 @@ export function AmbientParticles() {
     const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (mql.matches) return;
 
-    setParticles(generateParticles());
+    // Generate initial particles asynchronously to avoid cascading renders
+    const rafId = requestAnimationFrame(() => setParticles(generateParticles()));
 
     const handler = (e: MediaQueryListEvent) => {
       if (e.matches) {
@@ -42,7 +43,10 @@ export function AmbientParticles() {
       }
     };
     mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
+    return () => {
+      cancelAnimationFrame(rafId);
+      mql.removeEventListener("change", handler);
+    };
   }, []);
 
   if (particles.length === 0) return null;

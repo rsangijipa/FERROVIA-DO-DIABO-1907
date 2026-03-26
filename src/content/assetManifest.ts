@@ -1,4 +1,4 @@
-import type { ModeId, Resources } from "@/types/game";
+import type { ModeId } from "@/types/game";
 
 /* ------------------------------------------------------------------ */
 /*  Route / Mode typing                                                */

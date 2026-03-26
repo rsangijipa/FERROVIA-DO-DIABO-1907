@@ -31,12 +31,12 @@ interface SectionHeroProps {
 
 const stagger = {
   animate: { transition: { staggerChildren: 0.07 } },
-};
+} as const;
 
 const fadeUp = {
   initial: { opacity: 0, y: 14 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.36, ease: "easeOut" } },
-};
+} as const;
 
 export function SectionHero({
   title,

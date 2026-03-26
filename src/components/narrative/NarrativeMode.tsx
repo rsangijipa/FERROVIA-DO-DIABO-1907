@@ -1,10 +1,10 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, BookMarked, History, MapPin, MessageSquare, Undo2 } from "lucide-react";
+import { BookMarked } from "lucide-react";
 
 import { getHistoryChapterImage, historyAssets } from "@/content/assetManifest";
-import { historyChapters, historyChapterById, historyScenesByChapterId } from "@/content/historyContent";
+import { historyChapters, historyScenesByChapterId } from "@/content/historyContent";
 import { characters, places } from "@/content/entities";
 import { getPillarScores } from "@/lib/campaign/campaignEngine";
 import { historyToQuiz } from "@/lib/campaign/campaignRewards";
@@ -31,7 +31,7 @@ const crossfade = {
   initial: { opacity: 0, scale: 0.98 },
   animate: { opacity: 1, scale: 1, transition: { duration: 0.26, ease: "easeOut" } },
   exit: { opacity: 0, scale: 0.98, transition: { duration: 0.14 } },
-};
+} as const;
 
 export function NarrativeMode() {
   const history = useGameStore((store) => store.progress.history);

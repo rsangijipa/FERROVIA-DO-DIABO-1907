@@ -38,10 +38,12 @@ function useCountUp(target: number, duration = 1200): number {
   const prefersRM = useRef(false);
 
   useEffect(() => {
-    prefersRM.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    prefersRM.current = mediaQuery.matches;
+    
     if (prefersRM.current) {
-      setValue(target);
-      return;
+      const rafId = requestAnimationFrame(() => setValue(target));
+      return () => cancelAnimationFrame(rafId);
     }
 
     let start: number | null = null;

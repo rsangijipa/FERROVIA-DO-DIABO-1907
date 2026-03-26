@@ -13,7 +13,7 @@ import { PILLAR_COLORS, PILLAR_LABELS, type PillarId } from "@/lib/campaign/camp
 import { useGameStore } from "@/store/useGameStore";
 
 import { EditorialSeal } from "../ui/EditorialSeal";
-import { GameArtwork } from "../ui/GameArtwork";
+
 import { ModeCard } from "../ui/ModeCard";
 import { SectionHero } from "../ui/SectionHero";
 import { StatusBar } from "../ui/StatusBar";
@@ -47,12 +47,12 @@ const currentComplex = [
 
 const staggerContainer = {
   animate: { transition: { staggerChildren: 0.08 } },
-};
+} as const;
 
 const fadeUpItem = {
   initial: { opacity: 0, y: 16 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.32, ease: "easeOut" } },
-};
+} as const;
 
 export function HomeHub() {
   const playerProgress = useGameStore((store) => store.player.progress);

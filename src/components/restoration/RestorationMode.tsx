@@ -41,7 +41,7 @@ const crossfade = {
   initial: { opacity: 0, x: 12 },
   animate: { opacity: 1, x: 0, transition: { duration: 0.22, ease: "easeOut" } },
   exit: { opacity: 0, x: -12, transition: { duration: 0.14 } },
-};
+} as const;
 
 export function RestorationMode() {
   const resources = useGameStore((store) => store.restorationResources);

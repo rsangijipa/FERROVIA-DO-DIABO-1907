@@ -58,7 +58,7 @@ const crossfade = {
   initial: { opacity: 0, x: 10 },
   animate: { opacity: 1, x: 0, transition: { duration: 0.24, ease: "easeOut" } },
   exit: { opacity: 0, x: -10, transition: { duration: 0.12 } },
-};
+} as const;
 
 export function CodexView() {
   const museum = useGameStore((store) => store.progress.museum);

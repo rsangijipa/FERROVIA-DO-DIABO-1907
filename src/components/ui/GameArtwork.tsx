@@ -67,7 +67,7 @@ function ArtworkFrame({
           alt={alt}
           src={resolvedSrc}
           sizes={sizes}
-          preload={preload}
+          priority={preload}
           decoding="async"
           className={clsx("transition duration-500", fit === "contain" ? "object-contain" : "object-cover", imageClassName)}
           onError={() => {

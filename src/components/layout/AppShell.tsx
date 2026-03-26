@@ -12,12 +12,11 @@ import {
   ScrollText,
   Target,
   Trophy,
-  Wallet,
   Wrench,
 } from "lucide-react";
 import clsx from "clsx";
 
-import { resolvePageBackground, sharedBackgrounds } from "@/content/assetManifest";
+import { sharedBackgrounds } from "@/content/assetManifest";
 import { getCampaignState } from "@/lib/campaign/campaignEngine";
 import { modeRoutes } from "@/lib/constants";
 import { useGameStore } from "@/store/useGameStore";
