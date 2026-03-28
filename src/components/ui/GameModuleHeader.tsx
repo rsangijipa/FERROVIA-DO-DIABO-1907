@@ -13,6 +13,7 @@ interface GameModuleHeaderProps {
   badge?: string;
   fallbackArea?: FallbackAreaKey;
   className?: string;
+  preload?: boolean;
 }
 
 export function GameModuleHeader({
@@ -23,6 +24,7 @@ export function GameModuleHeader({
   badge,
   fallbackArea = "app",
   className,
+  preload = false,
 }: GameModuleHeaderProps) {
   return (
     <div className={clsx("relative overflow-hidden rounded-2xl border border-[color:var(--color-border)]", className)}>
@@ -34,6 +36,7 @@ export function GameModuleHeader({
         fadeBottom
         fallbackArea={fallbackArea}
         fallbackLabel={title}
+        preload={preload}
         className="min-h-[8rem] rounded-2xl border-0 sm:min-h-[10rem]"
         sizes="(max-width: 768px) 100vw, (max-width: 1280px) 70vw, 50vw"
       />

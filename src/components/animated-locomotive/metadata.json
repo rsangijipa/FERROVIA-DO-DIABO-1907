@@ -1,0 +1,5 @@
+{
+  "name": "Animated Locomotive",
+  "description": "A CSS/SVG animated steam locomotive moving through a scrolling landscape.",
+  "requestFramePermissions": []
+}

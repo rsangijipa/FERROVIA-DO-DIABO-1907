@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+:root {
+  --color-ferrovia: #191d1b;
+  --color-fuligem: #262522;
+  --color-madeira: #4d382d;
+  --color-rust: #a14f2a;
+  --color-cobre: #bf7a4f;
+  --color-latao: #d4a367;
+  --color-bronze: #d2a25e;
+  --color-mata: #2e4539;
+  --color-moss: #4f6856;
+  --color-rio: #55707c;
+  --color-tide: #7cb0b7;
+  --color-paper: #efead7;
+  --color-parchment: #f5eddc;
+  --color-ink: #2e251e;
+  --color-ink-soft: rgba(46, 37, 30, 0.82);
+  --color-amber: #d39a3b;
+  --color-success: #5e8a61;
+  --color-info: #5b8b98;
+  --color-danger: #b64932;
+
+  --color-bg: var(--color-ferrovia);
+  --color-surface: rgba(38, 37, 34, 0.92);
+  --color-surface-light: rgba(245, 237, 220, 0.96);
+  --color-border: rgba(212, 163, 103, 0.26);
+  --color-text: var(--color-paper);
+  --color-muted: rgba(236, 227, 209, 0.74);
+}

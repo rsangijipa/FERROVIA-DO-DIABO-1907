@@ -179,6 +179,7 @@ export function RestorationMode() {
               badge={stageLabel[selectedProgress.stage]}
               fallbackArea="restauracao2026"
               className="rounded-b-none border-x-0 border-t-0"
+              preload={true}
             />
 
             <div className="border-b border-[color:rgba(233,223,201,0.08)] p-5 md:p-6">
