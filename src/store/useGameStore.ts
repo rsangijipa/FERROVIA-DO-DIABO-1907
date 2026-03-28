@@ -24,7 +24,7 @@ import type {
   RestorationStage,
   SaveData,
   Settings,
-  TutorialProgress,
+  TutorialProgress
 } from "@/types/game";
 
 const initialResources: Resources = {
@@ -106,6 +106,19 @@ const buildInitialProgress = (): ProgressState => ({
     conhecimento: 0,
     acervo: 0,
   },
+  director: {
+    currentWeek: 1,
+    publicOpinion: 50,
+    institutionalTrust: 50,
+    operationalFatigue: 0,
+    sanitaryRisk: 10,
+    inaugurationPressure: 20,
+    heritageIntegrity: 80,
+    activeIncident: null,
+    incidentHistory: [],
+    playstyleProfile: "indefinido",
+    dynamicObjective: null,
+  },
 });
 
 const buildInitialPlayer = (): Player => ({
@@ -137,6 +150,7 @@ const buildInitialSettings = (): Settings => ({
 
 
 import { getCampaignState } from "@/lib/campaign/campaignEngine";
+import { calculateDirectorRisks } from "@/lib/campaign/incidentEngine";
 
 const calculatePlayerProgress = (progress: ProgressState, resources: Resources) => {
   const campaign = getCampaignState(progress, resources);
@@ -241,6 +255,7 @@ export interface GameStore {
   acceptLanding: () => void;
   logout: () => void;
   resetCampaign: () => void;
+  resolveIncident: (optionId: string) => void;
 }
 
 const buildInitialState = () => {
@@ -423,7 +438,10 @@ export const useGameStore = create<GameStore>()(
               tecnico: state.progress.reputation.tecnico + (choice.resourceDelta.progressoTecnico ?? 0) / 10,
               acervo: state.progress.reputation.acervo + (choice.resourceDelta.preservacao ?? 0) / 10,
             },
+            director: state.progress.director,
           };
+
+          nextProgress.director = calculateDirectorRisks(nextProgress.director);
 
           const newlyUnlockedEntryIds = nextUnlockedEntries.filter((entryId) => !previousUnlockedEntries.includes(entryId));
           const nextTutorial = buildTutorialProgress(nextProgress, {
@@ -493,7 +511,10 @@ export const useGameStore = create<GameStore>()(
               historico: state.progress.reputation.historico + (choice.delta.moral ?? 0) / 10,
               conhecimento: state.progress.reputation.conhecimento + (choice.delta.progresso ?? 0) / 10,
             },
+            director: state.progress.director,
           };
+
+          nextProgress.director = calculateDirectorRisks(nextProgress.director);
 
           return {
             progress: nextProgress,
@@ -718,6 +739,49 @@ export const useGameStore = create<GameStore>()(
         set(() => ({
           ...buildInitialState(),
         })),
+
+      resolveIncident: (optionId) =>
+        set((state) => {
+          const incident = state.progress.director.activeIncident;
+          if (!incident) return state;
+
+          const option = incident.options.find((o) => o.id === optionId);
+          if (!option) return state;
+
+          const nextResources = applyResourceDelta(state.restorationResources, option.resourceDelta);
+          const nextGlobalState = stateFromResources(nextResources);
+
+          const nextDirector = {
+            ...state.progress.director,
+            activeIncident: null,
+            incidentHistory: [...state.progress.director.incidentHistory, `[${state.progress.director.currentWeek}W]: ${incident.title} -> ${option.label} (${option.consequence})`],
+            publicOpinion: clamp(state.progress.director.publicOpinion + (option.directorDelta.publicOpinion ?? 0)),
+            institutionalTrust: clamp(state.progress.director.institutionalTrust + (option.directorDelta.institutionalTrust ?? 0)),
+            operationalFatigue: clamp(state.progress.director.operationalFatigue + (option.directorDelta.operationalFatigue ?? 0)),
+            sanitaryRisk: clamp(state.progress.director.sanitaryRisk + (option.directorDelta.sanitaryRisk ?? 0)),
+            inaugurationPressure: clamp(state.progress.director.inaugurationPressure + (option.directorDelta.inaugurationPressure ?? 0)),
+            heritageIntegrity: clamp(state.progress.director.heritageIntegrity + (option.directorDelta.heritageIntegrity ?? 0)),
+          };
+
+          const nextProgress = {
+            ...state.progress,
+            director: nextDirector,
+          };
+
+          return {
+            restorationResources: nextResources,
+            globalState: nextGlobalState,
+            progress: nextProgress,
+            player: {
+              ...state.player,
+              progress: calculatePlayerProgress(nextProgress, nextResources),
+            },
+            saveData: {
+              ...state.saveData,
+              lastUpdated: new Date().toISOString(),
+            },
+          };
+        }),
     }),
     {
       name: STORAGE_KEY,
@@ -734,7 +798,7 @@ export const useGameStore = create<GameStore>()(
       }),
       migrate: (persistedState, version) => {
         const base = buildInitialState();
-        const persisted = persistedState as Record<string, unknown> | undefined;
+        const persisted = persistedState as GameStore & { unlockedCodexIds?: string[] };
 
         if (!persisted) {
           return base as unknown as GameStore;
@@ -746,64 +810,59 @@ export const useGameStore = create<GameStore>()(
 
         const legacyUnlocked = Array.isArray(persisted.unlockedCodexIds)
           ? (persisted.unlockedCodexIds as string[])
-              .map((id) => legacyMuseumMap[id])
+              .map((id: string) => legacyMuseumMap[id])
               .filter((value): value is string => Boolean(value))
           : [];
+
+        const nextProgress = {
+          ...base.progress,
+          ...(persisted.progress || {}),
+          museum: {
+            ...base.progress.museum,
+            ...(persisted.progress?.museum || {}),
+            unlockedEntryIds: [...new Set([
+              ...base.progress.museum.unlockedEntryIds,
+              ...(persisted.progress?.museum?.unlockedEntryIds || []),
+              ...legacyUnlocked
+            ])],
+          },
+          reputation: {
+            ...base.progress.reputation,
+            ...(persisted.progress?.reputation || {}),
+          },
+          director: {
+            ...base.progress.director,
+            ...(persisted.progress?.director || {}),
+          }
+        };
 
         const nextState = {
           ...base,
           player: {
             ...base.player,
-            name: typeof persisted.player === "object" && persisted.player && "name" in persisted.player
-              ? String((persisted.player as Record<string, unknown>).name)
-              : base.player.name,
+            ...(persisted.player || {}),
           },
           saveData: {
             ...base.saveData,
-            currentMode: mapLegacyMode(
-              typeof persisted.saveData === "object" && persisted.saveData && "currentMode" in persisted.saveData
-                ? (persisted.saveData as Record<string, unknown>).currentMode
-                : "hub",
-            ),
+            ...(persisted.saveData || {}),
+            currentMode: mapLegacyMode(persisted.saveData?.currentMode || "hub"),
           },
           settings: {
             ...base.settings,
-            ...(typeof persisted.settings === "object" && persisted.settings ? (persisted.settings as Settings) : {}),
+            ...(persisted.settings || {}),
           },
-          tutorial: buildInitialTutorial(),
-          progress: {
-            ...base.progress,
-            museum: {
-              ...base.progress.museum,
-              unlockedEntryIds: [...new Set([...base.progress.museum.unlockedEntryIds, ...legacyUnlocked])],
-            },
-          },
+          progress: nextProgress,
         };
 
         if (typeof persisted.tutorial === "object" && persisted.tutorial) {
           nextState.tutorial = {
             ...base.tutorial,
-            ...(persisted.tutorial as TutorialProgress),
+            ...persisted.tutorial,
           };
         }
 
         nextState.tutorial = buildTutorialProgress(nextState.progress, nextState.tutorial);
         nextState.player.progress = calculatePlayerProgress(nextState.progress, nextState.restorationResources);
-
-        if (typeof nextState.saveData === "object" && nextState.saveData) {
-          (nextState.saveData as Record<string, unknown>).hasAcceptedLanding = 
-            (nextState.saveData as Record<string, unknown>).hasAcceptedLanding ?? false;
-        }
-
-        // Ensure reputation exists in Phase 4/5
-        if (!nextState.progress.reputation) {
-          nextState.progress.reputation = {
-            tecnico: 0,
-            historico: 0,
-            conhecimento: 0,
-            acervo: 0,
-          };
-        }
 
         return nextState as unknown as GameStore;
       },

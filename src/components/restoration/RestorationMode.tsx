@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Lock, Wrench } from "lucide-react";
+import { CheckCircle2, Lock, Wrench } from "lucide-react";
+import clsx from "clsx";
 
 import { getRestorationModuleImage, restorationAssets } from "@/content/assetManifest";
 import { restorationModules, restorationTasks } from "@/content/restorationModules";
@@ -51,11 +52,7 @@ const resourceLabel: Record<string, string> = {
   preservacao: "Preservacao",
 };
 
-const crossfade = {
-  initial: { opacity: 0, x: 12 },
-  animate: { opacity: 1, x: 0, transition: { duration: 0.22, ease: "easeOut" } },
-  exit: { opacity: 0, x: -12, transition: { duration: 0.14 } },
-} as const;
+
 
 export function RestorationMode() {
   const resources = useGameStore((store) => store.restorationResources);
@@ -132,12 +129,19 @@ export function RestorationMode() {
                   onMouseEnter={() => !locked && playTick()}
                   aria-pressed={active}
                   aria-label={`${module.kicker}, ${module.title}. Estatuto: ${stageLabel[moduleProgress.stage]}`}
-                  className={`w-full rounded-2xl border p-4 text-left transition-all duration-200 ${
+                  className={clsx(
+                    "w-full rounded-2xl border p-4 text-left transition-all duration-300 relative overflow-hidden",
                     active
                       ? "border-[color:var(--color-cobre)] bg-[color:rgba(183,106,60,0.16)] glow-badge"
-                      : "border-[color:rgba(233,223,201,0.1)] bg-[color:rgba(12,15,14,0.18)]"
-                  } ${locked ? "cursor-not-allowed opacity-55" : "hover:border-[color:var(--color-cobre)] hover-lift-game"}`}
+                      : "border-[color:rgba(233,223,201,0.1)] bg-[color:rgba(12,15,14,0.18)]",
+                    locked 
+                      ? "cursor-not-allowed opacity-[0.65] grayscale-[0.8]" 
+                      : "tactical-hover hover-lift-game",
+                  )}
                 >
+                  {locked && (
+                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwIiBmaWxsLW9wYWNpdHk9IjAuMDUiPjwvcmVjdD4KPHBhdGggZD0iTTAgMEw4IDhaTTEwIDBMOCAyWiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utb3BhY2l0eT0iMC4wNSIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] pointer-events-none" />
+                  )}
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <p className="text-xs uppercase tracking-[0.18em] text-[var(--color-latao)]">{module.kicker}</p>
@@ -195,26 +199,31 @@ export function RestorationMode() {
             <div className="grid gap-5 p-5 md:p-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.8fr)]">
               <div className="space-y-4">
                 {activeTask ? (
-                  <div className={`rounded-2xl border p-5 ${isCritical ? "border-[color:var(--color-danger)] pulse-critical" : "border-[color:rgba(233,223,201,0.08)]"} bg-[color:rgba(12,15,14,0.18)]`}>
-                    <div className="flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-[var(--color-latao)]">
-                      <Wrench size={14} />
-                      Tarefa em foco
-                    </div>
-                    <h2 className="mt-3 font-serif text-xl md:text-2xl text-[var(--color-paper)]">{activeTask.title}</h2>
-                    <p className="mt-3 text-sm leading-7 text-[var(--color-muted)]">{activeTask.summary}</p>
-                    <div className="mt-4 grid gap-3 md:grid-cols-2">
-                      {[
-                        { key: "Custo", value: activeTask.cost },
-                        { key: "Tempo", value: activeTask.time },
-                        { key: "Impacto", value: activeTask.impact },
-                        { key: "Risco", value: activeTask.risk },
-                      ].map((item) => (
-                        <div key={item.key} className="rounded-2xl border border-[color:rgba(233,223,201,0.08)] bg-[color:rgba(8,10,9,0.18)] p-3 text-sm text-[var(--color-muted)]">
-                          <p className="font-semibold text-[var(--color-paper)]">{item.key}</p>
-                          <p className="mt-1">{item.value}</p>
-                        </div>
-                      ))}
-                    </div>
+                    <div className={clsx(
+                      "rounded-2xl border p-5 md:p-6 shadow-2xl transition-all duration-500",
+                      isCritical ? "border-[color:var(--color-danger)] pulse-critical shadow-[0_0_40px_rgba(182,73,50,0.15)]" : "border-[color:var(--color-latao)]/25 shadow-[0_0_50px_rgba(0,0,0,0.4)]",
+                      "bg-[radial-gradient(circle_at_top_right,rgba(212,163,103,0.05),transparent_70%),rgba(12,15,14,0.32)]"
+                    )}>
+                      <div className="flex items-center gap-3 text-xs uppercase tracking-[0.24em] text-[var(--color-latao)] font-semibold">
+                        <Wrench size={16} className="text-[var(--color-cobre)]" />
+                        Tarefa em foco
+                      </div>
+                      <h2 className="mt-4 font-serif text-2xl md:text-3xl text-[var(--color-paper)] leading-tight">{activeTask.title}</h2>
+                      <p className="mt-3 text-sm leading-7 text-[var(--color-muted)] max-w-2xl">{activeTask.summary}</p>
+                      
+                      <div className="mt-8 grid gap-4 grid-cols-2 lg:grid-cols-4">
+                        {[
+                          { key: "Custo", value: activeTask.cost, icon: "" },
+                          { key: "Tempo", value: activeTask.time, icon: "" },
+                          { key: "Impacto", value: activeTask.impact, icon: "" },
+                          { key: "Risco", value: activeTask.risk, icon: "" },
+                        ].map((item) => (
+                          <div key={item.key} className="group rounded-2xl border border-[color:rgba(233,223,201,0.08)] bg-[color:rgba(8,10,9,0.22)] p-4 transition-all hover:bg-[color:rgba(212,163,103,0.04)] hover:border-[color:rgba(212,163,103,0.2)]">
+                            <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--color-latao)] opacity-70">{item.key}</p>
+                            <p className="mt-1.5 font-semibold text-[var(--color-paper)] text-sm md:text-base">{item.value}</p>
+                          </div>
+                        ))}
+                      </div>
 
                     <EditorialSeal
                       contentType={activeTask.contentType}
@@ -225,7 +234,8 @@ export function RestorationMode() {
 
                     <BlueprintLine className="mt-6" delay={0.2} />
 
-                    <div className="mt-5 grid gap-3">
+                    <div className="mt-8 grid gap-4 grid-cols-1 lg:grid-cols-2 relative">
+                      <div className="absolute inset-x-0 inset-y-8 bg-gradient-to-r from-transparent via-[var(--color-cobre)]/10 to-transparent pointer-events-none blur-xl" />
                       {activeTask.choices.map((choice) => (
                         <button
                           key={choice.id}
@@ -264,16 +274,43 @@ export function RestorationMode() {
                             }
                           }}
                           aria-label={`Decisão: ${choice.label}. ${choice.summary}`}
-                          className="rounded-2xl border border-[color:rgba(197,154,93,0.3)] bg-[color:rgba(44,42,40,0.74)] p-4 text-left transition-all duration-200 hover:border-[color:var(--color-cobre)] hover-lift-game"
+                          className="group relative rounded-2xl border border-[color:rgba(197,154,93,0.2)] bg-[color:rgba(12,15,14,0.32)] p-4 text-left transition-all duration-300 hover:border-[color:var(--color-cobre)] hover:bg-[color:rgba(183,106,60,0.04)] tactical-hover h-full flex flex-col justify-between"
                         >
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="min-w-0">
-                              <h3 className="font-semibold text-sm md:text-base text-[var(--color-paper)]">{choice.label}</h3>
-                              <p className="mt-2 text-sm leading-6 text-[var(--color-muted)]">{choice.summary}</p>
+                          <div>
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="min-w-0">
+                                <h3 className="font-serif text-lg leading-tight md:text-xl text-[var(--color-paper)] group-hover:text-[var(--color-latao)] transition-colors">{choice.label}</h3>
+                                <p className="mt-2 text-xs leading-5 text-[var(--color-muted)] group-hover:text-[var(--color-paper)]/80 transition-colors">{choice.summary}</p>
+                              </div>
+                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[color:rgba(212,163,103,0.16)] bg-[color:rgba(12,15,14,0.24)] text-[var(--color-latao)] group-hover:bg-[var(--color-rust)] group-hover:border-[var(--color-rust)] group-hover:text-white group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(161,79,42,0.6)] transition-all">
+                                <CheckCircle2 size={18} />
+                              </div>
                             </div>
-                            <ArrowRight size={16} className="mt-1 text-[var(--color-latao)]" />
+                            
+                            <div className="mt-5 grid grid-cols-2 lg:grid-cols-4 gap-2">
+                               {Object.entries(choice.resourceDelta).map(([key, value]) => {
+                                  const numValue = Number(value);
+                                  const isPositive = numValue > 0;
+                                  return (
+                                    <div key={key} className={`px-2 py-1.5 rounded bg-black/40 border text-center ${isPositive ? 'border-[var(--color-success)]/20' : 'border-[var(--color-danger)]/20'}`}>
+                                      <p className="text-[8px] uppercase tracking-widest text-white/50">{key === 'saudeSanitaria' ? 'Saúde' : key === 'progressoTecnico' ? 'Tecnico' : key}</p>
+                                      <p className={`text-xs font-mono font-bold mt-0.5 ${isPositive ? 'text-[var(--color-success)]' : 'text-[var(--color-danger)]'}`}>
+                                        {isPositive ? '+' : ''}{numValue}
+                                      </p>
+                                    </div>
+                                  );
+                               })}
+                            </div>
                           </div>
-                          <p className="mt-3 text-sm leading-6 text-[var(--color-paper)]/86">{choice.outcome}</p>
+
+                          <div>
+                            <div className="mt-5 flex items-center gap-3">
+                              <span className="h-px flex-1 bg-[color:rgba(212,163,103,0.1)]" />
+                              <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-latao)]/60">Resultado Provável</p>
+                              <span className="h-px flex-1 bg-[color:rgba(212,163,103,0.1)]" />
+                            </div>
+                            <p className="mt-3 text-xs italic leading-6 text-[var(--color-muted)] group-hover:text-[var(--color-paper)]/70 transition-colors">{choice.outcome}</p>
+                          </div>
                         </button>
                       ))}
                     </div>

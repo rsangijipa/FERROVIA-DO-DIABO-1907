@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import { Hammer, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 

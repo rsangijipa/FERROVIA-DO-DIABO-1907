@@ -6,7 +6,7 @@ import clsx from "clsx";
 
 import { areaFallbacks, type FallbackAreaKey } from "@/content/assetManifest";
 
-type ArtworkRatio = "16/9" | "4/3" | "1/1";
+type ArtworkRatio = "16/9" | "4/3" | "1/1" | "21/9";
 type ArtworkFit = "cover" | "contain";
 
 interface GameArtworkProps {

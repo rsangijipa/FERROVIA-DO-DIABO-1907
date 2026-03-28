@@ -4,49 +4,51 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Archive, BookOpenText, CheckCircle2, Circle, Factory, ScrollText, Settings2, Target, Trophy } from "lucide-react";
+import { Archive, BookOpenText, Factory, ScrollText, Settings2, Trophy } from "lucide-react";
 
 import { hubAssets, modeCovers } from "@/content/assetManifest";
 import { museumAreas } from "@/content/museumContent";
 import { getCampaignState } from "@/lib/campaign/campaignEngine";
 import { modeRoutes } from "@/lib/constants";
-import { PILLAR_COLORS, PILLAR_LABELS, type PillarId } from "@/lib/campaign/campaignTypes";
+import { type PillarId } from "@/lib/campaign/campaignTypes";
 import { useGameStore } from "@/store/useGameStore";
 
 import { EditorialSeal } from "../ui/EditorialSeal";
 import { ModeCard } from "../ui/ModeCard";
 import { SectionHero } from "../ui/SectionHero";
-import { StatusBar } from "../ui/StatusBar";
 import { AudioLogs } from "../ui/AudioLogs";
 import { TemporalMap } from "../ui/TemporalMap";
 import { AnimatedNumber } from "../ui/AnimatedNumber";
 import { useSFX } from "@/hooks/useSFX";
-import { CuratorJournal } from "./CuratorJournal";
-import { Book } from "lucide-react";
+import { AlertTriangle, Activity, ShieldAlert } from "lucide-react";
+import { buildDynamicObjective } from "@/lib/campaign/incidentEngine";
 
 const timeline = [
-  { year: "1903", title: "Tratado de Petropolis", type: "historical_fact" as const, sourceRef: "treaty-1903" },
-  { year: "1907", title: "Inicio das obras", type: "historical_fact" as const, sourceRef: "construction-1907-1912" },
-  { year: "1912", title: "Inauguracao da ferrovia", type: "historical_fact" as const, sourceRef: "construction-1907-1912" },
-  { year: "2008", title: "Tombamento pelo Iphan", type: "historical_fact" as const, sourceRef: "iphan-2008" },
-  { year: "2024", title: "Reabertura do complexo", type: "contemporary_fact" as const, sourceRef: "reopening-2024" },
-  { year: "2025-26", title: "Ativacao cultural e turistica", type: "contemporary_fact" as const, sourceRef: "activation-2025-2026" },
+  { year: "1903", title: "Tratado de Petrópolis", type: "historical_fact" as const, sourceRef: "treaty-1903" },
+  { year: "1907", title: "Início das obras e Farquhar", type: "historical_fact" as const, sourceRef: "construction-1907-1912" },
+  { year: "1910", title: "Intervenção de Oswaldo Cruz", type: "historical_fact" as const, sourceRef: "candelaria" },
+  { year: "1912", title: "Inauguração e 366 km", type: "historical_fact" as const, sourceRef: "construction-1907-1912" },
+  { year: "1913", title: "Colapso do Ciclo da Borracha", type: "historical_fact" as const, sourceRef: "construction-1907-1912" },
+  { year: "1943", title: "Soldados da Borracha", type: "historical_fact" as const, sourceRef: "construction-1907-1912" },
+  { year: "1972", title: "Desativação e último trem", type: "historical_fact" as const, sourceRef: "construction-1907-1912" },
+  { year: "2006", title: "Tombamento pelo Iphan", type: "historical_fact" as const, sourceRef: "iphan-2008" },
+  { year: "2024-26", title: "Reabertura PPP (Amazon Fort)", type: "contemporary_fact" as const, sourceRef: "reopening-2024" },
 ];
 
 const currentComplex = [
   {
-    title: "Museu e visitacao",
-    body: "O complexo reaberto em 2024 sustenta o eixo de patrimonio vivo com visita guiada e leitura publica.",
+    title: "Parceria Público-Privada",
+    body: "A Amazon Fort assumiu a infraestrutura e turismo na reabertura de 2024, em gestão compartilhada do museu.",
     sourceRef: "reopening-2024",
   },
   {
-    title: "Litorina e exibicoes",
-    body: "A agenda contemporanea legitima o modulo de material rodante e a camada de simulacao 2026.",
+    title: "Locomotivas 18 e 50",
+    body: "Enquanto a 18 circula no pátio central da capital, a Locomotiva 50 inicia sua restauração integral em SC.",
     sourceRef: "activation-2025-2026",
   },
   {
-    title: "Programacao cultural",
-    body: "Eventos como noites no museu ajudam o hub a falar de memoria e operacao no mesmo produto.",
+    title: "Museu de Guajará-Mirim",
+    body: "No km 366 (ponta da linha), a Jirau Energia atua para revitalizar a estação original até o final de 2026.",
     sourceRef: "activation-2025-2026",
   },
 ];
@@ -80,8 +82,6 @@ const tutorialStepMeta = {
 } as const;
 
 export function HomeHub() {
-  const [isJournalOpen, setIsJournalOpen] = useState(false);
-  const playerProgress = useGameStore((store) => store.player.progress);
   const unlockedEntries = useGameStore((store) => store.progress.museum.unlockedEntryIds.length);
   const completedAreas = useGameStore((store) =>
     museumAreas.filter((area) => area.status === "available").filter((area) =>
@@ -96,6 +96,8 @@ export function HomeHub() {
   const nextTutorialStep = tutorialStepMeta[tutorial.activeStep];
   const tutorialProgress = Math.round((tutorial.completedSteps.length / 4) * 100);
   const { playClick } = useSFX();
+  const director = useGameStore((store) => store.progress.director);
+  const dynamicMission = director ? buildDynamicObjective(director, progress, resources) : null;
 
   const cards = [
     {
@@ -137,7 +139,7 @@ export function HomeHub() {
   ];
 
   return (
-    <section className="space-y-6">
+    <section className="space-y-4">
       <SectionHero
         eyebrow="Painel de Controle — Piloto 2026"
         title="Ferrovia do Diabo — 1907"
@@ -153,126 +155,220 @@ export function HomeHub() {
         compact
       />
 
-      {!tutorial.completed ? (
-        <article className="card-dark p-5 md:p-6">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="min-w-0 flex-1">
-              <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-latao)]">Jogue agora</p>
-              <h2 className="mt-2 font-serif text-2xl text-[var(--color-paper)]">Missão guiada em 4 passos</h2>
-              <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--color-muted)]">
-                Siga a trilha principal sem precisar ler tudo antes: decida, avance, responda e veja o payoff no museu.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="image-badge image-badge-gold">{tutorialProgress}% da missão inicial</span>
-                <span className="image-badge">Próximo passo: {nextTutorialStep.label}</span>
-              </div>
+      {/* Unified Campaign Dashboard */}
+      <article className="play-gradient rounded-2xl p-6 md:p-8 shadow-2xl border border-[color:rgba(212,163,103,0.3)]">
+        <div className="flex flex-col lg:flex-row gap-8 items-stretch">
+          <div className="flex-1 space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="h-2 w-2 rounded-full bg-[var(--color-latao)] animate-pulse" />
+              <p className="text-xs uppercase tracking-[0.3em] text-[var(--color-paper)] font-bold">Comando de Campanha 2026</p>
             </div>
-            <Link href={nextTutorialStep.href} onClick={() => { playClick(); startTutorial(); }} className="btn-primary w-full sm:w-auto text-center shrink-0 transition-transform active:scale-95">
-              {tutorial.started ? "Continuar missão guiada" : "Começar missão guiada"}
-            </Link>
-          </div>
-
-          <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-            {(["restoration", "history", "quiz", "museum"] as const).map((stepId) => {
-              const completed = tutorial.completedSteps.includes(stepId);
-              const step = tutorialStepMeta[stepId];
-              const Icon = completed ? CheckCircle2 : Circle;
-              return (
-                <div
-                  key={stepId}
-                  className={`rounded-2xl border p-4 transition-all duration-300 ${
-                    completed
-                      ? "border-[color:rgba(94,138,97,0.32)] bg-[color:rgba(94,138,97,0.1)]"
-                      : tutorial.activeStep === stepId
-                        ? "border-[color:rgba(212,163,103,0.4)] bg-[color:rgba(12,15,14,0.48)] shadow-[0_0_15px_rgba(212,163,103,0.05)]"
-                        : "border-[color:rgba(233,223,201,0.08)] bg-[color:rgba(12,15,14,0.24)] opacity-60"
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <Icon size={16} className={completed ? "text-[var(--color-success)]" : "text-[var(--color-latao)]"} />
-                    <p className="text-[0.65rem] uppercase tracking-[0.16em] text-[var(--color-muted)]">Passo</p>
-                  </div>
-                  <h3 className={`mt-2 font-serif text-lg ${completed ? "text-[var(--color-paper)]/60" : "text-[var(--color-paper)]"}`}>{step.label}</h3>
-                </div>
-              );
-            })}
-          </div>
-        </article>
-      ) : null}
-
-      <article className="card-dark p-5 md:p-6">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <Target size={14} className="shrink-0 text-[var(--color-cobre)]" />
-              <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-cobre)]">Próxima jogada</p>
-            </div>
-            {campaign.currentMission ? (
-              <>
-                <h2 className="mt-2 font-serif text-2xl text-[var(--color-paper)]">{campaign.currentMission.title}</h2>
-                <p className="mt-3 text-sm leading-7 text-[var(--color-muted)]">
-                  {campaign.currentMission.impact}. Recompensa: {campaign.currentMission.reward}.
+            
+            {!tutorial.completed ? (
+              <div className="space-y-4">
+                <h2 className="font-serif text-3xl md:text-4xl text-[var(--color-paper)]">Missão Guiada: {tutorialProgress}%</h2>
+                <p className="text-base leading-relaxed text-[var(--color-paper)]/80 max-w-2xl">
+                  {nextTutorialStep.label}. Complete os 4 pilares da revitalização para liberar o museu completo.
                 </p>
-                <Link
-                  href={modeRoutes.find((m) => m.id === campaign.recommendedModule)?.href ?? "/"}
-                  onClick={() => playClick()}
-                  className="btn-primary mt-4 inline-flex w-full sm:w-auto items-center justify-center gap-2"
-                >
-                  Jogar etapa recomendada
-                </Link>
-              </>
+                <div className="flex flex-wrap gap-4 pt-2">
+                  <Link href={nextTutorialStep.href} onClick={() => { playClick(); startTutorial(); }} className="btn-primary px-8 py-3 text-lg font-serif">
+                    {tutorial.started ? "Continuar missão" : "Iniciar revitalização"}
+                  </Link>
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-black/20 border border-white/10">
+                    <span className="text-sm text-[var(--color-paper)]/60">Passo atual:</span>
+                    <span className="text-sm font-bold text-[var(--color-latao)]">{tutorial.activeStep}</span>
+                  </div>
+                </div>
+              </div>
+            ) : campaign.currentMission ? (
+              <div className="space-y-4">
+                {dynamicMission ? (
+                  <>
+                    <div className="flex items-center gap-2 mb-2">
+                      <AlertTriangle className="text-[var(--color-rust)]" size={24} />
+                      <h2 className="font-serif text-3xl md:text-4xl text-[var(--color-paper)]">{dynamicMission.title}</h2>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="bg-black/20 p-4 rounded-xl border border-white/5">
+                        <p className="text-[10px] uppercase text-[var(--color-rust)] mb-1 font-bold">Risco Tático</p>
+                        <p className="text-sm text-[var(--color-paper)]/80">{dynamicMission.primaryRisk}</p>
+                        <p className="text-xs text-[var(--color-paper)]/50 mt-2">Falha: {dynamicMission.consequenceIfIgnored}</p>
+                      </div>
+                      <div className="bg-[var(--color-latao)]/10 p-4 rounded-xl border border-[var(--color-latao)]/20">
+                        <p className="text-[10px] uppercase text-[var(--color-latao)] mb-1 font-bold">Ação Recomendada</p>
+                        <p className="text-sm text-[var(--color-paper)]/90">{dynamicMission.recommendedAction}</p>
+                      </div>
+                    </div>
+                    <Link
+                      href={modeRoutes.find((m) => m.id === dynamicMission.targetModuleId)?.href ?? "/"}
+                      onClick={() => playClick()}
+                      className="btn-primary mt-4 px-8 py-3 text-lg font-serif inline-block"
+                    >
+                      Executar ação
+                    </Link>
+                  </>
+                ) : (
+                  <p className="text-[var(--color-paper)]/60 italic">Carregando diretrizes de comando...</p>
+                )}
+              </div>
             ) : (
-              <>
-                <h2 className="mt-2 font-serif text-2xl text-[var(--color-success)]">Campanha concluída</h2>
-                <p className="mt-2 text-sm text-[var(--color-muted)]">Todos os objetivos da revitalização foram alcançados.</p>
-              </>
+              <div className="space-y-4">
+                <h2 className="font-serif text-3xl md:text-4xl text-[var(--color-success)]">Revitalização Concluída</h2>
+                <p className="text-base leading-relaxed text-[var(--color-paper)]/80">
+                  O complexo da EFMM está totalmente restaurado. Explore as alas do museu para ver o resultado final.
+                </p>
+              </div>
             )}
           </div>
 
-          <div className="w-full sm:w-auto sm:min-w-[200px]">
-            <p className="mb-2 text-[0.65rem] uppercase tracking-[0.16em] text-[var(--color-latao)]">Revitalização da EFMM</p>
-            <p className="mb-3 font-serif text-3xl font-bold text-[var(--color-latao)]">
-              <AnimatedNumber value={campaign.overallProgress} />%
-            </p>
+          <div className="lg:w-80 flex flex-col justify-center gap-6 p-6 rounded-2xl bg-black/30 border border-white/5 backdrop-blur-sm">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-latao)] mb-2">Progresso Geral</p>
+              <div className="flex items-end gap-2">
+                <span className="font-serif text-5xl font-bold text-[var(--color-latao)]"><AnimatedNumber value={campaign.overallProgress} />%</span>
+                <span className="text-xs text-[var(--color-paper)]/60 mb-2">Concluído</span>
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-latao)]">Radares Estratégicos</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <div className="flex justify-between items-center text-[9px] uppercase tracking-wider text-[var(--color-paper)]/60">
+                    <span>Opinião Púb.</span>
+                    <span>{director?.publicOpinion ?? 0}%</span>
+                  </div>
+                  <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden">
+                    <motion.div initial={{ width: 0 }} animate={{ width: `${director?.publicOpinion ?? 0}%` }} className="h-full bg-[var(--color-info)]" />
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex justify-between items-center text-[9px] uppercase tracking-wider text-[var(--color-paper)]/60">
+                    <span>Confiança</span>
+                    <span>{director?.institutionalTrust ?? 0}%</span>
+                  </div>
+                  <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden">
+                    <motion.div initial={{ width: 0 }} animate={{ width: `${director?.institutionalTrust ?? 0}%` }} className="h-full bg-[var(--color-success)]" />
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex justify-between items-center text-[9px] uppercase tracking-wider text-[var(--color-paper)]/60">
+                    <span className="text-[var(--color-rust)] font-bold flex items-center gap-1"><ShieldAlert size={10} /> Fadiga</span>
+                    <span>{director?.operationalFatigue ?? 0}%</span>
+                  </div>
+                  <div className="h-1 w-full bg-[var(--color-rust)]/20 rounded-full overflow-hidden">
+                    <motion.div initial={{ width: 0 }} animate={{ width: `${director?.operationalFatigue ?? 0}%` }} className="h-full bg-[var(--color-rust)]" />
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex justify-between items-center text-[9px] uppercase tracking-wider text-[var(--color-paper)]/60">
+                    <span className="text-[var(--color-danger)] font-bold flex items-center gap-1"><Activity size={10} /> R. Sanitário</span>
+                    <span>{director?.sanitaryRisk ?? 0}%</span>
+                  </div>
+                  <div className="h-1 w-full bg-[var(--color-danger)]/20 rounded-full overflow-hidden">
+                    <motion.div initial={{ width: 0 }} animate={{ width: `${director?.sanitaryRisk ?? 0}%` }} className="h-full bg-[var(--color-danger)]" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
-          {(["tecnico", "historico", "conhecimento", "acervo"] as PillarId[]).map((pillar) => (
-            <StatusBar
-              key={pillar}
-              label={PILLAR_LABELS[pillar]}
-              value={Math.round(campaign.pillarScores[pillar])}
-              colorVar={PILLAR_COLORS[pillar]}
-            />
-          ))}
         </div>
       </article>
 
-      <motion.div
-        className="grid gap-4 md:grid-cols-2 xl:grid-cols-4"
-        variants={staggerContainer}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, amount: 0.15 }}
-      >
-        {cards.map((card) => (
-          <motion.div key={card.href} variants={fadeUpItem} className="min-w-0">
-            <ModeCard
-              href={card.href}
-              title={card.title}
-              description={card.description}
-              icon={card.icon}
-              imageSrc={card.imageSrc}
-              imageAlt={card.title}
-              fallbackArea={card.fallbackArea}
-              metrics={card.metrics}
-              actionLabel="Entrar"
-              priority={card.href.includes("restauracao") || card.href.includes("historia")}
-            />
-          </motion.div>
-        ))}
-      </motion.div>
+      {/* Zona 3: Trilha de Campanha */}
+      <div className="bg-black/30 border border-[color:rgba(212,163,103,0.1)] rounded-2xl p-6 overflow-hidden relative">
+        <div className="absolute inset-0 blueprint-bg opacity-30" />
+        <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-latao)] mb-6 relative z-10">Desdobramento Mestre</p>
+        <div className="relative z-10 flex flex-wrap lg:flex-nowrap items-center justify-between gap-4">
+          {[
+            { label: "Canteiro Base", status: campaign.pillarScores.tecnico > 10 ? "done" : "current" },
+            { label: "Trilhos 2026", status: campaign.pillarScores.tecnico > 50 ? "done" : campaign.pillarScores.tecnico > 10 ? "current" : "locked" },
+            { label: "Acervo Resgatado", status: campaign.pillarScores.acervo > 30 ? "done" : "locked" },
+            { label: "História Reaberta", status: progress.history.completedChapterIds.length > 0 ? "done" : "locked" },
+            { label: "Comitê do Quiz", status: progress.quiz["modulo-1"]?.correct > 0 ? "done" : "locked" },
+            { label: "Museu Curado", status: progress.museum.unlockedEntryIds.length > 3 ? "done" : "locked" },
+          ].map((node, i, arr) => (
+            <div key={node.label} className="flex items-center gap-2 flex-1 min-w-max">
+              <div className={`flex flex-col items-center gap-2 ${node.status === "locked" ? "opacity-40" : ""}`}>
+                <div className={`h-8 w-8 rounded-full border-2 flex items-center justify-center transition-all ${
+                  node.status === 'done' ? 'bg-[var(--color-latao)] border-[var(--color-latao)] text-black' :
+                  node.status === 'current' ? 'bg-[var(--color-rust)]/20 border-[var(--color-rust)] text-[var(--color-rust)] interactive-glow' :
+                  'bg-black/50 border-white/10 text-white/20'
+                }`}>
+                  <span className="text-xs font-bold">{node.status === 'done' ? '✓' : i + 1}</span>
+                </div>
+                <span className={`text-[10px] uppercase tracking-wider text-center max-w-[80px] ${node.status === 'current' ? 'text-[var(--color-rust)] font-bold' : 'text-white/60'}`}>
+                  {node.label}
+                </span>
+              </div>
+              {i < arr.length - 1 && (
+                <div className="flex-1 h-[2px] w-8 lg:w-full bg-white/10 relative overflow-hidden">
+                  {node.status === 'done' && <motion.div className="absolute inset-0 bg-[var(--color-latao)]" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} style={{ transformOrigin: 'left' }} />}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-[1fr_300px]">
+        {/* Module Cards Grid */}
+        <motion.div
+          className="grid gap-4 md:grid-cols-2"
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, amount: 0.15 }}
+        >
+          {cards.map((card) => (
+            <motion.div key={card.href} variants={fadeUpItem} className="min-w-0">
+              <ModeCard
+                href={card.href}
+                title={card.title}
+                description={card.description}
+                icon={card.icon}
+                imageSrc={card.imageSrc}
+                imageAlt={card.title}
+                fallbackArea={card.fallbackArea}
+                metrics={card.metrics}
+                actionLabel="Entrar"
+                priority={card.href.includes("restauracao") || card.href.includes("historia")}
+                compact
+              />
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Zona 4: Acontecimentos Recentes */}
+        <div className="card-dark p-6 flex flex-col h-full max-h-[400px]">
+          <div className="flex items-center gap-2 mb-4">
+            <Archive className="text-[var(--color-latao)]" size={16} />
+            <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-latao)]">Despachos Recentes</p>
+          </div>
+          
+          <div className="flex-1 overflow-y-auto pr-2 space-y-3 font-mono text-xs">
+            {director?.incidentHistory && director.incidentHistory.length > 0 ? (
+              [...director.incidentHistory].reverse().map((log, i) => (
+                <div key={i} className="p-3 bg-black/40 border-l border-l-[var(--color-rust)] rounded-r-lg text-[var(--color-paper)]/80 leading-relaxed shadow-inner">
+                  {log}
+                </div>
+              ))
+            ) : (
+              <div className="p-3 bg-black/20 border border-[var(--color-latao)]/20 border-dashed rounded-lg text-[var(--color-paper)]/50 italic text-center">
+                Sem ocorrências graves na campanha até o momento. Operações normais.
+              </div>
+            )}
+            {progress.museum.unlockedEntryIds.length > 0 && (
+              <div className="p-3 bg-[var(--color-moss)]/20 border-l border-l-[var(--color-success)] rounded-r-lg text-[var(--color-paper)]/80 leading-relaxed">
+                [SISTEMA]: Catálogo patrimonial reativado. {progress.museum.unlockedEntryIds.length} peça(s) catalogada(s).
+              </div>
+            )}
+            <div className="p-3 bg-[var(--color-info)]/10 border-l border-l-[var(--color-info)] rounded-r-lg text-[var(--color-paper)]/80 leading-relaxed">
+              [SISTEMA]: Comando de Campanha inicializado.
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div className="grid gap-4 lg:grid-cols-2 mb-6">
         <AudioLogs />
@@ -290,6 +386,7 @@ export function HomeHub() {
           fallbackArea="resultadoIntegrado"
           metrics={["Perfil da campanha"]}
           actionLabel="Ver resultado"
+          compact
         />
         <ModeCard
           href="/config"
@@ -301,6 +398,7 @@ export function HomeHub() {
           fallbackArea="hub"
           metrics={["Acessibilidade"]}
           actionLabel="Ajustar"
+          compact
         />
       </div>
 

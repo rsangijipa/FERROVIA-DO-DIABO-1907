@@ -36,9 +36,6 @@ export function EditorialSeal({ contentType, sourceRef, confidenceNote, compact 
   const evidence = evidenceById[sourceRef];
   const Icon = style.icon;
 
-  // Simulate manual stamp rotation
-  const rotation = (sourceRef.length % 5) - 2; // Stable "random" rotation based on sourceRef
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 4 }}

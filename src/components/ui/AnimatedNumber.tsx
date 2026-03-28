@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useSpring, useTransform, motion, useMotionValue } from "framer-motion";
+import { useSpring, motion, useMotionValue } from "framer-motion";
 import { useSFX } from "@/hooks/useSFX";
 
 interface AnimatedNumberProps {
   value: number;
   format?: (val: number) => string;
   className?: string;
-  duration?: number;
   playSound?: boolean;
 }
 
@@ -16,7 +15,6 @@ export function AnimatedNumber({
   value,
   format = (val) => Math.round(val).toString(),
   className = "",
-  duration = 1.2,
   playSound = true,
 }: AnimatedNumberProps) {
   const motionValue = useMotionValue(0);

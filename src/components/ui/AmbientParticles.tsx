@@ -41,7 +41,6 @@ export function AmbientParticles({ type = "dust" }: { type?: "dust" | "soot" | "
     if (mql.matches || reducedMotion) return;
 
     // Heat and soot should be denser
-    const countMultiplier = type === "soot" || type === "heat" ? 2 : 1;
     const rafId = requestAnimationFrame(() => setParticles(generateParticles()));
 
     const handler = (e: MediaQueryListEvent) => {

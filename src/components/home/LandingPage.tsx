@@ -43,7 +43,7 @@ export function LandingPage() {
         <div className="mt-8 mx-auto h-px w-24 bg-gradient-to-r from-transparent via-[var(--color-latao)] to-transparent" />
 
         <p className="mt-8 text-lg md:text-xl text-[var(--color-muted)] leading-relaxed max-w-2xl mx-auto font-serif italic">
-          "Onde outros viram apenas selva, nós traçamos o futuro. Onde outros esqueceram o suor, nós restauramos a história."
+          &quot;Onde outros viram apenas selva, nós traçamos o futuro. Onde outros esqueceram o suor, nós restauramos a história.&quot;
         </p>
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">

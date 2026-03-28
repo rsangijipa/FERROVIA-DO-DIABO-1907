@@ -1,7 +1,6 @@
 "use client";
 
 import clsx from "clsx";
-import { motion } from "framer-motion";
 import { Check, X, Unlock, Award } from "lucide-react";
 
 type StampType = "correct" | "wrong" | "unlocked" | "completed";

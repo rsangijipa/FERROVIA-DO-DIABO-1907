@@ -9,6 +9,53 @@ export type ModeId =
 
 export type GlobalStateLevel = "estavel" | "pressionado" | "crise" | "colapso";
 
+export type PlaystyleProfile =
+  | "restaurador_tecnico"
+  | "curador_patrimonial"
+  | "gestor_politico"
+  | "operador_vitrine"
+  | "mediador_humanista"
+  | "executor_imprudente"
+  | "indefinido";
+
+export interface IncidentOption {
+  id: string;
+  label: string;
+  consequence: string;
+  resourceDelta: Partial<Resources>;
+  directorDelta: Partial<Omit<CampaignDirectorState, "currentWeek" | "activeIncident" | "incidentHistory" | "playstyleProfile" | "dynamicObjective">>;
+}
+
+export interface Incident {
+  id: string;
+  type: "sanitario" | "tecnico" | "politico" | "equipe" | "clima" | "publico";
+  title: string;
+  description: string;
+  options: IncidentOption[];
+}
+
+export interface DynamicObjective {
+  title: string;
+  primaryRisk: string;
+  recommendedAction: string;
+  consequenceIfIgnored: string;
+  targetModuleId?: ModeId;
+}
+
+export interface CampaignDirectorState {
+  currentWeek: number;
+  publicOpinion: number;
+  institutionalTrust: number;
+  operationalFatigue: number;
+  sanitaryRisk: number;
+  inaugurationPressure: number;
+  heritageIntegrity: number;
+  activeIncident: Incident | null;
+  incidentHistory: string[];
+  playstyleProfile: PlaystyleProfile;
+  dynamicObjective: DynamicObjective | null;
+}
+
 export type ContentType = "historical_fact" | "contemporary_fact" | "simulation_2026";
 
 export type RestorationStage =
@@ -270,6 +317,7 @@ export interface ProgressState {
   audioLogs: string[];
   foundArtifacts: string[];
   reputation: Record<string, number>;
+  director: CampaignDirectorState;
 }
 
 export interface RestorationDecisionFeedback {

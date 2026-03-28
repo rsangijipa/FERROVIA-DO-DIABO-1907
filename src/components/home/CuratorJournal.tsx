@@ -70,7 +70,7 @@ export function CuratorJournal({ isOpen, onClose }: CuratorJournalProps) {
               return (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
+                  onClick={() => setActiveTab(tab.id as typeof activeTab)}
                   className={clsx(
                     "flex items-center gap-2 rounded-t-lg border-x border-t px-4 py-2 transition-colors",
                     isActive

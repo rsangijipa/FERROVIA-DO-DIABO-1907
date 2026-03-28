@@ -133,16 +133,98 @@ html[data-high-contrast="true"] .hero-bottom-fade {
 
 .card-dark {
   border: 1px solid var(--color-border);
-  background: linear-gradient(180deg, rgba(38, 37, 34, 0.96), rgba(25, 29, 27, 0.9));
+  background: linear-gradient(180deg, rgba(38, 37, 34, 0.98), rgba(25, 29, 27, 0.94));
   border-radius: 1.25rem;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(8px);
 }
 
 .card-light {
-  border: 1px solid rgba(191, 122, 79, 0.24);
+  border: 1px solid rgba(191, 122, 79, 0.28);
   background: linear-gradient(180deg, var(--color-parchment), var(--color-paper));
   border-radius: 1.25rem;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(8px);
+}
+
+.play-gradient {
+  background: linear-gradient(135deg, var(--color-rust) 0%, var(--color-cobre) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.play-gradient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: translateX(-100%);
+  animation: shine-sweep 3s infinite;
+}
+
+@keyframes shine-sweep {
+  100% { transform: translateX(100%); }
+}
+
+.compact-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+/* ------------------------------------------------------------------ */
+/*  Tactical Game Feel                                                */
+/* ------------------------------------------------------------------ */
+
+.tactical-hover {
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform, box-shadow, border-color;
+}
+
+@media (hover: hover) {
+  .tactical-hover:hover {
+    transform: translateY(-2px) scale(1.01);
+    border-color: rgba(212, 163, 103, 0.4);
+    box-shadow: 
+      0 8px 24px rgba(8, 9, 10, 0.5),
+      0 0 16px rgba(212, 163, 103, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+}
+
+.tactical-hover:active {
+  transform: translateY(1px) scale(0.99);
+  transition-duration: 0.1s;
+}
+
+.interactive-glow {
+  position: relative;
+}
+
+.interactive-glow::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: radial-gradient(circle at center, rgba(212, 163, 103, 0.3) 0%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+}
+
+@media (hover: hover) {
+  .interactive-glow:hover::after {
+    opacity: 1;
+  }
+}
+
+.blueprint-bg {
+  background-image: 
+    linear-gradient(rgba(212, 163, 103, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 163, 103, 0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: center;
 }
 
 /* ------------------------------------------------------------------ */
@@ -172,12 +254,39 @@ html[data-high-contrast="true"] .hero-bottom-fade {
   border: 1px solid rgba(191, 122, 79, 0.5);
   background: var(--color-rust);
   color: var(--color-parchment);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(8, 9, 10, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .btn-primary:hover {
   background: var(--color-cobre);
-  box-shadow: 0 0 18px rgba(191, 122, 79, 0.22);
-  transform: translateY(-1px);
+  border-color: rgba(212, 163, 103, 0.8);
+  box-shadow: 0 4px 16px rgba(191, 122, 79, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  text-shadow: 0 1px 4px rgba(8, 9, 10, 0.6);
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(8, 9, 10, 0.4), inset 0 1px 4px rgba(8, 9, 10, 0.5);
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  transform: skewX(-20deg);
+  transition: 0s;
+}
+
+.btn-primary:hover::after {
+  left: 200%;
+  transition: left 0.6s ease-in-out;
 }
 
 .btn-secondary {
@@ -188,8 +297,13 @@ html[data-high-contrast="true"] .hero-bottom-fade {
 
 .btn-secondary:hover {
   background: rgba(79, 104, 86, 0.96);
-  box-shadow: 0 0 14px rgba(79, 104, 86, 0.18);
-  transform: translateY(-1px);
+  border-color: rgba(94, 138, 97, 0.6);
+  box-shadow: 0 4px 14px rgba(79, 104, 86, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+  transform: translateY(1px);
 }
 
 /* ------------------------------------------------------------------ */

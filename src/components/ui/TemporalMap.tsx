@@ -32,7 +32,7 @@ export function TemporalMap() {
           <div className="absolute left-6 right-6 h-0.5 bg-[color:rgba(233,223,201,0.1)]" />
           
           <div className="relative flex justify-between w-full">
-            {restorationModules.map((module, i) => {
+            {restorationModules.map((module) => {
               const status = restorationProgress[module.id]?.stage === "released" 
                 ? "completed" 
                 : restorationProgress[module.id]?.stage !== "locked" 

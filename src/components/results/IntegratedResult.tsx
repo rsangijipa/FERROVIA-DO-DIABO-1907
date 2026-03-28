@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {} from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Trophy } from "lucide-react";
@@ -16,23 +16,7 @@ import { useGameStore } from "@/store/useGameStore";
 import { SectionHero } from "../ui/SectionHero";
 import { StatusBar } from "../ui/StatusBar";
 
-const clampPercent = (value: number) => Math.round(Math.max(0, Math.min(100, value)));
-
-const resolveProfile = (restoration: number, history: number, quiz: number, museum: number) => {
-  if (restoration >= 75 && museum >= 55 && restoration >= history && restoration >= quiz) {
-    return "Engenheiro da Revitalizacao";
-  }
-  if (history >= 70 && museum >= 60) {
-    return "Curador da Memoria";
-  }
-  if (quiz >= 75 && museum >= 65) {
-    return "Guardiao do Acervo";
-  }
-  if (museum >= 60 && history >= 55) {
-    return "Mediador do Patrimonio";
-  }
-  return "Operador do Legado";
-};
+import { calculatePlaystyleProfile } from "@/lib/campaign/profileCalculator";
 import { AnimatedNumber } from "../ui/AnimatedNumber";
 
 export function IntegratedResult() {
@@ -53,12 +37,19 @@ export function IntegratedResult() {
   ];
   const weakestPillar = pillarEntries.reduce((a, b) => (b[1] < a[1] ? b : a))[0];
 
-  const profile = resolveProfile(
-    pillarScores.tecnico,
-    pillarScores.historico,
-    pillarScores.conhecimento,
-    pillarScores.acervo,
-  );
+  const profile = calculatePlaystyleProfile(progress, resources, progress.director);
+  
+  const displayProfileMap: Record<string, string> = {
+    restaurador_tecnico: "Restaurador Técnico",
+    curador_patrimonial: "Curador Patrimonial",
+    gestor_politico: "Gestor Político",
+    operador_vitrine: "Operador de Vitrine",
+    mediador_humanista: "Mediador Humanista",
+    executor_imprudente: "Executor Imprudente",
+    indefinido: "Gestor Generalista"
+  };
+
+  const profileDisplay = displayProfileMap[profile] ?? "Gestor Generalista";
 
   const whatUnlockedMost = progress.museum.unlockedEntryIds.length > 0
     ? campaign.dominantPillar === "tecnico" ? "Restauração 2026"
@@ -68,7 +59,6 @@ export function IntegratedResult() {
     : "nenhum módulo ainda";
 
   const availableQuizModules = quizModules.filter((module) => module.status === "available");
-  const totalQuizQuestions = availableQuizModules.reduce((acc: number, module) => acc + (quizQuestionsByModuleId[module.id]?.length ?? 0), 0);
   const availableMuseumEntries = museumAreas.filter((area) => area.status === "available").reduce((acc: number, area) => acc + area.entryIds.length, 0);
 
   const timeline = [
@@ -82,11 +72,11 @@ export function IntegratedResult() {
     <section className="space-y-4">
       <SectionHero
         eyebrow="Dossie final da Entrega 1"
-        title={profile}
-        subtitle={`Perfil de ${player.name}. O resultado cruza restauracao, historia, quiz e museu com pesos fixos e leitura de predominancia.`}
+        title={profileDisplay}
+        subtitle={`Perfil de ${player.name}. O resultado cruza restauração, história, quiz e museu com suas reações sob pressão via incidentes.`}
         imageSrc={resultAssets.hero}
         imageAlt="Resultado Integrado"
-        chips={[`Score ponderado ${campaign.overallProgress}%`, `Perfil ${profile}`, `Progresso geral ${playerProgress}%`]}
+        chips={[`Score ponderado ${campaign.overallProgress}%`, `Perfil ${profileDisplay}`, `Progresso geral ${playerProgress}%`]}
         fallbackArea="resultadoIntegrado"
         preload
       />
@@ -167,7 +157,7 @@ export function IntegratedResult() {
           </div>
           <div className="mt-5 text-center">
             <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-latao)]">Perfil da campanha</p>
-            <h2 className="mt-2 font-serif text-xl md:text-2xl text-[var(--color-paper)]">{profile}</h2>
+            <h2 className="mt-2 font-serif text-xl md:text-2xl text-[var(--color-paper)]">{profileDisplay}</h2>
             <p className="mt-4 font-serif text-5xl font-bold text-[var(--color-latao)]">
               <AnimatedNumber value={campaign.overallProgress} />%
             </p>
@@ -218,12 +208,26 @@ export function IntegratedResult() {
 
         <article className="card-dark p-5">
           <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-muted)]">Predominância</p>
-          <h3 className="mt-2 font-serif text-xl text-[var(--color-paper)]">{profile}</h3>
+          <h3 className="mt-2 font-serif text-xl text-[var(--color-paper)]">{profileDisplay}</h3>
           <p className="mt-3 text-sm leading-7 text-[var(--color-muted)]">
-            O perfil nasce da area mais forte da sua campanha combinada ao nivel de maturidade do museu.
+            O perfil nasce das suas decisões frente ao Diretor de Campanha, sua relação com os trabalhadores, pressão sanitária, desgaste político e a área mais forte da sua curadoria.
           </p>
         </article>
       </div>
+
+      {progress.director.incidentHistory.length > 0 && (
+        <article className="card-dark p-5 mt-4">
+          <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-danger)]">Custo Oculto da Campanha</p>
+          <h2 className="mt-2 font-serif text-xl md:text-2xl text-[var(--color-paper)]">Histórico de Incidentes e Resoluções</h2>
+          <ul className="mt-4 space-y-3 font-mono text-[0.7rem] sm:text-xs">
+            {progress.director.incidentHistory.map((incidentLog, i) => (
+              <li key={i} className="text-[var(--color-paper)]/70 bg-black/30 p-2 rounded-lg border border-white/5 border-l-[var(--color-rust)] border-l-2">
+                {incidentLog}
+              </li>
+            ))}
+          </ul>
+        </article>
+      )}
 
       <div className="grid gap-4 md:grid-cols-2">
         <article className="card-dark p-5">

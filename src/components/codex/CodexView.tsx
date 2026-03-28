@@ -87,24 +87,31 @@ export function CodexView() {
 
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
         {/* Left: museum map */}
-        <section className="card-dark overflow-hidden p-0">
-          {/* Map base image */}
-          <div className="relative h-40 overflow-hidden">
+        <section className="card-dark overflow-hidden flex flex-col relative">
+          <div className="absolute inset-0 blueprint-bg opacity-40 mix-blend-overlay pointer-events-none" />
+          
+          {/* Map base image with integrated overlay */}
+          <div className="relative h-64 overflow-hidden shrink-0 border-b border-[color:rgba(212,163,103,0.15)] shadow-inner">
             <Image
               src={museumAssets.mapBase}
-              alt="Mapa do museu"
+              alt="Planta do Complexo"
               fill
-              className="object-cover"
+              className="object-cover opacity-80 mix-blend-luminosity hover:scale-105 transition-transform duration-1000"
               sizes="(max-width: 1280px) 100vw, 50vw"
             />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_20%,rgba(25,29,27,0.95))]" />
-            <div className="absolute bottom-4 left-5">
-              <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-latao)]">Mapa do museu</p>
+            <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-ferrovia)] via-transparent to-[var(--color-ferrovia)]/30" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-ferrovia)]/80 via-transparent to-transparent" />
+            <div className="absolute bottom-6 left-6 flex items-center gap-3">
+              <Map size={24} className="text-[var(--color-latao)]" />
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--color-cobre)] drop-shadow-md">Documento 4A</p>
+                <p className="font-serif text-lg text-[var(--color-paper)] drop-shadow-md">Planta Curatorial</p>
+              </div>
             </div>
           </div>
 
           {/* Museum nodes grid */}
-          <div className="grid gap-3 p-5 md:grid-cols-2">
+          <div className="grid gap-4 p-6 md:grid-cols-2 flex-1 relative z-10">
             {museumAreas.map((area) => {
               const Icon = iconByName[area.icon as keyof typeof iconByName] ?? Archive;
               const state = getAreaColorState(area.id, museum.unlockedEntryIds, museum.viewedEntryIds);
@@ -203,33 +210,37 @@ export function CodexView() {
                             onClick={() => viewMuseumEntry(entry.id)}
                             aria-expanded={viewed}
                             aria-label={`Entrada: ${entry.title}. Status: ${viewed ? "Vista" : "Nova"}`}
-                            className={`w-full rounded-2xl border p-5 text-left transition-all duration-200 ${
+                            className={`group w-full rounded-2xl border p-5 text-left transition-all duration-300 relative overflow-hidden ${
                               viewed
-                                ? "border-[color:rgba(212,163,103,0.3)] bg-[color:rgba(212,163,103,0.08)]"
-                                : "border-[color:rgba(233,223,201,0.1)] bg-[color:rgba(12,15,14,0.18)] hover:border-[color:var(--color-cobre)] hover-lift-game"
+                                ? "border-[color:rgba(212,163,103,0.3)] bg-[color:rgba(12,15,14,0.4)] shadow-md"
+                                : "border-[color:var(--color-cobre)] bg-[color:rgba(212,163,103,0.1)] tactical-hover shadow-[0_0_20px_rgba(212,163,103,0.15)]"
                             }`}
                           >
-                            {/* Entry thumbnail */}
-                            <div className="flex gap-4">
-                              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-[color:var(--color-border)]">
+                            {!viewed && <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--color-latao)]/20 to-transparent pointer-events-none translate-x-[-100%] animate-[shine-sweep_3s_infinite]" />}
+                            
+                            {/* Entry Header */}
+                            <div className="flex flex-col md:flex-row md:items-start gap-5 relative z-10">
+                              <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border-2 border-[var(--color-latao)] shadow-[0_8px_16px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-500">
                                 <Image
                                   src={getMuseumEntryThumb(entry.id, selectedArea.id)}
                                   alt={entry.title}
                                   fill
                                   className="object-cover"
-                                  sizes="64px"
+                                  sizes="80px"
                                 />
+                                <div className="absolute inset-0 shadow-[inset_0_0_15px_rgba(0,0,0,0.8)] pointer-events-none" />
                               </div>
                               <div className="min-w-0 flex-1">
-                                <div className="flex items-center justify-between gap-3">
-                                  <h2 className="font-serif text-lg md:text-xl text-[var(--color-paper)]">{entry.title}</h2>
-                                  <span className={`image-badge ${viewed ? "image-badge-gold" : ""}`}>{viewed ? "Vista" : "Nova"}</span>
+                                <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
+                                  <span className={`text-[9px] uppercase font-bold tracking-[0.25em] px-2 py-1 rounded border ${viewed ? "border-white/10 text-white/50 bg-black/40" : "border-[var(--color-cobre)] text-[var(--color-latao)] bg-[var(--color-cobre)]/20 shadow-[0_0_8px_rgba(212,163,103,0.6)]"}`}>
+                                    {viewed ? "Catalogado" : "Nova Descoberta"}
+                                  </span>
+                                  <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--color-cobre)] opacity-80 flex items-center gap-1">
+                                    <Archive size={10} /> Origem: {getEntryUnlockSources(entry.id).label}
+                                  </p>
                                 </div>
+                                <h2 className="font-serif text-xl md:text-2xl text-[var(--color-paper)] drop-shadow-sm">{entry.title}</h2>
                                 <p className="mt-2 text-sm leading-6 text-[var(--color-muted)]">{entry.summary}</p>
-                              {/* Source attribution */}
-                              <p className="mt-1 text-[0.6rem] uppercase tracking-[0.12em] text-[var(--color-cobre)]">
-                                Desbloqueado por: {getEntryUnlockSources(entry.id).label}
-                              </p>
                               </div>
                             </div>
 

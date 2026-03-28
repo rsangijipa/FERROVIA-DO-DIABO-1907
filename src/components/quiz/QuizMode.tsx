@@ -15,6 +15,7 @@ import { EditorialSeal } from "../ui/EditorialSeal";
 import { FeedbackStamp } from "../ui/FeedbackStamp";
 import { GameModuleHeader } from "../ui/GameModuleHeader";
 import { SectionHero } from "../ui/SectionHero";
+import { useSFX } from "@/hooks/useSFX";
 
 
 
@@ -28,6 +29,7 @@ export function QuizMode() {
   const quizProgress = useGameStore((store) => store.progress.quiz);
   const answerQuiz = useGameStore((store) => store.answerQuiz);
   const nextQuizQuestion = useGameStore((store) => store.nextQuizQuestion);
+  const { playClick, playSuccess, playFailure, playTick } = useSFX();
 
   const firstModuleId = quizModules.find((module) => module.status === "available")?.id ?? quizModules[0].id;
   const [selectedModuleId, setSelectedModuleId] = useState(firstModuleId);
@@ -171,12 +173,12 @@ export function QuizMode() {
                     </span>
                   </div>
 
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div className="text-xs uppercase tracking-[0.18em] text-[var(--color-latao)]">
+                  <div className="flex flex-wrap items-center justify-between gap-3 relative z-10">
+                    <div className="text-[10px] uppercase font-bold tracking-[0.2em] text-[var(--color-rust)] bg-[var(--color-rust)]/10 px-2.5 py-1 rounded border border-[var(--color-rust)]/20 shadow-sm">
                       {question.topic} • {question.difficulty}
                     </div>
                   </div>
-                  <h2 className="mt-4 font-serif text-xl md:text-2xl text-[var(--color-paper)]">{question.prompt}</h2>
+                  <h2 className="mt-6 font-serif text-2xl md:text-3xl text-[var(--color-paper)] leading-snug drop-shadow-md relative z-10">{question.prompt}</h2>
 
                   <div className="mt-5 grid gap-3">
                     {question.options.map((option, index) => {
@@ -189,21 +191,27 @@ export function QuizMode() {
                         <button
                           key={option}
                           type="button"
-                          onClick={() => answerQuiz(selectedModule.id, index)}
+                          onMouseEnter={() => !isAnswered && playTick()}
+                          onClick={() => {
+                            if (isCorrectAnswer) playSuccess();
+                            else playFailure();
+                            answerQuiz(selectedModule.id, index);
+                          }}
                           disabled={isAnswered}
                           aria-pressed={isSelected}
                           aria-label={`Alternativa ${choiceLetters[index]}: ${option}`}
                           className={clsx(
-                            "flex items-start gap-3 rounded-2xl border p-4 text-left transition-all duration-200",
+                            "flex items-start gap-4 rounded-2xl border p-5 text-left transition-all duration-300 relative overflow-hidden group",
                             showCorrect
-                              ? "border-[color:var(--color-success)] bg-[color:rgba(94,138,97,0.12)]"
+                              ? "border-[color:var(--color-success)] bg-[color:rgba(94,138,97,0.16)] shadow-[0_0_20px_rgba(94,138,97,0.2)]"
                               : showWrong
-                                ? "border-[color:var(--color-danger)] bg-[color:rgba(182,73,50,0.1)]"
+                                ? "border-[color:var(--color-danger)] bg-[color:rgba(182,73,50,0.12)]"
                                 : isAnswered
-                                  ? "cursor-not-allowed border-[color:rgba(233,223,201,0.06)] bg-[color:rgba(12,15,14,0.1)] opacity-60"
-                                  : "border-[color:rgba(212,163,103,0.18)] bg-[color:rgba(12,15,14,0.14)] hover:border-[color:var(--color-cobre)] hover-lift-game",
+                                  ? "cursor-not-allowed border-[color:rgba(233,223,201,0.04)] bg-[color:rgba(12,15,14,0.2)] opacity-50 grayscale pt-5"
+                                  : "border-[color:rgba(212,163,103,0.18)] bg-[color:rgba(12,15,14,0.3)] hover:border-[color:var(--color-cobre)] hover:bg-[color:rgba(212,163,103,0.06)] tactical-hover",
                           )}
                         >
+                          {showCorrect && <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwIiBmaWxsLW9wYWNpdHk9IjAuMDUiPjwvcmVjdD4KPHBhdGggZD0iTTAgMEw4IDhaTTEwIDBMOCAyWiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utb3BhY2l0eT0iMC4wNSIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] opacity-20 pointer-events-none" />}
                           <span
                             className={clsx(
                               "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border font-serif text-sm font-bold",
@@ -237,7 +245,7 @@ export function QuizMode() {
                           className="mt-4"
                         />
                       </div>
-                      <button className="btn-primary" onClick={() => nextQuizQuestion(selectedModule.id)}>
+                      <button className="btn-primary" onClick={() => { playClick(); nextQuizQuestion(selectedModule.id); }}>
                         {selectedProgress.currentQuestionIndex >= questions.length - 1 ? "Concluir modulo" : "Proxima pergunta"}
                       </button>
                     </div>
@@ -246,14 +254,34 @@ export function QuizMode() {
               ) : (
                 <motion.div
                   key="completed"
-                  className="mt-5 rounded-2xl border border-[color:rgba(233,223,201,0.08)] bg-[color:rgba(12,15,14,0.18)] p-5"
+                  className="mt-5 rounded-2xl border border-[color:rgba(212,163,103,0.3)] bg-[color:rgba(12,15,14,0.3)] p-8 relative overflow-hidden text-center shadow-[0_0_40px_rgba(0,0,0,0.6)]"
                   {...crossfade}
                 >
-                  <FeedbackStamp type="completed" className="mb-4" />
-                  <h2 className="font-serif text-2xl text-[var(--color-paper)]">Modulo concluido</h2>
-                  <p className="mt-3 text-sm leading-7 text-[var(--color-muted)]">
-                    Voce fechou este modulo com {selectedProgress.correct} acertos em {questions.length} perguntas.
-                  </p>
+                  <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-cobre)]/10 to-transparent pointer-events-none" />
+                  
+                  <div className="flex flex-col items-center relative z-10">
+                    <div className="h-24 w-24 rounded-full border-4 border-[var(--color-latao)] bg-[color:rgba(212,163,103,0.1)] flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(212,163,103,0.3)]">
+                      <span className="font-serif text-4xl text-[var(--color-latao)]">{selectedProgress.correct}</span>
+                      <span className="text-[var(--color-latao)]/50 text-xl font-light mx-1">/</span>
+                      <span className="text-xl text-[var(--color-latao)]/70 mt-3">{questions.length}</span>
+                    </div>
+
+                    <h2 className="font-serif text-3xl md:text-4xl text-[var(--color-paper)] chromatic-text">Autenticação Concluída</h2>
+                    <p className="mt-4 text-base leading-relaxed text-[var(--color-muted)] max-w-md mx-auto">
+                      Sua precisão curatorial certificou a veracidade destes fatos históricos e consolidou a narrativa do Museu Vivo.
+                    </p>
+
+                    {quizToMuseum[selectedModule.id] && (
+                      <div className="mt-8 p-4 bg-black/40 border border-[var(--color-success)]/30 rounded-xl inline-block">
+                        <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-[var(--color-success)] mb-1">
+                          Recompensa Desbloqueada
+                        </p>
+                        <p className="text-sm text-[var(--color-paper)]">
+                          Ala do Museu liberada para exploração.
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>

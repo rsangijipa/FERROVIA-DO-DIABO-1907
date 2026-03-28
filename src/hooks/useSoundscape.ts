@@ -1,4 +1,3 @@
-import type { ModeId } from "@/types/game";
-
+"use client";
 
 export function useSoundscape() {}

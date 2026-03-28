@@ -127,57 +127,77 @@ export function NarrativeMode() {
           >
             {currentScene ? (
               <>
-                {/* Chapter illustration */}
-                <GameArtwork
-                  src={getHistoryChapterImage(currentChapter.id)}
-                  alt={currentChapter.title}
-                  aspectRatio="16/9"
-                  overlay
-                  fadeBottom
-                  fallbackArea="historiaInterativa"
-                  fallbackLabel={currentChapter.title}
-                  className="max-h-[14rem] min-h-[10rem] rounded-b-none border-x-0 border-t-0"
-                  sizes="(max-width: 1280px) 100vw, 60vw"
-                />
-
-                <div className="p-5 md:p-6">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-latao)]">
-                        Parte {currentChapter.part} • Cena {history.currentSceneIndex + 1}/{scenes.length}
-                      </p>
-                      <h1 className="mt-2 font-serif text-2xl md:text-3xl text-[var(--color-paper)] chromatic-text">{currentScene.title}</h1>
+                <div className="relative">
+                  <GameArtwork
+                    src={getHistoryChapterImage(currentChapter.id)}
+                    alt={currentChapter.title}
+                    aspectRatio="16/9"
+                    overlay
+                    fadeBottom
+                    fallbackArea="historiaInterativa"
+                    fallbackLabel={currentChapter.title}
+                    className="max-h-[24rem] min-h-[18rem] rounded-b-none border-x-0 border-t-0"
+                    sizes="(max-width: 1280px) 100vw, 60vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-ferrovia)] via-black/40 to-transparent flex flex-col justify-end p-6 md:p-10 pointer-events-none">
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="rounded border border-[color:rgba(212,163,103,0.4)] bg-black/60 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-latao)] backdrop-blur-md">
+                        Parte {currentChapter.part}
+                      </span>
+                      <span className="rounded border border-[color:rgba(191,122,79,0.6)] bg-[var(--color-rust)]/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-paper)] backdrop-blur-md shadow-[0_0_15px_rgba(161,79,42,0.6)]">
+                        {dramaticRoleLabel[currentScene.dramaticRole]}
+                      </span>
                     </div>
-                    <span className="rounded-full border border-[color:rgba(212,163,103,0.28)] bg-[color:rgba(212,163,103,0.1)] px-3 py-2 text-xs uppercase tracking-[0.16em] text-[var(--color-latao)]">
-                      {dramaticRoleLabel[currentScene.dramaticRole]}
-                    </span>
+                    <h1 className="font-serif text-3xl md:text-5xl text-[var(--color-paper)] leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,1)]">
+                      {currentScene.title}
+                    </h1>
+                    <p className="text-xs uppercase tracking-[0.3em] text-[var(--color-latao)]/80 mt-3 drop-shadow-md">
+                      Cena {history.currentSceneIndex + 1} de {scenes.length}
+                    </p>
                   </div>
+                </div>
+
+                <div className="p-5 md:p-6 pt-4">
 
                   <div className="mt-4 text-sm leading-7 text-[var(--color-muted)] h-14 md:h-20 lg:h-auto overflow-y-auto">
                     <Typewriter text={currentScene.context} speed={20} />
                   </div>
 
                   {/* Dialogue with character portrait and quotation */}
-                  <div className="mt-5 flex items-start gap-3 md:gap-4 rounded-2xl border border-[color:rgba(212,163,103,0.16)] bg-[color:rgba(12,15,14,0.2)] p-4 md:p-5">
-                    {currentCharacter && (
-                      <CharacterPortrait
-                        characterId={currentCharacter.id}
-                        name={currentCharacter.name}
-                        size={48}
-                        className="mt-1 shrink-0"
-                      />
-                    )}
-                    <div className="min-w-0 flex-1">
+                  {/* Dialogue with character portrait and quotation */}
+                  <div className="mt-6 relative">
+                    <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-[var(--color-latao)]/15 via-transparent to-[var(--color-latao)]/5 blur-xl opacity-20" />
+                    <div className="relative flex flex-col md:flex-row items-start gap-5 rounded-2xl border border-[color:rgba(212,163,103,0.4)] bg-[color:rgba(12,15,14,0.48)] p-5 md:p-6 shadow-2xl overflow-hidden">
+                      <div className="absolute top-0 right-0 p-4 opacity-5">
+                        <span className="font-serif text-8xl text-[var(--color-latao)]">&rdquo;</span>
+                      </div>
+                      
                       {currentCharacter && (
-                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-latao)]">
-                          {currentCharacter.name}
-                        </p>
+                        <div className="relative shrink-0 flex flex-col items-center z-10">
+                          <CharacterPortrait
+                            characterId={currentCharacter.id}
+                            name={currentCharacter.name}
+                            size={100}
+                            className="rounded-full ring-4 ring-[var(--color-latao)]/30 ring-offset-4 ring-offset-[color:var(--color-ferrovia)] shadow-[0_10px_30px_rgba(0,0,0,0.8)]"
+                          />
+                          <div className="mt-[-10px] px-4 py-1.5 rounded-full bg-[color:var(--color-ferrovia)] border border-[color:var(--color-latao)]/40 shadow-lg relative z-10">
+                            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-latao)]">
+                              Depoente
+                            </p>
+                          </div>
+                        </div>
                       )}
-                      <p className="mt-2 font-serif text-base italic leading-7 text-[var(--color-paper)]">
-                        <span className="mr-1 text-lg text-[var(--color-latao)]">&ldquo;</span>
-                        <Typewriter text={currentScene.dialogue} speed={35} />
-                        <span className="ml-1 text-lg text-[var(--color-latao)]">&rdquo;</span>
-                      </p>
+                      
+                      <div className="min-w-0 flex-1">
+                        {currentCharacter && (
+                          <h3 className="text-[11px] font-bold uppercase tracking-[0.24em] text-[var(--color-latao)] mb-3">
+                            {currentCharacter.name}
+                          </h3>
+                        )}
+                        <div className="font-serif text-lg md:text-xl italic leading-relaxed text-[var(--color-paper)] drop-shadow-sm">
+                          <Typewriter text={currentScene.dialogue} speed={25} />
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -228,21 +248,25 @@ export function NarrativeMode() {
                       </button>
                     </div>
                   ) : (
-                    <div className="mt-5 grid gap-3">
+                    <div className="mt-10 grid gap-4 grid-cols-1 lg:grid-cols-2 relative pb-4">
+                      <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-cobre)]/5 to-transparent blur-2xl pointer-events-none" />
                       {currentScene.choices.map((choice, i) => (
                         <button
                           key={choice.id}
                           type="button"
                           onClick={() => { playClick(); chooseHistoryChoice(choice.id); }}
-                          className="group rounded-2xl border border-[color:rgba(212,163,103,0.2)] bg-[color:rgba(12,15,14,0.2)] p-4 text-left transition-all duration-200 hover:border-[color:var(--color-cobre)] hover-lift-game"
+                          className="group relative overflow-hidden rounded-2xl border border-[color:rgba(212,163,103,0.3)] bg-[color:rgba(12,15,14,0.4)] p-6 text-left transition-all duration-300 tactical-hover"
                         >
-                          <div className="flex items-start gap-3">
-                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[color:rgba(212,163,103,0.3)] bg-[color:rgba(212,163,103,0.1)] font-serif text-sm font-bold text-[var(--color-latao)]">
-                              {choiceLetters[i] ?? "•"}
-                            </span>
+                          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwIiBmaWxsLW9wYWNpdHk9IjAuMDUiPjwvcmVjdD4KPHBhdGggZD0iTTAgMEw4IDhaTTEwIDBMOCAyWiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utb3BhY2l0eT0iMC4wNSIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none" />
+                          <div className="relative z-10 flex flex-col h-full justify-between gap-4">
                             <div>
-                              <h3 className="font-semibold text-[var(--color-paper)]">{choice.label}</h3>
-                              <p className="mt-2 text-sm leading-6 text-[var(--color-muted)]">{choice.consequence}</p>
+                               <p className="text-[10px] uppercase font-bold tracking-[0.3em] text-[var(--color-rust)] mb-2 group-hover:text-[var(--color-cobre)] transition-colors">Postura {choiceLetters[i]}</p>
+                               <h3 className="font-serif text-2xl leading-tight text-[var(--color-paper)] group-hover:text-white transition-colors">{choice.label}</h3>
+                            </div>
+                            <div className="flex items-start gap-3 mt-4">
+                               <div className="flex-1 border-t border-[color:rgba(212,163,103,0.15)] pt-4">
+                                  <p className="text-xs italic leading-6 text-[var(--color-muted)] group-hover:text-[var(--color-paper)]/90 transition-colors">{choice.consequence}</p>
+                               </div>
                             </div>
                           </div>
                         </button>

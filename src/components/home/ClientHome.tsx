@@ -6,8 +6,6 @@ import { useGameStore } from "@/store/useGameStore";
 import { motion } from "framer-motion";
 
 export function ClientHome() {
-  const hasAcceptedLanding = useGameStore((state) => state.saveData.hasAcceptedLanding);
-
   return (
     <motion.div
       key="hub"

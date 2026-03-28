@@ -16,6 +16,7 @@ import { ScrollToTop } from "../ui/ScrollToTop";
 import { useSFX } from "@/hooks/useSFX";
 import { LandingPage } from "../home/LandingPage";
 import { MobileNav } from "./MobileNav";
+import { IncidentModal } from "../ui/IncidentModal";
 
 const navItems = [
   { href: "/", label: "Hub", icon: Compass },
@@ -111,13 +112,20 @@ export function AppShellClient({ children }: { children: React.ReactNode }) {
                       onMouseEnter={() => playTick()}
                       aria-current={isActive ? "page" : undefined}
                       className={clsx(
-                        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[0.8rem] transition-all duration-200",
+                        "relative inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[0.8rem] transition-colors duration-200 z-10 tactical-hover",
                         isActive
-                          ? "border-[color:var(--color-cobre)] bg-[color:rgba(183,106,60,0.18)] text-[var(--color-paper)] glow-badge"
-                          : "border-[color:var(--color-border)] bg-[color:rgba(12,15,14,0.4)] text-[var(--color-muted)] hover:border-[color:rgba(212,163,103,0.2)] hover:text-[var(--color-paper)]",
+                          ? "text-[var(--color-paper)]"
+                          : "text-[var(--color-muted)] hover:text-[var(--color-paper)] border border-transparent hover:border-[color:rgba(212,163,103,0.15)]",
                       )}
                     >
-                      <Icon size={12} />
+                      {isActive && (
+                        <motion.div
+                          layoutId="desktop-active-nav"
+                          className="absolute inset-0 -z-10 rounded-full border border-[var(--color-cobre)] bg-[color:rgba(183,106,60,0.18)] interactive-glow"
+                          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        />
+                      )}
+                      <Icon size={14} className={isActive ? "text-[var(--color-latao)] drop-shadow-md" : ""} />
                       {item.label}
                     </Link>
                   );
@@ -180,13 +188,20 @@ export function AppShellClient({ children }: { children: React.ReactNode }) {
                     href={item.href}
                     onClick={() => playClick()}
                     className={clsx(
-                      "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs transition-all",
+                      "relative inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs transition-colors z-10",
                       isActive
-                        ? "border-[color:var(--color-cobre)] bg-[color:rgba(183,106,60,0.18)] text-[var(--color-paper)]"
-                        : "border-[color:rgba(212,163,103,0.1)] text-[var(--color-muted)]",
+                        ? "text-[var(--color-paper)]"
+                        : "text-[var(--color-muted)] border border-transparent hover:border-[color:rgba(212,163,103,0.15)]",
                     )}
                   >
-                    <Icon size={12} />
+                    {isActive && (
+                      <motion.div
+                        layoutId="tablet-active-nav"
+                        className="absolute inset-0 -z-10 rounded-full border border-[var(--color-cobre)] bg-[color:rgba(183,106,60,0.18)] interactive-glow"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      />
+                    )}
+                    <Icon size={12} className={isActive ? "text-[var(--color-latao)]" : ""} />
                     {item.label}
                   </Link>
                 );
@@ -275,6 +290,7 @@ export function AppShellClient({ children }: { children: React.ReactNode }) {
         </AnimatePresence>
         {hasAcceptedLanding && <MobileNav />}
       </div>
+      <IncidentModal />
     </MotionConfig>
   );
 }
